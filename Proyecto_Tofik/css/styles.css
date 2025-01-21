@@ -1,0 +1,188 @@
+/* General */
+@font-face {
+  font-family: 'Fuente';
+  src: url('../html/Lucida\ Bright\ Demibold.ttf') format('truetype');
+}
+body {
+  font-family: 'Fuente';
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  background-image: url('../images/fondo.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #333;
+}
+
+/* Cabecera */
+.header {
+  background-color: rgba(0, 123, 255, 0.8);
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  position: relative;
+}
+
+.header img {
+  position: absolute;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 40px;
+}
+
+/* Pie de Página */
+.footer {
+  background-color: rgba(0, 123, 255, 0.8);
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  position: relative;
+}
+
+.footer img {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 40px;
+}
+
+a {
+  text-decoration: none;
+  text-decoration-line: none;
+}
+
+/* Botones */
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Contenedores */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Formularios */
+form {
+  max-width: 600px;
+  margin: auto;
+}
+
+form .form-control {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+form .form-control:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+form button[type="submit"] {
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+form button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Tablas */
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  background-color: #007bff;
+  color: white;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Títulos */
+h1, h2, h3 {
+  color: #007bff;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .header img, .footer img {
+    height: 30px;
+  }
+  .container {
+    padding: 15px;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+}
