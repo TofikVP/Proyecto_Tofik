@@ -1,0 +1,177 @@
+{% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>VANDAL</title>
+        <!-- Enlace al archivo de estilos principal -->
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <link rel="stylesheet" href="{% static 'css/dashboards.css' %}">
+        <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    </head>
+
+    <body>
+        <!-- Header social + login -->
+        <nav class="navbar">
+            <div class="language-switch">
+                <a href="/es{{ request.get_full_path|slice:'3:' }}" class="lang-option">ES</a>
+                <span>|</span>
+                <a href="/en{{ request.get_full_path|slice:'3:' }}" class="lang-option">EN</a>
+            </div>
+
+            {% if user.is_authenticated %}
+                <div class="login-dropdown">
+                    <button class="dropdown-button">Bienvenido
+                        {{ user.username }}</button>
+                    <div class="dropdown-content">
+                        <a href="/{{ LANGUAGE_CODE }}/dashboard/{{ user.userrole.role }}">Ir a mi panel</a>
+                        <a href="/{{ LANGUAGE_CODE }}/logout/">Cerrar sesión</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="login-icon">
+                    <a href="/{{ LANGUAGE_CODE }}/login/">
+                        <img
+                            class="social-icons"
+                            src="{% static 'images/Logos/Login_icon.png' %}"
+                            alt="Login Icon">
+                    </a>
+                </div>
+            {% endif %}
+        </nav>
+
+        <!-- Logo principal -->
+        <nav class="navbar">
+            <div>
+                <a href="/{{ LANGUAGE_CODE }}/">
+                    <img
+                        class="logo"
+                        src="{% static 'images/Logos/vandal_logo.png' %}"
+                        alt="Vandal Logo">
+                </a>
+            </div>
+        </nav>
+
+        <!-- Navbar principal -->
+        <nav class="navbar">
+            <ul>
+                <li>
+                    <a href="/{{ LANGUAGE_CODE }}/">{% trans "INICIO" %}</a>
+                </li>
+                <li>
+                    <a href="/{{ LANGUAGE_CODE }}/blog/">{% trans "Blog" %}</a>
+                </li>
+                <li>
+                    <a href="/{{ LANGUAGE_CODE }}/redactores">{% trans "Equipo" %}</a>
+                </li>
+                <li>
+                    <a href="/{{ LANGUAGE_CODE }}/videos">{% trans "Vídeos" %}</a>
+                </li>
+                <li>
+                    <a href="/{{ LANGUAGE_CODE }}/calendario">{% trans "Calendario" %}</a>
+                </li>
+                <li>
+                    <a href="/{{ LANGUAGE_CODE }}/ranking">{% trans "Ranking" %}</a>
+                </li>
+            </ul>
+        </nav>
+
+        <body>
+            <h1 class="dashboard-title">Bienvenid@,
+                {{ user.username }}</h1>
+
+            <!-- Contenedor principal del dashboard -->
+            <div class="dashboard-container">
+
+                <!-- Sección de subida de contenido -->
+                <div class="dashboard-card">
+                    <h2>Subir contenido</h2>
+                    <form method="post" enctype="multipart/form-data" class="dashboard-form">
+                        {% csrf_token %}
+                        <input type="file" name="file" required>
+                        <button type="submit" name="upload">Subir archivo</button>
+                    </form>
+                </div>
+
+                <!-- Sección de Posts -->
+                <div class="dashboard-card">
+                    <h2>Tus Posts</h2>
+                    <ul class="dashboard-list">
+                        {% for p in posts %}
+                            <li>
+                                <a href="{% url 'blog_post' p.id %}">{{ p.title }}</a>
+                            </li>
+                            {% empty %}
+                            <li>No tienes posts.</li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- Botón para mostrar el formulario -->
+                    <button
+                        onclick="document.getElementById('nuevo-post-form').classList.toggle('hidden')"
+                        class="btn btn-primary">
+                        Agregar nuevo post
+                    </button>
+
+                    <!-- Formulario oculto por defecto -->
+                    <div id="nuevo-post-form" class="hidden" style="margin-top: 1em;">
+                        <form method="post" enctype="multipart/form-data" class="dashboard-form">
+                            {% csrf_token %}
+
+                            <label for="id_title">Título</label>
+                            <input type="text" name="title" id="id_title" class="form-control" required>
+
+                            <label for="id_content">Contenido</label>
+                            <textarea name="content" id="id_content" rows="5" class="form-control" required></textarea>
+
+                            <label for="id_image">Imagen (opcional)</label>
+                            <input type="file" name="image" id="id_image" class="form-control">
+
+                            <button type="submit" name="post_submit" class="btn btn-success" style="margin-top: 1em;">Publicar</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Sección de Comentarios -->
+                <div class="dashboard-card">
+                    <h2>Tus Comentarios</h2>
+                    <ul class="dashboard-list">
+                        {% for c in comments %}
+                            <li>
+                                <div class="comment-item">
+                                    <div class="content">{{ c.content }}
+                                        <small>({{ c.created_at }})</small>
+                                    </div>
+                                    <div class="actions">
+                                        {% if role == 'redactor' %}
+                                            <a href="{% url 'comment_delete' c.pk %}">Eliminar</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </li>
+                            {% empty %}
+                            <li>No tienes comentarios.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Sección de Cambio de Contraseña -->
+                <div class="dashboard-card">
+                    <h2>Cambiar contraseña</h2>
+                    <form method="post" class="dashboard-form">
+                        {% csrf_token %}
+                        {{ password_form.as_p }}
+                        <button type="submit" name="password_submit">Actualizar contraseña</button>
+                    </form>
+                </div>
+
+                <!-- Botón logout -->
+                <div class="dashboard-card">
+                    <a href="{% url 'logout' %}" class="dashboard-form">Cerrar sesión</a>
+                </div>
+
+            </div>

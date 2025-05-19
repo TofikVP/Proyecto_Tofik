@@ -1,0 +1,124 @@
+{% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VANDAL</title>
+  <!-- Enlace al archivo de estilos principal -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/calendario.css' %}">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- Header social + login -->
+  <nav class="navbar">
+    <div class="language-switch">
+  <a href="/es{{ request.get_full_path|slice:'3:' }}" class="lang-option">ES</a>
+  <span>|</span>
+  <a href="/en{{ request.get_full_path|slice:'3:' }}" class="lang-option">EN</a>
+</div>
+
+    {% if user.is_authenticated %}
+    <div class="login-dropdown">
+      <button class="dropdown-button">Bienvenido {{ user.username }}</button>
+      <div class="dropdown-content">
+        <a href="/{{ LANGUAGE_CODE }}/dashboard/{{ user.userrole.role }}">Ir a mi panel</a>
+        <a href="/{{ LANGUAGE_CODE }}/logout/">Cerrar sesión</a>
+      </div>
+    </div>
+    {% else %}
+    <div class="login-icon">
+      <a href="/{{ LANGUAGE_CODE }}/login/">
+        <img class="social-icons" src="{% static 'images/Logos/Login_icon.png' %}" alt="Login Icon">
+      </a>
+    </div>
+    {% endif %}
+  </nav>
+
+  <!-- Logo principal -->
+  <nav class="navbar">
+    <div>
+      <a href="/{{ LANGUAGE_CODE }}/">
+        <img class="logo" src="{% static 'images/Logos/vandal_logo.png' %}" alt="Vandal Logo">
+      </a>
+    </div>
+  </nav>
+
+  <!-- Navbar principal -->
+<nav class="navbar">
+  <ul>
+    <li><a href="/{{ LANGUAGE_CODE }}/">{% trans "INICIO" %}</a></li>
+    <li><a href="/{{ LANGUAGE_CODE }}/blog/">{% trans "Blog" %}</a></li>
+    <li><a href="/{{ LANGUAGE_CODE }}/redactores">{% trans "Equipo" %}</a></li>
+    <li><a href="/{{ LANGUAGE_CODE }}/videos">{% trans "Vídeos" %}</a></li>
+    <li><a href="/{{ LANGUAGE_CODE }}/calendario">{% trans "Calendario" %}</a></li>
+    <li><a href="/{{ LANGUAGE_CODE }}/ranking">{% trans "Ranking" %}</a></li>
+  </ul>
+</nav>
+
+  <section id="calendario" class="calendario-container">
+    <h2>Calendario de Eventos</h2>
+    <div class="calendario-card">
+      <div class="title">10 mayo 2025</div>
+      <div class="desc">Torneo de estrategia en línea – 16:00h</div>
+      <div class="image"><img src="{% static 'images/Calendario/1.png' %}" alt=""></div>
+    </div>
+    <div class="calendario-card">
+      <div class="title">18 mayo 2025</div>
+      <div class="desc">Taller de diseño UX/UI – 11:00h</div>
+      <div class="image"><img src="{% static 'images/Calendario/2.jpg' %}" alt=""></div>
+    </div>
+    <div class="calendario-card">
+      <div class="title">25 mayo 2025</div>
+      <div class="desc">Game Jam colaborativo – 14:00h</div>
+      <div class="image"><img src="{% static 'images/Calendario/3.png' %}" alt=""></div>
+    </div>
+    <div class="calendario-card">
+      <div class="title">1 junio 2025</div>
+      <div class="desc">Conferencia sobre inteligencia artificial – 10:00h</div>
+      <div class="image"><img src="{% static 'images/Calendario/4.jpg' %}" alt=""></div>
+    </div>
+    <div class="calendario-card">
+      <div class="title">15 junio 2025</div>
+      <div class="desc">Hackathon de desarrollo web – 09:00h</div>
+      <div class="image"><img src="{% static 'images/Calendario/5.png' %}" alt=""></div>
+    </div>
+  </section>
+
+  <!-- Sección de contacto -->
+<div style="text-align: center;">
+  <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>
+  <p>{% trans "Cuéntanos para que podamos lanzar un hechizo de corrección." %}</p>
+</div>
+<div style="text-align: center; margin: 20px 0;">
+  <a href="/{{ LANGUAGE_CODE }}/contacto" class="contact-button">{% trans "Contáctanos" %}</a>
+</div>
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-logo">
+      <img class="logo-footer" src="{% static 'images/Logos/vandal_logo.png' %}" alt="Vandal Logo Footer">
+    </div>
+    </br>
+    <nav class="footer-nav">
+      <a href="/{{ LANGUAGE_CODE }}/legal">{% trans "Aviso legal" %}</a>
+      <a href="/{{ LANGUAGE_CODE }}/">{% trans "Política de cookies" %}</a>
+      <a href="/{{ LANGUAGE_CODE }}/publicidad">{% trans "Publicidad" %}</a>
+      <a href="/{{ LANGUAGE_CODE }}/contacto">{% trans "Trabaja con nosotros" %}</a>
+    </nav>
+    </br>
+    <div class="footer-bottom">
+      {% trans "Copyright Vandal © 2025 - Prohibida la reproducción total o parcial de estos contenidos sin el permiso expreso de los autores." %}
+    </div>
+  </footer>
+  </footer>
+</body>
+
+</html>

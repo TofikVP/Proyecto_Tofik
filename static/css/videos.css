@@ -1,0 +1,25 @@
+/* Estilos para el portal de videos */
+
+#video-portal {
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .video-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .video-item {
+    width: 300px;
+    text-align: center;
+  }
+  
+  video {
+    width: 100%;
+    height: auto;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+  }

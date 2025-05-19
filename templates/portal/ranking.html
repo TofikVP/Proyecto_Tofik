@@ -1,0 +1,273 @@
+{% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VANDAL</title>
+  <!-- Enlace al archivo de estilos principal -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/ranking.css' %}">
+</head>
+
+<body>
+  <!-- Header social + login -->
+  <nav class="navbar">
+    <div class="language-switch">
+  <a href="/es{{ request.get_full_path|slice:'3:' }}" class="lang-option">ES</a>
+  <span>|</span>
+  <a href="/en{{ request.get_full_path|slice:'3:' }}" class="lang-option">EN</a>
+</div>
+
+    {% if user.is_authenticated %}
+    <div class="login-dropdown">
+      <button class="dropdown-button">Bienvenido {{ user.username }}</button>
+      <div class="dropdown-content">
+        <a href="/{{ LANGUAGE_CODE }}/dashboard/{{ user.userrole.role }}">Ir a mi panel</a>
+        <a href="/{{ LANGUAGE_CODE }}/logout/">Cerrar sesión</a>
+      </div>
+    </div>
+    {% else %}
+    <div class="login-icon">
+      <a href="/{{ LANGUAGE_CODE }}/login/">
+        <img class="social-icons" src="{% static 'images/Logos/Login_icon.png' %}" alt="Login Icon">
+      </a>
+    </div>
+    {% endif %}
+  </nav>
+
+  <!-- Logo principal -->
+  <nav class="navbar">
+    <div>
+      <a href="/{{ LANGUAGE_CODE }}/">
+        <img class="logo" src="{% static 'images/Logos/vandal_logo.png' %}" alt="Vandal Logo">
+      </a>
+    </div>
+  </nav>
+
+  <!-- Navbar principal -->
+<nav class="navbar">
+  <ul>
+    <li><a href="/{{ LANGUAGE_CODE }}/">{% trans "INICIO" %}</a></li>
+    <li><a href="/{{ LANGUAGE_CODE }}/blog/">{% trans "Blog" %}</a></li>
+    <li><a href="/{{ LANGUAGE_CODE }}/redactores">{% trans "Equipo" %}</a></li>
+    <li><a href="/{{ LANGUAGE_CODE }}/videos">{% trans "Vídeos" %}</a></li>
+    <li><a href="/{{ LANGUAGE_CODE }}/calendario">{% trans "Calendario" %}</a></li>
+    <li><a href="/{{ LANGUAGE_CODE }}/ranking">{% trans "Ranking" %}</a></li>
+  </ul>
+</nav>
+
+  <!-- Contenido principal -->
+  <section id="ranking">
+    <h2>Top 10 mejores juegos de la historia</h2>
+    <div class="list-ranking">
+
+      <!-- Top 1 -->
+      <div class="ranking-container">
+        <div class="caratula">
+          <img src="{% static 'images/Ranking/1.jpg' %}" alt="Top 1">
+        </div>
+        <div class="info">
+          <div class="title">1. Super Mario Bros</div>
+          <div class="summary">Lanzado en 1985, este título marcó el inicio del fenómeno global de Mario.
+            Con niveles de desplazamiento lateral, saltos precisos y enemigos carismáticos, redefinió el género de
+            plataformas.
+            Su impacto cultural y jugabilidad atemporal lo convierten en uno de los pilares del gaming.</div>
+        </div>
+        <div class="nota">
+          <p>98</p>
+        </div>
+      </div>
+
+      <!-- Top 2 -->
+      <div class="ranking-container">
+        <div class="caratula">
+          <img src="{% static 'images/Ranking/2.jpg' %}" alt="Top 2">
+        </div>
+        <div class="info">
+          <div class="title">2. The Legend of Zelda: Ocarina Of Time</div>
+          <div class="summary">Considerado uno de los mejores videojuegos de todos los tiempos, llevó la saga a las 3D
+            con gran
+            maestría.
+            Acompaña a Link en una aventura épica para salvar Hyrule, viajando entre el pasado y el futuro.
+            Su diseño de mazmorras, música y narrativa marcaron un antes y un después en los juegos de aventura.</div>
+        </div>
+        <div class="nota">
+          <p>94</p>
+        </div>
+      </div>
+      <!-- Top 3 -->
+      <div class="ranking-container">
+        <div class="caratula">
+          <img src="{% static 'images/Ranking/3.jpg' %}" alt="Top 3">
+        </div>
+        <div class="info">
+          <div class="title">3. Monster Hunter World</div>
+          <div class="summary">Una serie de acción donde enfrentas criaturas colosales en combates estratégicos y
+            cooperativos.
+            La caza, la recolección de recursos y la creación de equipo son esenciales para progresar.
+            Con cada entrega ha evolucionado, ganando popularidad en todo el mundo por su profundidad y desafío.</div>
+        </div>
+        <div class="nota">
+          <p>93</p>
+        </div>
+      </div>
+      <!-- Top 4 -->
+      <div class="ranking-container">
+        <div class="caratula">
+          <img src="{% static 'images/Ranking/4.png' %}" alt="Top 4">
+        </div>
+        <div class="info">
+          <div class="title">4. Tetris</div>
+          <div class="summary">Un juego de rompecabezas creado en 1984 que se basa en encajar bloques que caen desde la
+            parte
+            superior.
+            Su simplicidad y dificultad creciente lo convierten en un clásico adictivo que ha perdurado por décadas.
+            Ha sido adaptado a casi todas las plataformas existentes y es sinónimo de perfección en diseño de juegos.
+          </div>
+        </div>
+        <div class="nota">
+          <p>91</p>
+        </div>
+      </div>
+      <!-- Top 5 -->
+      <div class="ranking-container">
+        <div class="caratula">
+          <img src="{% static 'images/Ranking/5.jpg' %}" alt="Top 5">
+        </div>
+        <div class="info">
+          <div class="title">5. Final Fantasy VII</div>
+          <div class="summary">Este RPG de 1997 revolucionó el género con su historia épica, gráficos 3D
+            pre-renderizados y
+            escenas cinematográficas.
+            Sigue a Cloud Strife en su lucha contra la megacorporación Shinra y el misterioso Sephiroth.
+            Es uno de los títulos más influyentes y queridos de la saga Final Fantasy y del gaming en general.</div>
+        </div>
+        <div class="nota">
+          <p>90</p>
+        </div>
+      </div>
+      <!-- Top 6 -->
+      <div class="ranking-container">
+        <div class="caratula">
+          <img src="{% static 'images/Ranking/6.jpg' %}" alt="Top 6">
+        </div>
+        <div class="info">
+          <div class="title">6. The Witcher 3: Wild Hunt</div>
+          <div class="summary">Una obra maestra del RPG moderno con un vasto mundo abierto lleno de historias ricas y
+            personajes
+            complejos.
+            Encarnas a Geralt de Rivia, un cazador de monstruos en busca de su hija adoptiva, Ciri.
+            Con decisiones que afectan el mundo, misiones memorables y un sistema de combate profundo, es un referente
+            del
+            género.</div>
+        </div>
+        <div class="nota">
+          <p>89</p>
+        </div>
+      </div>
+      <!-- Top 7 -->
+      <div class="ranking-container">
+        <div class="caratula">
+          <img src="{% static 'images/Ranking/7.jpg' %}" alt="Top 7">
+        </div>
+        <div class="info">
+          <div class="title">7. Dark Souls</div>
+          <div class="summary">Conocido por su alta dificultad y diseño meticuloso, te sumerge en un mundo oscuro y
+            decadente.
+            No da muchas explicaciones: aprendes a través del fracaso y la exploración constante.
+            Su atmósfera, narrativa críptica y jugabilidad desafiante han influido a toda una generación de juegos.
+          </div>
+        </div>
+        <div class="nota">
+          <p>87</p>
+        </div>
+      </div>
+      <!-- Top 8 -->
+      <div class="ranking-container">
+        <div class="caratula">
+          <img src="{% static 'images/Ranking/8.jpg' %}" alt="Top 8">
+        </div>
+        <div class="info">
+          <div class="title">8. NieR: Replicant</div>
+          <div class="summary">Una obra singular que mezcla acción, RPG y elementos filosóficos sobre la humanidad y el
+            sacrificio.
+            Cuenta con múltiples finales que amplían la historia y cambian la perspectiva del jugador.
+            Su estilo narrativo, banda sonora emotiva y diseño experimental lo han convertido en un juego de culto.
+          </div>
+        </div>
+        <div class="nota">
+          <p>86</p>
+        </div>
+      </div>
+      <!-- Top 9 -->
+      <div class="ranking-container">
+        <div class="caratula">
+          <img src="{% static 'images/Ranking/9.jpg' %}" alt="Top 9">
+        </div>
+        <div class="info">
+          <div class="title">9. Minecraft</div>
+          <div class="summary">Un sandbox infinito donde puedes construir, explorar, sobrevivir y crear lo que imagines.
+            Desde simples casas hasta complejos circuitos de redstone, ofrece libertad total al jugador.
+            Su estilo visual pixelado y jugabilidad accesible lo han hecho uno de los juegos más vendidos de la
+            historia.</div>
+        </div>
+        <div class="nota"">
+          <p>85</p>
+        </div>
+      </div>
+
+      <!-- Top 10 -->
+      <div class=" ranking-container">
+          <div class="caratula">
+            <img src="{% static 'images/Ranking/10.jpg' %}" alt="Top 10">
+          </div>
+          <div class="info">
+            <div class="title">10. Persona 5</div>
+            <div class="summary">Combina la vida escolar japonesa con un mundo sobrenatural donde los protagonistas
+              roban
+              corazones
+              corruptos.
+              Su estética única, música estilizada y combate por turnos lo distinguen dentro del JRPG moderno.
+              Más que un juego, es una experiencia narrativa cargada de simbolismo, relaciones y crítica social.</div>
+          </div>
+          <div class="nota">
+            <p>84</p>
+          </div>
+        </div>
+
+      </div>
+  </section>
+  <!-- Sección de contacto -->
+<div style="text-align: center;">
+  <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>
+  <p>{% trans "Cuéntanos para que podamos lanzar un hechizo de corrección." %}</p>
+</div>
+<div style="text-align: center; margin: 20px 0;">
+  <a href="/{{ LANGUAGE_CODE }}/contacto" class="contact-button">{% trans "Contáctanos" %}</a>
+</div>
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-logo">
+      <img class="logo-footer" src="{% static 'images/Logos/vandal_logo.png' %}" alt="Vandal Logo Footer">
+    </div>
+    </br>
+    <nav class="footer-nav">
+      <a href="/{{ LANGUAGE_CODE }}/legal">{% trans "Aviso legal" %}</a>
+      <a href="/{{ LANGUAGE_CODE }}/">{% trans "Política de cookies" %}</a>
+      <a href="/{{ LANGUAGE_CODE }}/publicidad">{% trans "Publicidad" %}</a>
+      <a href="/{{ LANGUAGE_CODE }}/contacto">{% trans "Trabaja con nosotros" %}</a>
+    </nav>
+    </br>
+    <div class="footer-bottom">
+      {% trans "Copyright Vandal © 2025 - Prohibida la reproducción total o parcial de estos contenidos sin el permiso expreso de los autores." %}
+    </div>
+  </footer>
+</body>
+
+</html>

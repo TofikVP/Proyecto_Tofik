@@ -1,0 +1,9 @@
+{% block content %}
+  <h2>¿Eliminar este comentario?</h2>
+  <p>{{ comment.content }}</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirmar</button>
+    <a href="{% url 'dashboard_redactor' %}">Cancelar</a>
+  </form>
+{% endblock %}

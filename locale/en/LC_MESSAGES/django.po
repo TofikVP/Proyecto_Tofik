@@ -1,0 +1,218 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-11 05:28-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: templates/common/home.html:62 templates/common/legal.html:54
+#: templates/portal/blog_detalle.html:62 templates/portal/blog_list.html:54
+#: templates/portal/calendario.html:56 templates/portal/contacto.html:55
+#: templates/portal/noticia_detalle.html:51 templates/portal/ranking.html:54
+#: templates/portal/redactores.html:54 templates/portal/videos.html:54
+#: templates/usuarios/login.html:55
+msgid "INICIO"
+msgstr "HOME"
+
+#: templates/common/home.html:65 templates/common/legal.html:55
+#: templates/portal/blog_detalle.html:65 templates/portal/blog_list.html:55
+#: templates/portal/blog_list.html:64 templates/portal/calendario.html:57
+#: templates/portal/contacto.html:56 templates/portal/noticia_detalle.html:52
+#: templates/portal/ranking.html:55 templates/portal/redactores.html:55
+#: templates/portal/videos.html:55 templates/usuarios/login.html:56
+msgid "Blog"
+msgstr "Blog"
+
+#: templates/common/home.html:68 templates/common/legal.html:56
+#: templates/portal/blog_detalle.html:68 templates/portal/blog_list.html:56
+#: templates/portal/calendario.html:58 templates/portal/contacto.html:57
+#: templates/portal/noticia_detalle.html:53 templates/portal/ranking.html:56
+#: templates/portal/redactores.html:56 templates/portal/videos.html:56
+#: templates/usuarios/login.html:57
+msgid "Equipo"
+msgstr "Team"
+
+#: templates/common/home.html:71 templates/common/legal.html:57
+#: templates/portal/blog_detalle.html:71 templates/portal/blog_list.html:57
+#: templates/portal/calendario.html:59 templates/portal/contacto.html:58
+#: templates/portal/noticia_detalle.html:54 templates/portal/ranking.html:57
+#: templates/portal/redactores.html:57 templates/portal/videos.html:57
+#: templates/usuarios/login.html:58
+msgid "Vídeos"
+msgstr "Videos"
+
+#: templates/common/home.html:74 templates/common/legal.html:58
+#: templates/portal/blog_detalle.html:74 templates/portal/blog_list.html:58
+#: templates/portal/calendario.html:60 templates/portal/contacto.html:59
+#: templates/portal/noticia_detalle.html:55 templates/portal/ranking.html:58
+#: templates/portal/redactores.html:58 templates/portal/videos.html:58
+#: templates/usuarios/login.html:59
+msgid "Calendario"
+msgstr "Calendar"
+
+#: templates/common/home.html:77 templates/common/legal.html:59
+#: templates/portal/blog_detalle.html:77 templates/portal/blog_list.html:59
+#: templates/portal/calendario.html:61 templates/portal/contacto.html:60
+#: templates/portal/noticia_detalle.html:56 templates/portal/ranking.html:59
+#: templates/portal/redactores.html:59 templates/portal/videos.html:59
+#: templates/usuarios/login.html:60
+msgid "Ranking"
+msgstr "Ranking"
+
+#: templates/common/home.html:83
+msgid "NOTICIAS DESTACADAS"
+msgstr "FEATURED NEWS"
+
+#: templates/common/home.html:88
+msgid "Hace"
+msgstr "Published"
+
+#: templates/common/home.html:114
+msgid "No hay noticias por el momento."
+msgstr "There are no news at the moment."
+
+#: templates/common/home.html:161 templates/portal/blog_detalle.html:187
+#: templates/portal/blog_list.html:101 templates/portal/calendario.html:96
+#: templates/portal/ranking.html:246 templates/portal/redactores.html:148
+#: templates/portal/videos.html:95 templates/usuarios/login.html:99
+msgid "¿Encontraste un bug en tu aventura?"
+msgstr "Did you find a bug in your adventure?"
+
+#: templates/common/home.html:162 templates/portal/blog_detalle.html:188
+#: templates/portal/blog_list.html:102 templates/portal/calendario.html:97
+#: templates/portal/ranking.html:247 templates/portal/redactores.html:149
+#: templates/portal/videos.html:96 templates/usuarios/login.html:100
+msgid "Cuéntanos para que podamos lanzar un hechizo de corrección."
+msgstr "Tell us so we can cast a correction spell."
+
+#: templates/common/home.html:165 templates/portal/blog_detalle.html:191
+#: templates/portal/blog_list.html:105 templates/portal/calendario.html:100
+#: templates/portal/ranking.html:250 templates/portal/redactores.html:152
+#: templates/portal/videos.html:99 templates/usuarios/login.html:103
+msgid "Contáctanos"
+msgstr "Contact us"
+
+#: templates/common/home.html:178 templates/common/legal.html:81
+#: templates/portal/blog_detalle.html:204 templates/portal/blog_list.html:116
+#: templates/portal/calendario.html:111 templates/portal/contacto.html:89
+#: templates/portal/noticia_detalle.html:99 templates/portal/ranking.html:261
+#: templates/portal/redactores.html:163 templates/portal/videos.html:110
+#: templates/usuarios/login.html:114
+msgid "Aviso legal"
+msgstr "Legal notice"
+
+#: templates/common/home.html:179 templates/common/legal.html:82
+#: templates/portal/blog_detalle.html:205 templates/portal/blog_list.html:117
+#: templates/portal/calendario.html:112 templates/portal/contacto.html:90
+#: templates/portal/noticia_detalle.html:100 templates/portal/ranking.html:262
+#: templates/portal/redactores.html:164 templates/portal/videos.html:111
+#: templates/usuarios/login.html:115
+msgid "Política de cookies"
+msgstr "Cookie policy"
+
+#: templates/common/home.html:180 templates/common/legal.html:83
+#: templates/portal/blog_detalle.html:206 templates/portal/blog_list.html:118
+#: templates/portal/calendario.html:113 templates/portal/contacto.html:91
+#: templates/portal/noticia_detalle.html:101 templates/portal/ranking.html:263
+#: templates/portal/redactores.html:165 templates/portal/videos.html:112
+#: templates/usuarios/login.html:116
+msgid "Publicidad"
+msgstr "Advertising"
+
+#: templates/common/home.html:181 templates/common/legal.html:84
+#: templates/portal/blog_detalle.html:207 templates/portal/blog_list.html:119
+#: templates/portal/calendario.html:114 templates/portal/contacto.html:92
+#: templates/portal/noticia_detalle.html:102 templates/portal/ranking.html:264
+#: templates/portal/redactores.html:166 templates/portal/videos.html:113
+#: templates/usuarios/login.html:117
+msgid "Trabaja con nosotros"
+msgstr "Work with us"
+
+#: templates/common/legal.html:88 templates/portal/blog_list.html:123
+#: templates/portal/calendario.html:118 templates/portal/contacto.html:96
+#: templates/portal/noticia_detalle.html:106 templates/portal/ranking.html:268
+#: templates/portal/redactores.html:170 templates/portal/videos.html:117
+#: templates/usuarios/login.html:121
+msgid ""
+"Copyright Vandal © 2025 - Prohibida la reproducción total o parcial de estos "
+"contenidos sin el permiso expreso de los autores."
+msgstr ""
+"Copyright Vandal © 2025 - Total or partial reproduction of this content is "
+"prohibited without the express permission of the authors."
+
+#: templates/portal/blog_detalle.html:92
+msgid "Autor"
+msgstr "Author"
+
+#: templates/portal/blog_detalle.html:98
+msgid "Publicado hace"
+msgstr "Posted"
+
+#: templates/portal/blog_detalle.html:134
+msgid "Enviado hace"
+msgstr "Posted"
+
+#: templates/portal/blog_detalle.html:140
+msgid "Responder"
+msgstr "Reply"
+
+#: templates/portal/blog_detalle.html:146
+msgid "Enviar respuesta"
+msgstr "Submit reply"
+
+#: templates/portal/blog_detalle.html:155
+msgid "atrás"
+msgstr "ago"
+
+#: templates/portal/blog_detalle.html:161
+msgid "No hay comentarios sobre el blog aún. Sé el primero."
+msgstr "There are no comments yet. Be the first to comment."
+
+#: templates/portal/blog_detalle.html:177
+msgid "Inicia sesión"
+msgstr "Log in"
+
+#: templates/portal/blog_detalle.html:178
+msgid "para dejar un comentario."
+msgstr "to leave a comment."
+
+#: templates/portal/redactores.html:65
+msgid "Nuestro equipo de redacción"
+msgstr "Our editorial team"
+
+#: templates/portal/redactores.html:79
+msgid "Redactor de videojuegos y tecnología."
+msgstr "Video game and technology writer."
+
+#: templates/portal/redactores.html:94
+msgid "Experta en análisis de juegos."
+msgstr "Game analysis expert."
+
+#: templates/portal/redactores.html:109
+msgid "Apasionado de la música y los videojuegos."
+msgstr "Passionate about music and video games."
+
+#: templates/portal/redactores.html:124
+msgid "Redactora de cine y series."
+msgstr "Film and TV series writer."
+
+#: templates/portal/redactores.html:139
+msgid "Crítico de cine y videojuegos."
+msgstr "Film and video game critic."
+
+#: templates/portal/videos.html:65
+msgid "Explora nuestros videos"
+msgstr "Explore our videos"

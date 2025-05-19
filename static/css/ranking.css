@@ -1,0 +1,70 @@
+/* Estilos para el ranking */
+
+#ranking {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  
+  .list-ranking {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  
+  .ranking-container {
+    display: flex;
+    background: rgba(128, 128, 128, 0.5);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: auto;
+  }
+  
+  .ranking-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  
+  .ranking-container .caratula img {
+    width: 300px;
+    height: 150px;
+    transition: transform 0.3s ease;
+  }
+  
+  .ranking-container .info {
+    flex-grow: 1;
+    text-align: center;
+    margin-left: 40px;
+  }
+  
+  .ranking-container .info .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.712);
+    border-bottom: #000000 solid 1px;
+  }
+  
+  .ranking-container .info .summary {
+    font-size: 1rem;
+    color: rgb(0, 0, 0);
+  }
+  
+  .ranking-container .nota {
+    margin-left: 40px;
+    text-align: center;
+  }
+  
+  .ranking-container .nota p {
+    font-size: 80px;
+    color: #000000;
+    border-radius: 20%;
+    background: rgb(0, 238, 28);
+    padding: 10px;
+  }

@@ -1,0 +1,36 @@
+/* Estilos para el formulario de contacto */
+
+form.contacto {
+    background: white;
+    color: #000000;
+    padding: 15px;
+    margin: 0 auto;
+    max-width: 800px;
+    margin-top: 20px;
+  }
+  
+  form.contacto h2 {
+    text-align: center;
+    color: #000000;
+    margin-bottom: 20px;
+  }
+  
+  form.contacto label {
+    color: #000000c4;
+    font-style: normal;
+  }
+  
+  
+  form.contacto button {
+    background-color: #151518eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  form.contacto button:hover {
+    background-color: #0056b3;
+  }

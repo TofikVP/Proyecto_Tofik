@@ -1,0 +1,115 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-11 04:52-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
+
+#: templates/common/home.html:54 templates/common/legal.html:54
+#: templates/portal/blog_detalle.html:54 templates/portal/blog_list.html:54
+#: templates/portal/calendario.html:56 templates/portal/contacto.html:55
+#: templates/portal/noticia_detalle.html:51 templates/portal/ranking.html:54
+#: templates/portal/redactores.html:54 templates/portal/videos.html:54
+#: templates/usuarios/login.html:55
+msgid "INICIO"
+msgstr ""
+
+#: templates/common/home.html:55 templates/common/legal.html:55
+#: templates/portal/blog_detalle.html:55 templates/portal/blog_list.html:55
+#: templates/portal/calendario.html:57 templates/portal/contacto.html:56
+#: templates/portal/noticia_detalle.html:52 templates/portal/ranking.html:55
+#: templates/portal/redactores.html:55 templates/portal/videos.html:55
+#: templates/usuarios/login.html:56
+msgid "Blog"
+msgstr ""
+
+#: templates/common/home.html:56 templates/common/legal.html:56
+#: templates/portal/blog_detalle.html:56 templates/portal/blog_list.html:56
+#: templates/portal/calendario.html:58 templates/portal/contacto.html:57
+#: templates/portal/noticia_detalle.html:53 templates/portal/ranking.html:56
+#: templates/portal/redactores.html:56 templates/portal/videos.html:56
+#: templates/usuarios/login.html:57
+msgid "Equipo"
+msgstr ""
+
+#: templates/common/home.html:57 templates/common/legal.html:57
+#: templates/portal/blog_detalle.html:57 templates/portal/blog_list.html:57
+#: templates/portal/calendario.html:59 templates/portal/contacto.html:58
+#: templates/portal/noticia_detalle.html:54 templates/portal/ranking.html:57
+#: templates/portal/redactores.html:57 templates/portal/videos.html:57
+#: templates/usuarios/login.html:58
+msgid "Vídeos"
+msgstr ""
+
+#: templates/common/home.html:58 templates/common/legal.html:58
+#: templates/portal/blog_detalle.html:58 templates/portal/blog_list.html:58
+#: templates/portal/calendario.html:60 templates/portal/contacto.html:59
+#: templates/portal/noticia_detalle.html:55 templates/portal/ranking.html:58
+#: templates/portal/redactores.html:58 templates/portal/videos.html:58
+#: templates/usuarios/login.html:59
+msgid "Calendario"
+msgstr ""
+
+#: templates/common/home.html:59 templates/common/legal.html:59
+#: templates/portal/blog_detalle.html:59 templates/portal/blog_list.html:59
+#: templates/portal/calendario.html:61 templates/portal/contacto.html:60
+#: templates/portal/noticia_detalle.html:56 templates/portal/ranking.html:59
+#: templates/portal/redactores.html:59 templates/portal/videos.html:59
+#: templates/usuarios/login.html:60
+msgid "Ranking"
+msgstr ""
+
+#: templates/common/home.html:67
+msgid "NOTICIAS DESTACADAS"
+msgstr ""
+
+#: templates/common/legal.html:81 templates/portal/blog_list.html:103
+#: templates/portal/calendario.html:110 templates/portal/contacto.html:89
+#: templates/portal/ranking.html:260 templates/portal/redactores.html:165
+#: templates/portal/videos.html:109 templates/usuarios/login.html:113
+msgid "Aviso legal"
+msgstr ""
+
+#: templates/common/legal.html:82 templates/portal/blog_list.html:104
+#: templates/portal/calendario.html:111 templates/portal/contacto.html:90
+#: templates/portal/ranking.html:261 templates/portal/redactores.html:166
+#: templates/portal/videos.html:110 templates/usuarios/login.html:114
+msgid "Política de cookies"
+msgstr ""
+
+#: templates/common/legal.html:83 templates/portal/blog_list.html:105
+#: templates/portal/calendario.html:112 templates/portal/contacto.html:91
+#: templates/portal/ranking.html:262 templates/portal/redactores.html:167
+#: templates/portal/videos.html:111 templates/usuarios/login.html:115
+msgid "Publicidad/Advertising"
+msgstr ""
+
+#: templates/common/legal.html:84 templates/portal/blog_list.html:106
+#: templates/portal/calendario.html:113 templates/portal/contacto.html:92
+#: templates/portal/ranking.html:263 templates/portal/redactores.html:168
+#: templates/portal/videos.html:112 templates/usuarios/login.html:116
+msgid "Trabaja con nosotros"
+msgstr ""
+
+#: templates/common/legal.html:88 templates/portal/blog_list.html:110
+#: templates/portal/calendario.html:117 templates/portal/contacto.html:96
+#: templates/portal/ranking.html:267 templates/portal/redactores.html:172
+#: templates/portal/videos.html:116 templates/usuarios/login.html:120
+msgid ""
+"Copyright Vandal © 2025 - Prohibida la reproducción total o parcial de estos "
+"contenidos sin el permiso expreso de los autores."
+msgstr ""
