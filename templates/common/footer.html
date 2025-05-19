@@ -1,0 +1,18 @@
+{% load i18n %}
+{% load static %}
+<footer class="footer">
+    <div class="footer-logo">
+        <img class="logo-footer" src="{% static 'images/Logos/vandal_logo.png' %}" alt="Vandal Logo Footer">
+    </div>
+    </br>
+    <nav class="footer-nav">
+        <a href="/{{ LANGUAGE_CODE }}/legal">{% trans "Aviso legal" %}</a>
+        <a href="/{{ LANGUAGE_CODE }}/">{% trans "Política de cookies" %}</a>
+        <a href="/{{ LANGUAGE_CODE }}/publicidad">{% trans "Publicidad" %}</a>
+        <a href="/{{ LANGUAGE_CODE }}/contacto">{% trans "Trabaja con nosotros" %}</a>
+    </nav>
+    </br>
+    <div class="footer-bottom">
+        {% trans "Copyright Vandal © 2025 - Prohibida la reproducción total o parcial de estos contenidos sin el permiso expreso de los autores." %}
+    </div>
+</footer>

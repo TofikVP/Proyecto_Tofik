@@ -1,0 +1,86 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}VANDAL{% endblock %}
+{% block content %}
+  <!-- Noticias Destacadas -->
+  <section id="noticias">
+    <h2>{% trans "NOTICIAS DESTACADAS" %}</h2>
+    <div class="list-noticias">
+      {% for noticia in noticias_destacadas %}
+        <div class="noticia">
+          <div class="headline">
+            {% if LANGUAGE_CODE == 'en' and noticia.titulo_en %}
+              {{ noticia.titulo_en }}
+            {% else %}
+              {{ noticia.titulo }}
+            {% endif %}
+          </div>
+
+          <div class="image">
+            <a href="{% url 'detalle_noticia_destacada' noticia.pk %}">
+              <img class="image" src="{{ noticia.imagen.url }}" alt="{% if LANGUAGE_CODE == 'en' and noticia.titulo_en %}{{ noticia.titulo_en }}{% else %}{{ noticia.titulo }}{% endif %}">
+            </a>
+          </div>
+          <div class="summary">
+            {% if LANGUAGE_CODE == 'en' and noticia.resumen_en %}
+              {{ noticia.resumen_en|truncatechars:120 }}
+            {% else %}
+              {{ noticia.resumen|truncatechars:120 }}
+            {% endif %}
+          </div>
+        </div>
+      {% empty %}
+        <p style="color: white;">{% trans "No hay noticias por el momento." %}</p>
+      {% endfor %}
+    </div>
+  </section>
+
+
+  <!-- Últimas Noticias -->
+  <section id="noticias">
+    <h2>{% trans "ÚLTIMAS NOTICIAS" %}</h2>
+    <div class="list-noticias">
+      {% for noticia in ultimas_noticias %}
+        <div class="noticia">
+          <div class="time">
+            {% trans "Hace" %} {{ noticia.fecha_publicacion|timesince }}
+          </div>
+
+          <div class="headline">
+            {% if LANGUAGE_CODE == 'en' and noticia.titulo_en %}
+              {{ noticia.titulo_en }}
+            {% else %}
+              {{ noticia.titulo }}
+            {% endif %}
+          </div>
+
+          <div class="image">
+            <a href="{% url 'detalle_noticia_ultima' noticia.pk %}">
+              <img class="image" src="{{ noticia.imagen.url }}" alt="{% if LANGUAGE_CODE == 'en' and noticia.titulo_en %}{{ noticia.titulo_en }}{% else %}{{ noticia.titulo }}{% endif %}">
+            </a>
+          </div>
+
+          <div class="summary">
+            {% if LANGUAGE_CODE == 'en' and noticia.resumen_en %}
+              {{ noticia.resumen_en|truncatechars:120 }}
+            {% else %}
+              {{ noticia.resumen|truncatechars:120 }}
+            {% endif %}
+          </div>
+        </div>
+      {% empty %}
+        <p style="color: white;">{% trans "No hay noticias por el momento." %}</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Sección de contacto -->
+  <div style="text-align: center;">
+      <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>
+      <p>{% trans "Cuéntanos para que podamos lanzar un hechizo de corrección." %}</p>
+  </div>
+  <div style="text-align: center; margin: 20px 0;">
+      <a href="/{{ LANGUAGE_CODE }}/contacto" class="contact-button">{% trans "Contáctanos" %}</a>
+  </div>
+{% endblock %}

@@ -1,21 +1,11 @@
-{% load static %}
+{% extends "common/base.html" %}
 {% load i18n %}
-{% get_current_language as LANGUAGE_CODE %}
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/noticias.css' %}">
-    <title>Error</title>
-</head>
-
-<body>
+{% load static %}
+{% block title %}VANDAL{% endblock %}
+{% block content %}
+<section>
     <h1>Error</h1>
     <p>{{ message }}</p>
     <p><button style="margin-top: 20px; display: inline-block;" onclick="window.location.href='{% url 'home' %}'">Volver a la página principal</button></p>
-</body>
-
-</html>
+</section>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% load i18n %}
+{% load static %}
+<nav class="navbar">
+<div class="language-switch">
+    <a href="/es{{ request.get_full_path|slice:'3:' }}" class="lang-option">ES</a>
+    <span>|</span>
+    <a href="/en{{ request.get_full_path|slice:'3:' }}" class="lang-option">EN</a>
+</div>
+{% if user.is_authenticated %}
+    <div class="login-dropdown">
+        <button class="dropdown-button">Bienvenido {{ user.username }}</button>
+        <div class="dropdown-content">
+            <a href="/{{ LANGUAGE_CODE }}/dashboard/{{ user.userrole.role }}">Ir a mi panel</a>
+            <a href="/{{ LANGUAGE_CODE }}/logout/">Cerrar sesión</a>
+        </div>
+    </div>
+{% else %}
+    <div class="login-icon">
+        <a href="/{{ LANGUAGE_CODE }}/login/">
+            <img class="social-icons" src="{% static 'images/Logos/Login_icon.png' %}" alt="Login Icon">
+        </a>
+    </div>
+{% endif %}
+</nav>
+<nav class="navbar">
+<div>
+    <a href="/{{ LANGUAGE_CODE }}/">
+        <img class="logo" src="{% static 'images/Logos/vandal_logo.png' %}" alt="Vandal Logo">
+    </a>
+</div>
+</nav>
+<nav class="navbar">
+<ul>
+    <li><a href="/{{ LANGUAGE_CODE }}/">{% trans "INICIO" %}</a></li>
+    <li><a href="/{{ LANGUAGE_CODE }}/blog/">{% trans "Blog" %}</a></li>
+    <li><a href="/{{ LANGUAGE_CODE }}/redactores">{% trans "Equipo" %}</a></li>
+    <li><a href="/{{ LANGUAGE_CODE }}/videos">{% trans "Vídeos" %}</a></li>
+    <li><a href="/{{ LANGUAGE_CODE }}/calendario">{% trans "Calendario" %}</a></li>
+    <li><a href="/{{ LANGUAGE_CODE }}/ranking">{% trans "Ranking" %}</a></li>
+</ul>
+</nav>

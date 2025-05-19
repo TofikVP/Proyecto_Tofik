@@ -1,0 +1,30 @@
+{% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VANDAL{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/noticias.css' %}">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    <link rel="stylesheet" href="{% static 'css/calendario.css' %}">
+    <link rel="stylesheet" href="{% static 'css/contacto.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboards.css' %}">
+    <link rel="stylesheet" href="{% static 'css/formularios.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ranking.css' %}">
+    <link rel="stylesheet" href="{% static 'css/redactores.css' %}">
+    <link rel="stylesheet" href="{% static 'css/videos.css' %}">
+
+</head>
+    <body>
+        {% include "common/header.html" %}
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+        {% include "common/footer.html" %}
+    </body>
+</html>

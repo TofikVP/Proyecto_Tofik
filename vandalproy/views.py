@@ -1,23 +1,24 @@
 from django.shortcuts import render, redirect, get_object_or_404
+
+from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
+from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.models import User
-from .models import BlogPost, BlogComment, UserRole, Noticia
+
+from .models import BlogPost, BlogComment, UserRole, Noticias_ultima, Noticias_destacada
 from .forms import CommentForm, PostForm
-from django.contrib.auth.backends import ModelBackend
 import logging
+
 from django.http import HttpResponseRedirect
-from django.urls import reverse
-from django.shortcuts import get_object_or_404
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
+
 from django.views.generic import DeleteView
-from .models import BlogComment, UserRole
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth import get_backends
+
 
 logger = logging.getLogger(__name__)
 
@@ -52,19 +53,19 @@ def user_dashboard(request, role):
                 user = pwd_form.save()
                 update_session_auth_hash(request, user)
                 return redirect(f'/')
-        # 2.b) Subida de archivo (colaborador/redactor)
-        if 'upload' in request.POST and role in ['colaborador', 'redactor']:
+        # 2.b) Subida de archivo (admin/colaborador/redactor)
+        if 'upload' in request.POST and role in ['admin', 'colaborador', 'redactor']:
             fs = FileSystemStorage(location='static/uploads/')
             fs.save(request.FILES['file'].name, request.FILES['file'])
             return redirect(f'dashboard_{role}')
-        if 'post_submit' in request.POST and role in ['colaborador', 'redactor']:
+        if 'post_submit' in request.POST and role in ['admin', 'colaborador', 'redactor']:
             post_form = PostForm(request.POST, request.FILES)
             if post_form.is_valid():
                 post = post_form.save(commit=False)
                 post.author = request.user
                 post.save()
                 return redirect(f'dashboard_{role}')
-        if 'noticia_submit' in request.POST and role == 'redactor':
+        if 'noticia_submit' in request.POST and role == 'redactor' or role == 'admin':
             titulo = request.POST.get('titulo')
             resumen = request.POST.get('resumen')
             contenido = request.POST.get('contenido')
@@ -72,7 +73,7 @@ def user_dashboard(request, role):
 
             # Crear noticia sin 'autor', usando fecha actual
             from datetime import date
-            Noticia.objects.create(
+            Noticias_ultima.objects.create(
                 titulo=titulo,
                 resumen=resumen,
                 contenido=contenido,
@@ -95,6 +96,7 @@ def user_dashboard(request, role):
 
     # 5) Renderizar siempre (GET o POST), retornando HttpResponse
     templates = {
+        # 'admin':     '',
         'redactor':   'usuarios/dashboard_redactor.html',
         'colaborador':'usuarios/dashboard_colaborador.html',
         'suscriptor': 'usuarios/dashboard_suscriptor.html',
@@ -252,13 +254,22 @@ def submit_comment(request):
     return HttpResponseRedirect(reverse('login'))
 
 # Noticias
-def detalle_noticia(request, pk):
-    noticia = get_object_or_404(Noticia, pk=pk)
+def detalle_noticia_destacada(request, pk):
+    noticia = get_object_or_404(Noticias_destacada, pk=pk)
     return render(request, 'portal/noticia_detalle.html', {'noticia': noticia})
 
+def detalle_noticia_ultima(request, pk):
+    noticia = get_object_or_404(Noticias_ultima, pk=pk)
+    return render(request, 'portal/noticia_detalle.html', {'noticia': noticia})
+
+# Vista para la página de inicio
 def home(request):
-    noticias = Noticia.objects.all().order_by('-fecha_publicacion')
-    return render(request, 'common/home.html', {'noticias': noticias})
+    noticias_destacadas = Noticias_destacada.objects.all().order_by('-titulo')
+    ultimas_noticias = Noticias_ultima.objects.all().order_by('-fecha_publicacion')
+    return render(request, 'portal/home.html', {
+        'noticias_destacadas': noticias_destacadas,
+        'ultimas_noticias': ultimas_noticias
+        })
 
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = BlogComment

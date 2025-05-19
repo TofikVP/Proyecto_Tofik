@@ -1,228 +1,117 @@
-{% load static %}
+{% extends "common/base.html" %}
 {% load i18n %}
-{% get_current_language as LANGUAGE_CODE %}
-<!DOCTYPE html>
-<html lang="es">
+{% load static %}
+{% block title %}VANDAL{% endblock %}
+{% block content %}
+<!-- Sección de comentarios -->
+<section id="comments-section">
+    <h2 class="titulo-post">{{ post.title }}</h2>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>VANDAL</title>
-        <!-- Enlace al archivo de estilos principal -->
-        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
-    </head>
-
-    <body>
-        <!-- Header social + login -->
-        <nav class="navbar">
-            <div class="language-switch">
-                <a href="/es{{ request.get_full_path|slice:'3:' }}" class="lang-option">ES</a>
-                <span>|</span>
-                <a href="/en{{ request.get_full_path|slice:'3:' }}" class="lang-option">EN</a>
+    <!-- Comentario principal desde el post -->
+    <div class="comment-block principal">
+        <div class="comment-header">
+            <div class="avatar"></div>
+            <div class="user-info">
+                <span class="username">{{ post.author.username }}</span>
+                <span class="user-role">{% trans "Autor" %}</span>
             </div>
-
-            {% if user.is_authenticated %}
-                <div class="login-dropdown">
-                    <button class="dropdown-button">Bienvenido
-                        {{ user.username }}</button>
-                    <div class="dropdown-content">
-                        <a href="/{{ LANGUAGE_CODE }}/dashboard/{{ user.userrole.role }}">Ir a mi panel</a>
-                        <a href="/{{ LANGUAGE_CODE }}/logout/">Cerrar sesión</a>
-                    </div>
-                </div>
+        </div>
+        <div class="comment-meta">
+            <span class="comment-number">#0</span>
+            <span class="comment-time">
+                {% trans "Publicado hace" %}
+                {{ post.created_at|timesince }}
+            </span>
+        </div>
+        <div class="comment-content">
+            {% if LANGUAGE_CODE == 'en' and post.content_en %}
+                {{ post.content_en|linebreaks }}
             {% else %}
-                <div class="login-icon">
-                    <a href="/{{ LANGUAGE_CODE }}/login/">
-                        <img
-                            class="social-icons"
-                            src="{% static 'images/Logos/Login_icon.png' %}"
-                            alt="Login Icon">
-                    </a>
-                </div>
+                {{ post.content|linebreaks }}
             {% endif %}
-        </nav>
-
-        <!-- Logo principal -->
-        <nav class="navbar">
-            <div>
-                <a href="/{{ LANGUAGE_CODE }}/">
-                    <img
-                        class="logo"
-                        src="{% static 'images/Logos/vandal_logo.png' %}"
-                        alt="Vandal Logo">
-                </a>
+        </div>
+        {% if post.image %}
+            <div class="comment-image">
+                <img src="{{ post.image.url }}" alt="Imagen del post">
             </div>
-        </nav>
+        {% endif %}
+    </div>
 
-        <!-- Navbar principal -->
-        <nav class="navbar">
-            <ul>
-                <li>
-                    <a href="/{{ LANGUAGE_CODE }}/">{% trans "INICIO" %}</a>
-                </li>
-                <li>
-                    <a href="/{{ LANGUAGE_CODE }}/blog/">{% trans "Blog" %}</a>
-                </li>
-                <li>
-                    <a href="/{{ LANGUAGE_CODE }}/redactores">{% trans "Equipo" %}</a>
-                </li>
-                <li>
-                    <a href="/{{ LANGUAGE_CODE }}/videos">{% trans "Vídeos" %}</a>
-                </li>
-                <li>
-                    <a href="/{{ LANGUAGE_CODE }}/calendario">{% trans "Calendario" %}</a>
-                </li>
-                <li>
-                    <a href="/{{ LANGUAGE_CODE }}/ranking">{% trans "Ranking" %}</a>
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Sección de comentarios -->
-        <section id="comments-section">
-            <h2 class="titulo-post">{{ post.title }}</h2>
-
-            <!-- Comentario principal desde el post -->
-            <div class="comment-block principal">
-                <div class="comment-header">
-                    <div class="avatar"></div>
-                    <div class="user-info">
-                        <span class="username">{{ post.author.username }}</span>
-                        <span class="user-role">{% trans "Autor" %}</span>
+    <!-- Lista de comentarios -->
+    <div class="comments-list">
+        {% if comments %}
+            {% for comment in comments %}
+                <div class="comment-block">
+                    <div class="comment-header">
+                        <div class="avatar"></div>
+                        <div class="user-info">
+                            <span class="username">{{ comment.user.username }}</span>
+                            <span class="user-role">
+                                {% with comment.user.userrole.role as rol %}
+                                ROL ({{ rol|title }})
+                                {% endwith %}
+                            </span>
+                        </div>
                     </div>
-                </div>
-                <div class="comment-meta">
-                    <span class="comment-number">#0</span>
-                    <span class="comment-time">
-                        {% trans "Publicado hace" %}
-                        {{ post.created_at|timesince }}
-                    </span>
-                </div>
-                <div class="comment-content">
-                  {% if LANGUAGE_CODE == 'en' and post.content_en %}
-                      {{ post.content_en|linebreaks }}
-                  {% else %}
-                      {{ post.content|linebreaks }}
-                  {% endif %}
-              </div>
-                {% if post.image %}
-                    <div class="comment-image">
-                        <img src="{{ post.image.url }}" alt="Imagen del post">
+                    <div class="comment-meta">
+                        <span class="comment-number">#{{ forloop.counter }}</span>
+                        <span class="comment-time">{% trans "Enviado hace" %}
+                            {{ comment.created_at|timesince }}</span>
                     </div>
-                {% endif %}
-            </div>
+                    <div class="comment-content">{{ comment.content }}</div>
 
-            <!-- Lista de comentarios -->
-            <div class="comments-list">
-                {% if comments %}
-                    {% for comment in comments %}
-                        <div class="comment-block">
-                            <div class="comment-header">
-                                <div class="avatar"></div>
-                                <div class="user-info">
-                                    <span class="username">{{ comment.user.username }}</span>
-                                    <span class="user-role">
-                                        {% with comment.user.userrole.role as rol %}
-                                        ROL ({{ rol|title }})
-                                        {% endwith %}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="comment-meta">
-                                <span class="comment-number">#{{ forloop.counter }}</span>
-                                <span class="comment-time">{% trans "Enviado hace" %}
-                                    {{ comment.created_at|timesince }}</span>
-                            </div>
-                            <div class="comment-content">{{ comment.content }}</div>
+                    {% if user.is_authenticated %}
+                        <button class="show-reply-btn" onclick="toggleReplyForm(this)">{% trans "Responder" %}</button>
 
-                            {% if user.is_authenticated %}
-                                <button class="show-reply-btn" onclick="toggleReplyForm(this)">{% trans "Responder" %}</button>
+                        <form method="post" class="reply-form" style="display: none; margin-top: 10px;">
+                            {% csrf_token %}
+                            {{ form.content }}
+                            <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                            <button type="submit">{% trans "Enviar respuesta" %}</button>
+                        </form>
+                    {% endif %}
 
-                                <form method="post" class="reply-form" style="display: none; margin-top: 10px;">
-                                    {% csrf_token %}
-                                    {{ form.content }}
-                                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
-                                    <button type="submit">{% trans "Enviar respuesta" %}</button>
-                                </form>
-                            {% endif %}
-
-                            {% for reply in comment.replies.all %}
-                                <div class="reply-block">
-                                    <strong>{{ reply.user.username }}</strong>
-                                    <p>{{ reply.content }}</p>
-                                    <span>{{ reply.created_at|timesince }}
-                                        {% trans "atrás" %}</span>
-                                </div>
-                            {% endfor %}
+                    {% for reply in comment.replies.all %}
+                        <div class="reply-block">
+                            <strong>{{ reply.user.username }}</strong>
+                            <p>{{ reply.content }}</p>
+                            <span>{{ reply.created_at|timesince }}
+                                {% trans "atrás" %}</span>
                         </div>
                     {% endfor %}
-                {% else %}
-                    <p>{% trans "No hay comentarios sobre el blog aún. Sé el primero." %}</p>
-                {% endif %}
-            </div>
-
-            <!-- Nuevo comentario raíz -->
-            {% if user.is_authenticated %}
-                <form method="POST" class="comment-form">
-                    {% csrf_token %}
-                    {{ form.content }}
-                    <input type="hidden" name="parent_id" value="">
-                    <!-- comentario raíz -->
-                    <button type="submit">Enviar comentario</button>
-                </form>
-            {% else %}
-                <div class="login-notice">
-                    <p>
-                        <a class="login-link" href="{% url 'login' %}">{% trans "Inicia sesión" %}</a>
-                        {% trans "para dejar un comentario." %}
-                    </p>
                 </div>
-
-            {% endif %}
-        </section>
-
-        <!-- Sección de contacto -->
-        <div style="text-align: center;">
-            <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>
-            <p>{% trans "Cuéntanos para que podamos lanzar un hechizo de corrección." %}</p>
-        </div>
-        <div style="text-align: center; margin: 20px 0;">
-            <a href="/{{ LANGUAGE_CODE }}/contacto" class="contact-button">{% trans "Contáctanos" %}</a>
-        </div>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="footer-logo">
-                <img
-                    class="logo-footer"
-                    src="{% static 'images/Logos/vandal_logo.png' %}"
-                    alt="Vandal Logo Footer">
-            </div>
-        </br>
-        <nav class="footer-nav">
-            <a href="/{{ LANGUAGE_CODE }}/legal">{% trans "Aviso legal" %}</a>
-            <a href="/{{ LANGUAGE_CODE }}/">{% trans "Política de cookies" %}</a>
-            <a href="/{{ LANGUAGE_CODE }}/publicidad">{% trans "Publicidad" %}</a>
-            <a href="/{{ LANGUAGE_CODE }}/contacto">{% trans "Trabaja con nosotros" %}</a>
-        </nav>
-    </br>
-    <div class="footer-bottom">
-        {% trans "Copyright Vandal © 2025 - Prohibida la reproducción total o parcial de
-        estos con" + "tenidos sin el permiso expreso de los autores." %}
+            {% endfor %}
+        {% else %}
+            <p>{% trans "No hay comentarios sobre el blog aún. Sé el primero." %}</p>
+        {% endif %}
     </div>
-</footer>
 
-<script>
-    function toggleReplyForm(button) {
-        const form = button.nextElementSibling;
-        if (form.style.display === "none") {
-            form.style.display = "block";
-            button.style.display = "none";
-        }
-    }
-</script>
+    <!-- Nuevo comentario raíz -->
+    {% if user.is_authenticated %}
+        <form method="POST" class="comment-form">
+            {% csrf_token %}
+            {{ form.content }}
+            <input type="hidden" name="parent_id" value="">
+            <!-- comentario raíz -->
+            <button type="submit">Enviar comentario</button>
+        </form>
+    {% else %}
+        <div class="login-notice">
+            <p>
+                <a class="login-link" href="{% url 'login' %}">{% trans "Inicia sesión" %}</a>
+                {% trans "para dejar un comentario." %}
+            </p>
+        </div>
 
-</body>
+    {% endif %}
+</section>
 
-</html>
+<!-- Sección de contacto -->
+<div style="text-align: center;">
+    <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>
+    <p>{% trans "Cuéntanos para que podamos lanzar un hechizo de corrección." %}</p>
+</div>
+<div style="text-align: center; margin: 20px 0;">
+    <a href="/{{ LANGUAGE_CODE }}/contacto" class="contact-button">{% trans "Contáctanos" %}</a>
+</div>
+{% endblock %}
