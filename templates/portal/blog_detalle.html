@@ -1,12 +1,12 @@
 {% extends "common/base.html" %}
 {% load i18n %}
 {% load static %}
+{% load comentarios_extras %}
 {% block title %}VANDAL{% endblock %}
 {% block content %}
 <!-- Sección de comentarios -->
 <section id="comments-section">
     <h2 class="titulo-post">{{ post.title }}</h2>
-
     <!-- Comentario principal desde el post -->
     <div class="comment-block principal">
         <div class="comment-header">
@@ -59,6 +59,40 @@
                             {{ comment.created_at|timesince }}</span>
                     </div>
                     <div class="comment-content">{{ comment.content }}</div>
+                <div class="comment-rating">
+                    {% with avg=comment.ratings.all|average_stars %}
+                        {% star_states avg as states %}
+                        <span>
+                            {% for state in states %}
+                                {% if state == 'full' %}
+                                    ★
+                                {% elif state == 'half' %}
+                                    <span style="color:#FFD700;">&#9733;</span><span style="color:#DDD;position:relative;left:-10px;">&#9734;</span>
+                                {% else %}
+                                    ☆
+                                {% endif %}
+                            {% endfor %}
+                            ({{ avg|floatformat:1 }}/5)
+                        </span>
+                    {% endwith %}
+                </div>
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'rate_comment' comment.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <label>Tu calificación:</label>
+                            {% for i in "12345" %}
+                                <input type="radio" name="stars" value="{{ forloop.counter }}">
+                                {{ forloop.counter }}
+                            {% endfor %}
+                            <button type="submit">Calificar</button>
+                        </form>
+                    {% endif %}
+                    {% if user.is_authenticated and role == 'redactor' or role == 'admin' %}
+                        <div class="actions">
+                            <a href="{% url 'comment_delete' comment.pk %}?next={{ request.path }}">Eliminar</a>
+                        </div>
+                    {% endif %}
 
                     {% if user.is_authenticated %}
                         <button class="show-reply-btn" onclick="toggleReplyForm(this)">{% trans "Responder" %}</button>
@@ -76,7 +110,13 @@
                             <strong>{{ reply.user.username }}</strong>
                             <p>{{ reply.content }}</p>
                             <span>{{ reply.created_at|timesince }}
-                                {% trans "atrás" %}</span>
+                                {% trans "atrás" %}
+                            </span>
+                        {% if user.is_authenticated and role == 'redactor' or role == 'admin' %}
+                            <div class="actions">
+                                <a href="{% url 'comment_delete' comment.pk %}?next={{ request.path }}">Eliminar</a>
+                            </div>
+                        {% endif %}
                         </div>
                     {% endfor %}
                 </div>
@@ -102,10 +142,23 @@
                 {% trans "para dejar un comentario." %}
             </p>
         </div>
-
     {% endif %}
 </section>
 
+<secion>
+    <!-- Botón para siguiente publicación y publicacion anterior -->
+    <div class="navigation-buttons">
+        <div class="navigation-buttons">
+            <nav class="nav">
+                {% if post.get_previous_by_created_at %}
+                    <a href="{% url 'blog_post' post.get_previous_by_created_at.pk %}" class="prev-button">{% trans "Publicación anterior" %}</a>
+                {% endif %}
+                {% if post.get_next_by_created_at %}
+                    <a href="{% url 'blog_post' post.get_next_by_created_at.pk %}" class="next-button">{% trans "Siguiente publicación" %}</a>
+                {% endif %}
+            </nav>
+    </div>
+</section>
 <!-- Sección de contacto -->
 <div style="text-align: center;">
     <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>

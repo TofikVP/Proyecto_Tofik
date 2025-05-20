@@ -1,9 +1,9 @@
 /* Estilos para la pagina de Login */
-.separador_login {
-    background-color: transparent;
-  }
-  
-  .separador_login:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-  }
+form.separador_login {
+  background-color: transparent;
+}
+
+form.separador_login:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}

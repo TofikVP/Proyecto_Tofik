@@ -3,6 +3,7 @@
 {% load static %}
 {% block title %}VANDAL{% endblock %}
 {% block content %}
+{% if user.is_authenticated and user.userrole.role == 'redactor' or user.userrole.role == 'admin' %}
 <body>
     <h1 class="dashboard-title">Bienvenid@, {{ user.username }}</h1>
 
@@ -52,8 +53,31 @@
                 <li>No tienes posts.</li>
                 {% endfor %}
             </ul>
-        </div>
+                <!-- Botón para mostrar el formulario -->
+                <button
+                    onclick="document.getElementById('nuevo-post-form').classList.toggle('hidden')"
+                    class="btn btn-primary">
+                    Agregar nuevo post
+                </button>
 
+                <!-- Formulario oculto por defecto -->
+                <div id="nuevo-post-form" class="hidden" style="margin-top: 1em;">
+                    <form method="post" enctype="multipart/form-data" class="dashboard-form" style="background: white">
+                        {% csrf_token %}
+
+                        <label for="id_title">Título</label>
+                        <input type="text" name="title" id="id_title" class="form-control" required>
+
+                        <label for="id_content">Contenido</label>
+                        <textarea name="content" id="id_content" rows="5" class="form-control" required></textarea>
+
+                        <label for="id_image">Imagen (opcional)</label>
+                        <input type="file" name="image" id="id_image" class="form-control">
+
+                        <button type="submit" name="post_submit" class="btn btn-success" style="margin-top: 1em;">Publicar</button>
+                    </form>
+                </div>
+        </div>
         <!-- Sección de Comentarios -->
         <div class="dashboard-card">
             <h2>Tus Comentarios</h2>
@@ -63,7 +87,7 @@
                     <div class="comment-item">
                         <div class="content">{{ c.content }} <small>({{ c.created_at }})</small></div>
                         <div class="actions">
-                            {% if role == 'redactor' %}
+                            {% if role == 'redactor' or role == "admin" %}
                             <a href="{% url 'comment_delete' c.pk %}">Eliminar</a>
                             {% endif %}
                         </div>
@@ -90,4 +114,10 @@
             <a href="{% url 'logout' %}" class="dashboard-form">Cerrar sesión</a>
         </div>
     </div>
+</body>
+{% else %}
+    <script>
+        window.location.href = "{% url 'home' %}";
+    </script>
+{% endif %}
 {% endblock %}

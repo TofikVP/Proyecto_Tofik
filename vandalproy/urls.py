@@ -12,12 +12,16 @@ urlpatterns = [
 ]
 
 urlpatterns += i18n_patterns(
+    # Panel administrador
     path('admin/', admin.site.urls),
+    # Paginas del portal
     path('', views.home, name='home'),
     path('legal/', TemplateView.as_view(template_name='portal/legal.html'), name='legal'),
     path('error/', TemplateView.as_view(template_name='portal/error.html'), name='error'),
     path('blog/', views.blog_list_view, name='blog_list'),
     path('blog/<int:post_id>/', views.blog_post_view, name='blog_post'),
+    path('comentario/<int:pk>/eliminar/', CommentDeleteView.as_view(), name='comment_delete'),
+    path('comentario/<int:comment_id>/rate/', views.rate_comment, name='rate_comment'),
     path('noticias_destacada/<int:pk>/', views.detalle_noticia_destacada, name='detalle_noticia_destacada'),
     path('noticias_ultima/<int:pk>/', views.detalle_noticia_ultima, name='detalle_noticia_ultima'),
     path('calendario/', TemplateView.as_view(template_name='portal/calendario.html'), name='calendario'),

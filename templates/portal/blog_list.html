@@ -11,7 +11,6 @@
     {% for post in posts %}
     <article class="card">
       <div class="date">{{ post.created_at|date:"j F Y" }}</div>
-      
       <div class="title">
         {% if LANGUAGE_CODE == 'en' and post.title_en %}
           {{ post.title_en }}
@@ -38,9 +37,91 @@
     </article>
     {% endfor %}
   </div>
+  <!-- Paginación -->
+  <div class="pagination">
+    {% if posts.has_previous %}
+      <a href="?page={{ posts.previous_page_number }}">Anterior</a>
+    {% endif %}
+    <span>Página {{ posts.number }} de {{ posts.paginator.num_pages }}</span>
+    {% if posts.has_next %}
+      <a href="?page={{ posts.next_page_number }}">Siguiente</a>
+    {% elif posts.number > 1 %}
+      <span> página anterior</span>
+    {% elif posts.number == posts.paginator.num_pages %}
+      <span>Última página</span>
+    {% elif posts.number == 1 %}
+      <span>Primera página</span>
+    {% endif %}
+  </div>
+  <!-- Lista de comentarios -->
+  <div class="comments-list">
+    {% if comments %}
+      {% for comment in comments %}
+        <div class="comment-block">
+          <div class="comment-header">
+              <div class="avatar"></div>
+              <div class="user-info">
+                  <span class="username">{{ comment.user.username }}</span>
+                  <span class="user-role">
+                      {% with comment.user.userrole.role as rol %}
+                      ROL ({{ rol|title }})
+                      {% endwith %}
+                  </span>
+              </div>
+          </div>
+          <div class="comment-meta">
+              <span class="comment-number">#{{ forloop.counter }}</span>
+              <span class="comment-time">{% trans "Enviado hace" %}
+                  {{ comment.created_at|timesince }}</span>
+          </div>
+          <div class="comment-content">{{ comment.content }}</div>
+
+          {% if user.is_authenticated %}
+              <button class="show-reply-btn" onclick="toggleReplyForm(this)">{% trans "Responder" %}</button>
+
+              <form method="post" class="reply-form">
+                  {% csrf_token %}
+                  {{ form.content }}
+                  <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                  <button type="submit">{% trans "Enviar respuesta" %}</button>
+              </form>
+          {% endif %}
+
+          {% for reply in comment.replies.all %}
+              <div class="reply-block">
+                  <strong>{{ reply.user.username }}</strong>
+                  <p>{{ reply.content }}</p>
+                  <span>{{ reply.created_at|timesince }}
+                      {% trans "atrás" %}</span>
+              </div>
+          {% endfor %}
+      </div>
+      {% endfor %}
+    {% else %}
+        <p style="margin-top: 5%">{% trans "No hay comentarios sobre el blog aún. Sé el primero en comentar." %}</p>
+    {% endif %}
+  </div>
+
+  <!-- Nuevo comentario raíz -->
+  {% if user.is_authenticated %}
+      <form method="POST" class="comment-form">
+          {% csrf_token %}
+          {{ form.content }}
+          <input type="hidden" name="parent_id" value="">
+          <!-- comentario raíz -->
+          <button type="submit">Enviar comentario</button>
+      </form>
+  {% else %}
+      <div class="login-notice">
+          <p>
+              <a class="login-link" href="{% url 'login' %}">{% trans "Inicia sesión" %}</a>
+              {% trans "para dejar un comentario." %}
+          </p>
+      </div>
+
+    {% endif %}
 </section>
 
-  
   <!-- Sección de contacto -->
 <div style="text-align: center;">
   <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>

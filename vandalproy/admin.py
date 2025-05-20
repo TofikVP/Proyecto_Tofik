@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-#Register your models here.
+# Register your models here.
 from .models import BlogPost, BlogComment, UserRole, Noticias_ultima, Noticias_destacada
 
 admin.site.register(UserRole)

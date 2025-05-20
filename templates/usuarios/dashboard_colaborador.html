@@ -4,100 +4,80 @@
 {% block title %}VANDAL{% endblock %}
 {% block content %}
 
-<!-- Dashboard de Colaboradores -->
-<body>
-    <h1 class="dashboard-title">Bienvenid@,
-        {{ user.username }}</h1>
+{% if user.is_authenticated and user.userrole.role == 'colaborador' or user.userrole.role == 'admin' %}
+    <!-- Dashboard de Colaboradores -->
+    <body>
+        <h1 class="dashboard-title">Bienvenid@,
+            {{ user.username }}</h1>
 
-    <!-- Contenedor principal del dashboard -->
-    <div class="dashboard-container">
+        <!-- Contenedor principal del dashboard -->
+        <div class="dashboard-container">
 
-        <!-- Sección de subida de contenido -->
-        <div class="dashboard-card">
-            <h2>Subir contenido</h2>
-            <form style="background: white" method="post" enctype="multipart/form-data" class="dashboard-form">
-                {% csrf_token %}
-                <input type="file" name="file" required>
-                <button type="submit" name="upload">Subir archivo</button>
-            </form>
-        </div>
-
-        <!-- Sección de Posts -->
-        <div class="dashboard-card">
-            <h2>Tus Posts</h2>
-            <ul class="dashboard-list">
-                {% for p in posts %}
-                    <li>
-                        <a href="{% url 'blog_post' p.id %}">{{ p.title }}</a>
-                    </li>
-                    {% empty %}
-                    <li>No tienes posts.</li>
-                {% endfor %}
-            </ul>
-
-            <!-- Botón para mostrar el formulario -->
-            <button
-                onclick="document.getElementById('nuevo-post-form').classList.toggle('hidden')"
-                class="btn btn-primary">
-                Agregar nuevo post
-            </button>
-
-            <!-- Formulario oculto por defecto -->
-            <div id="nuevo-post-form" class="hidden" style="margin-top: 1em;">
-                <form method="post" enctype="multipart/form-data" class="dashboard-form" style="background: white">
+            <!-- Sección de subida de contenido -->
+            <div class="dashboard-card">
+                <h2>Subir contenido</h2>
+                <form style="background: white" method="post" enctype="multipart/form-data" class="dashboard-form">
                     {% csrf_token %}
-
-                    <label for="id_title">Título</label>
-                    <input type="text" name="title" id="id_title" class="form-control" required>
-
-                    <label for="id_content">Contenido</label>
-                    <textarea name="content" id="id_content" rows="5" class="form-control" required></textarea>
-
-                    <label for="id_image">Imagen (opcional)</label>
-                    <input type="file" name="image" id="id_image" class="form-control">
-
-                    <button type="submit" name="post_submit" class="btn btn-success" style="margin-top: 1em;">Publicar</button>
+                    <input type="file" name="file" required>
+                    <button type="submit" name="upload">Subir archivo</button>
                 </form>
             </div>
-        </div>
 
-        <!-- Sección de Comentarios -->
-        <div class="dashboard-card">
-            <h2>Tus Comentarios</h2>
-            <ul class="dashboard-list">
-                {% for c in comments %}
-                    <li>
-                        <div class="comment-item">
-                            <div class="content">{{ c.content }}
-                                <small>({{ c.created_at }})</small>
+            <!-- Sección de Posts -->
+            <div class="dashboard-card">
+                <h2>Tus Posts</h2>
+                <ul class="dashboard-list">
+                    {% for p in posts %}
+                        <li>
+                            <a href="{% url 'blog_post' p.id %}">{{ p.title }}</a>
+                        </li>
+                        {% empty %}
+                        <li>No tienes posts.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <!-- Sección de Comentarios -->
+            <div class="dashboard-card">
+                <h2>Tus Comentarios</h2>
+                <ul class="dashboard-list">
+                    {% for c in comments %}
+                        <li>
+                            <div class="comment-item">
+                                <div class="content">{{ c.content }}
+                                    <small>({{ c.created_at }})</small>
+                                </div>
+                                <div class="actions">
+                                    {% if role == 'redactor' %}
+                                        <a href="{% url 'comment_delete' c.pk %}">Eliminar</a>
+                                    {% endif %}
+                                </div>
                             </div>
-                            <div class="actions">
-                                {% if role == 'redactor' %}
-                                    <a href="{% url 'comment_delete' c.pk %}">Eliminar</a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </li>
-                    {% empty %}
-                    <li>No tienes comentarios.</li>
-                {% endfor %}
-            </ul>
-        </div>
+                        </li>
+                        {% empty %}
+                        <li>No tienes comentarios.</li>
+                    {% endfor %}
+                </ul>
+            </div>
 
-        <!-- Sección de Cambio de Contraseña -->
-        <div class="dashboard-card">
-            <h2>Cambiar contraseña</h2>
-            <form style="background: white" method="post" class="dashboard-form">
-                {% csrf_token %}
-                {{ password_form.as_p }}
-                <button type="submit" name="password_submit">Actualizar contraseña</button>
-            </form>
-        </div>
+            <!-- Sección de Cambio de Contraseña -->
+            <div class="dashboard-card">
+                <h2>Cambiar contraseña</h2>
+                <form style="background: white" method="post" class="dashboard-form">
+                    {% csrf_token %}
+                    {{ password_form.as_p }}
+                    <button type="submit" name="password_submit">Actualizar contraseña</button>
+                </form>
+            </div>
 
-        <!-- Botón logout -->
-        <div class="dashboard-card">
-            <a href="{% url 'logout' %}" class="dashboard-form">Cerrar sesión</a>
+            <!-- Botón logout -->
+            <div class="dashboard-card">
+                <a href="{% url 'logout' %}" class="dashboard-form">Cerrar sesión</a>
+            </div>
         </div>
-
-    </div>
-{% endblock %}
+    </body>
+{% else %}
+    <script>
+        window.location.href = "{% url 'home' %}";
+    </script>
+{% endif %}
+    {% endblock %}

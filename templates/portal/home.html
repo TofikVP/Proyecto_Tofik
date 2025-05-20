@@ -3,6 +3,18 @@
 {% load static %}
 {% block title %}VANDAL{% endblock %}
 {% block content %}
+  <!-- Buscador -->
+  <div class="search-bar">
+    <form method="get" action="" class="buscador-form">
+      <input type="text" name="q" class="buscador-input" placeholder="{% trans 'Buscar noticia...' %}" value="{{ query|default:'' }}">
+      <button type="submit" class="buscador-btn" aria-label="{% trans 'Buscar' %}">
+        <svg class="buscador-icon" viewBox="0 0 24 24" width="20" height="20">
+          <circle cx="11" cy="11" r="8" stroke="#555" stroke-width="2" fill="none"/>
+          <line x1="17" y1="17" x2="21" y2="21" stroke="#555" stroke-width="2"/>
+        </svg>
+      </button>
+    </form>
+  </div>
   <!-- Noticias Destacadas -->
   <section id="noticias">
     <h2>{% trans "NOTICIAS DESTACADAS" %}</h2>
@@ -34,10 +46,20 @@
         <p style="color: white;">{% trans "No hay noticias por el momento." %}</p>
       {% endfor %}
     </div>
+    <!-- Paginación solo para destacadas -->
+    <div class="pagination" style="text-align:center; margin:2em 0;">
+      {% if noticias_destacadas.has_previous %}
+        <a href="?q={{ query }}&page={{ noticias_destacadas.previous_page_number }}">{% trans "Anterior" %}</a>
+      {% endif %}
+      <span>{% trans "Página" %} {{ noticias_destacadas.number }} {% trans "de" %} {{ noticias_destacadas.paginator.num_pages }}</span>
+      {% if noticias_destacadas.has_next %}
+        <a href="?q={{ query }}&page={{ noticias_destacadas.next_page_number }}">{% trans "Siguiente" %}</a>
+      {% endif %}
+    </div>
   </section>
 
 
-  <!-- Últimas Noticias -->
+  <!-- Últimas Noticias (Las últimas 3) -->
   <section id="noticias">
     <h2>{% trans "ÚLTIMAS NOTICIAS" %}</h2>
     <div class="list-noticias">
@@ -46,7 +68,6 @@
           <div class="time">
             {% trans "Hace" %} {{ noticia.fecha_publicacion|timesince }}
           </div>
-
           <div class="headline">
             {% if LANGUAGE_CODE == 'en' and noticia.titulo_en %}
               {{ noticia.titulo_en }}
@@ -54,13 +75,11 @@
               {{ noticia.titulo }}
             {% endif %}
           </div>
-
           <div class="image">
             <a href="{% url 'detalle_noticia_ultima' noticia.pk %}">
               <img class="image" src="{{ noticia.imagen.url }}" alt="{% if LANGUAGE_CODE == 'en' and noticia.titulo_en %}{{ noticia.titulo_en }}{% else %}{{ noticia.titulo }}{% endif %}">
             </a>
           </div>
-
           <div class="summary">
             {% if LANGUAGE_CODE == 'en' and noticia.resumen_en %}
               {{ noticia.resumen_en|truncatechars:120 }}
@@ -70,7 +89,7 @@
           </div>
         </div>
       {% empty %}
-        <p style="color: white;">{% trans "No hay noticias por el momento." %}</p>
+        <p style="color: white;">{% trans "No se encontraron noticias." %}</p>
       {% endfor %}
     </div>
   </section>
