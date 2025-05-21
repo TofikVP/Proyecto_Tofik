@@ -1,0 +1,23 @@
+{% extends "common/base.html" %}
+{% load static %}
+{% block title %}{{ juego.titulo }}{% endblock %}
+{% block content %}
+<section id="detalle-juego" style="max-width: 800px; margin: 40px auto; background: #222; border-radius: 12px; padding: 32px;">
+    <h2 style="text-align:center;">{{ juego.titulo }}</h2>
+    <img src="{% if juego.portada %}{{ juego.portada.url }}{% endif %}" alt="Portada {{ juego.titulo }}" style="display:block; margin: 20px auto; max-width: 300px; border-radius: 8px;">
+    <p style="text-align:center; margin-bottom: 20px;"><strong>Género:</strong> {{ juego.genero }}</p>
+    <div style="margin-bottom: 20px;">
+        <h3>Resumen</h3>
+        <p>{{ juego.resumen }}</p>
+    </div>
+    {% if juego.capturas %}
+    <div style="text-align:center;">
+        <h3>Captura</h3>
+        <img src="{{ juego.capturas.url }}" alt="Captura de {{ juego.titulo }}" style="max-width: 90%; border-radius: 8px;">
+    </div>
+    {% endif %}
+    <div style="text-align:center; margin-top: 30px;">
+        <a href="{% url 'ranking' %}" class="contact-button">Volver al ranking</a>
+    </div>
+</section>
+{% endblock %}

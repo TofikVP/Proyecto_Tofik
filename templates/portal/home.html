@@ -6,8 +6,8 @@
   <!-- Buscador -->
   <div class="search-bar">
     <form method="get" action="" class="buscador-form">
-      <input type="text" name="q" class="buscador-input" placeholder="{% trans 'Buscar noticia...' %}" value="{{ query|default:'' }}">
-      <button type="submit" class="buscador-btn" aria-label="{% trans 'Buscar' %}">
+      <input type="text" name="q" class="buscador-input" placeholder={% trans "Buscar noticia..." %} value="{{ query|default:'' }}">
+      <button type="submit" class="buscador-btn" aria-label={% trans "Buscar" %}>
         <svg class="buscador-icon" viewBox="0 0 24 24" width="20" height="20">
           <circle cx="11" cy="11" r="8" stroke="#555" stroke-width="2" fill="none"/>
           <line x1="17" y1="17" x2="21" y2="21" stroke="#555" stroke-width="2"/>

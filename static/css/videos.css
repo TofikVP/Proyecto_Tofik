@@ -1,25 +1,62 @@
 /* Estilos para el portal de videos */
 
 #video-portal {
-    justify-content: center;
-    text-align: center;
-  }
-  
-  .video-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-  
-  .video-item {
-    width: 300px;
-    text-align: center;
-  }
-  
-  video {
-    width: 100%;
-    height: auto;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-  }
+  justify-content: center;
+  text-align: center;
+}
+
+#video-portal h2 {
+margin-top: 50px;
+}
+
+.video-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.video-item {
+  width: 300px;
+  text-align: center;
+  justify-content: center;
+}
+
+video {
+  width: 100%;
+  height: auto;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+}
+
+div#clips-container {
+  display: flex;
+  gap: 120px;
+}
+
+div#clips-container p {
+  margin-left: 25%;
+  margin-top: 10px;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+div#clips-container p small {
+  display: block;
+  margin-top: 8px;
+  color: rgb(255, 255, 255);
+  font-size: 1em;
+
+}
+
+div#clips-container p small a {
+  text-decoration: none;
+}
+
+div#clips-container p small a {
+  color: rgb(255, 255, 255)
+}
+
+div#clips-container p small a:hover {
+  color: rgb(255, 0, 0)
+}

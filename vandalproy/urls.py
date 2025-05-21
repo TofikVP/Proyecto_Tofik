@@ -27,7 +27,7 @@ urlpatterns += i18n_patterns(
     path('calendario/', TemplateView.as_view(template_name='portal/calendario.html'), name='calendario'),
     path('contacto/', TemplateView.as_view(template_name='portal/contacto.html'), name='contacto'),
     path('ranking/', TemplateView.as_view(template_name='portal/ranking.html'), name='ranking'),
-    path('redactores/', TemplateView.as_view(template_name='portal/redactores.html'), name='redactores'),
+    path('ranking/<int:pk>/', views.detalle_ranking_juego, name='detalle_ranking_juego'),    path('redactores/', TemplateView.as_view(template_name='portal/redactores.html'), name='redactores'),
     path('videos/', TemplateView.as_view(template_name='portal/videos.html'), name='videos'),
     path('login/', views.login_view, name='login'),
     path('registro/', views.register_view, name='register'),

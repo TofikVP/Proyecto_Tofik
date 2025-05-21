@@ -25,6 +25,7 @@ from .models import (
     Noticias_ultima,
     Noticias_destacada,
     CommentRating,
+    Juego_ranking,
 )
 from .forms import CommentForm, PostForm
 import logging
@@ -359,16 +360,6 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 # Noticias
-def detalle_noticia_destacada(request, pk):
-    noticia = get_object_or_404(Noticias_destacada, pk=pk)
-    return render(request, "portal/noticia_detalle.html", {"noticia": noticia})
-
-
-def detalle_noticia_ultima(request, pk):
-    noticia = get_object_or_404(Noticias_ultima, pk=pk)
-    return render(request, "portal/noticia_detalle.html", {"noticia": noticia})
-
-
 # Vista para la página de inicio
 def home(request):
     # Buscador de noticias destacadas
@@ -392,3 +383,17 @@ def home(request):
             "query": query,
         },
     )
+
+def detalle_noticia_destacada(request, pk):
+    noticia = get_object_or_404(Noticias_destacada, pk=pk)
+    return render(request, "portal/noticia_detalle.html", {"noticia": noticia})
+
+
+def detalle_noticia_ultima(request, pk):
+    noticia = get_object_or_404(Noticias_ultima, pk=pk)
+    return render(request, "portal/noticia_detalle.html", {"noticia": noticia})
+
+
+def detalle_ranking_juego(request, pk):
+    juego = get_object_or_404(Juego_ranking, pk=pk)
+    return render(request, "portal/ranking_detalle.html", {"juego": juego})

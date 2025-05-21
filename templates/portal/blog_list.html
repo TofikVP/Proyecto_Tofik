@@ -47,10 +47,6 @@
       <a href="?page={{ posts.next_page_number }}">Siguiente</a>
     {% elif posts.number > 1 %}
       <span> página anterior</span>
-    {% elif posts.number == posts.paginator.num_pages %}
-      <span>Última página</span>
-    {% elif posts.number == 1 %}
-      <span>Primera página</span>
     {% endif %}
   </div>
   <!-- Lista de comentarios -->

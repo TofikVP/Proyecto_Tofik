@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load static %}
 {% load comentarios_extras %}
+{% get_current_language as LANGUAGE_CODE %}
 {% block title %}VANDAL{% endblock %}
 {% block content %}
 <!-- Sección de comentarios -->
@@ -47,8 +48,9 @@
                         <div class="user-info">
                             <span class="username">{{ comment.user.username }}</span>
                             <span class="user-role">
+                                
                                 {% with comment.user.userrole.role as rol %}
-                                ROL ({{ rol|title }})
+                                {{ rol|  title }}
                                 {% endwith %}
                             </span>
                         </div>
@@ -85,7 +87,7 @@
                                 <input type="radio" name="stars" value="{{ forloop.counter }}">
                                 {{ forloop.counter }}
                             {% endfor %}
-                            <button type="submit">Calificar</button>
+                            <button type="submit">{% trans Calificar %}</button>
                         </form>
                     {% endif %}
                     {% if user.is_authenticated and role == 'redactor' or role == 'admin' %}
@@ -149,12 +151,15 @@
     <!-- Botón para siguiente publicación y publicacion anterior -->
     <div class="navigation-buttons">
         <div class="navigation-buttons">
-            <nav class="nav">
                 {% if post.get_previous_by_created_at %}
-                    <a href="{% url 'blog_post' post.get_previous_by_created_at.pk %}" class="prev-button">{% trans "Publicación anterior" %}</a>
+                    <a href="{% url 'blog_post' post.get_previous_by_created_at.pk %}" class="prev-button">
+                        {% trans "Publicación anterior" %}
+                    </a>
                 {% endif %}
                 {% if post.get_next_by_created_at %}
-                    <a href="{% url 'blog_post' post.get_next_by_created_at.pk %}" class="next-button">{% trans "Siguiente publicación" %}</a>
+                    <a href="{% url 'blog_post' post.get_next_by_created_at.pk %}" class="next-button">
+                        {% trans "Siguiente publicación" %}
+                    </a>
                 {% endif %}
             </nav>
     </div>

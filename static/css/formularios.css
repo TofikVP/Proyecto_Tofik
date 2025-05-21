@@ -22,15 +22,6 @@ form .button:hover {
   background-color: #0056b3;
 }
 
-form {
-  flex: 1;
-  max-width: 400px;
-  padding: 20px;
-  border-radius: 12px;
-  background: linear-gradient(5deg, #1252e9bf, #14095a);
-  font-family: Arial, sans-serif;
-}
-
 h2 {
   text-align: center;
   color: #ffffff;

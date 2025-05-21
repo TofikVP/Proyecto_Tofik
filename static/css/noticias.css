@@ -85,10 +85,8 @@
   display: flex;
   justify-content: right;
   align-items: right;
-  margin-bottom: 2rem;
-  background: #110F5D;
 }
-.buscador-form {
+form.buscador-form {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -131,7 +129,7 @@
   opacity: 1;
   padding: 0 10px;
   width: 100%;
-  height: 80%;
+  height: 65%;
   margin-top: 25px;
 }
 

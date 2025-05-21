@@ -1,9 +1,17 @@
 /* Estilos para la pagina de Login */
+
 form.separador_login {
   background-color: transparent;
+  flex: 1;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 12px;
+  background: linear-gradient(5deg, #1252e9bf, #14095a);
+  font-family: Arial, sans-serif;
 }
 
 form.separador_login:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
+

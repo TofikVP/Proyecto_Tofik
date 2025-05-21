@@ -88,3 +88,53 @@ class Noticias_destacada(models.Model):
 
     def __str__(self):
         return self.titulo
+
+
+# Videojuegos del ranking
+class Juego_ranking(models.Model):
+    id = models.AutoField(primary_key=True)
+    titulo = models.CharField(max_length=200)
+    titulo_en = models.CharField(max_length=200, blank=True)
+    resumen = models.TextField()
+    resumen_en = models.TextField(blank=True)
+    genero = models.CharField (
+        max_length=50,
+        choices=[
+            ("shooter", "Shooter"),
+            ("aventura", "Aventura"),
+            ("hack and slash", "Hack & Slash"),
+            ("rpg", "RPG"),
+            ("jrpg", "JRPG"),
+            ("plataformas", "Plataformas"),
+            ("simulador", "Simulador"),
+            ("soulslike", "Soulslike"),
+            ("mundo abierto", "Mundo Abierto"),
+            ("sandbox", "Sandbox"),
+            ("por turnos", "Por turnos"),
+            ("ritmo", "Ritmo"),
+            ("puzzles", "Puzzles")
+        ],
+    )
+    genero_en = models.CharField (
+        max_length=50,
+        choices=[
+            ("shooter", "Shooter"),
+            ("adventure", "Adventure"),
+            ("hack and slash", "Hack & Slash"),
+            ("rpg", "RPG"),
+            ("jrpg", "JRPG"),
+            ("plataform", "Plataform"),
+            ("simulator", "Simulator"),
+            ("soulslike", "Soulslike"),
+            ("open world", "Open World"),
+            ("sandbox", "Sandbox"),
+            ("turn based", "Turn Based"),
+            ("rythm", "Rythm"),
+            ("puzzle", "Puzzle")
+        ],
+    )
+    portada = models.ImageField(upload_to="juegos_ranking/portadas/")
+    capturas = models.ImageField(upload_to="juegos_ranking/capturas/")
+    
+    def __str__(self):
+        return self.titulo
