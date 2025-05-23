@@ -37,98 +37,25 @@
             </div>
         {% endif %}
     </div>
-
-    <!-- Lista de comentarios -->
-    <div class="comments-list">
-        {% if comments %}
-            {% for comment in comments %}
-                <div class="comment-block">
-                    <div class="comment-header">
-                        <div class="avatar"></div>
-                        <div class="user-info">
-                            <span class="username">{{ comment.user.username }}</span>
-                            <span class="user-role">
-                                
-                                {% with comment.user.userrole.role as rol %}
-                                {{ rol|  title }}
-                                {% endwith %}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="comment-meta">
-                        <span class="comment-number">#{{ forloop.counter }}</span>
-                        <span class="comment-time">{% trans "Enviado hace" %}
-                            {{ comment.created_at|timesince }}</span>
-                    </div>
-                    <div class="comment-content">{{ comment.content }}</div>
-                <div class="comment-rating">
-                    {% with avg=comment.ratings.all|average_stars %}
-                        {% star_states avg as states %}
-                        <span>
-                            {% for state in states %}
-                                {% if state == 'full' %}
-                                    ★
-                                {% elif state == 'half' %}
-                                    <span style="color:#FFD700;">&#9733;</span><span style="color:#DDD;position:relative;left:-10px;">&#9734;</span>
-                                {% else %}
-                                    ☆
-                                {% endif %}
-                            {% endfor %}
-                            ({{ avg|floatformat:1 }}/5)
-                        </span>
-                    {% endwith %}
-                </div>
-                    {% if user.is_authenticated %}
-                        <form method="post" action="{% url 'rate_comment' comment.id %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="next" value="{{ request.path }}">
-                            <label>Tu calificación:</label>
-                            {% for i in "12345" %}
-                                <input type="radio" name="stars" value="{{ forloop.counter }}">
-                                {{ forloop.counter }}
-                            {% endfor %}
-                            <button type="submit">{% trans Calificar %}</button>
-                        </form>
-                    {% endif %}
-                    {% if user.is_authenticated and role == 'redactor' or role == 'admin' %}
-                        <div class="actions">
-                            <a href="{% url 'comment_delete' comment.pk %}?next={{ request.path }}">Eliminar</a>
-                        </div>
-                    {% endif %}
-
-                    {% if user.is_authenticated %}
-                        <button class="show-reply-btn" onclick="toggleReplyForm(this)">{% trans "Responder" %}</button>
-
-                        <form method="post" class="reply-form" style="display: none; margin-top: 10px;">
-                            {% csrf_token %}
-                            {{ form.content }}
-                            <input type="hidden" name="parent_id" value="{{ comment.id }}">
-                            <button type="submit">{% trans "Enviar respuesta" %}</button>
-                        </form>
-                    {% endif %}
-
-                    {% for reply in comment.replies.all %}
-                        <div class="reply-block">
-                            <strong>{{ reply.user.username }}</strong>
-                            <p>{{ reply.content }}</p>
-                            <span>{{ reply.created_at|timesince }}
-                                {% trans "atrás" %}
-                            </span>
-                        {% if user.is_authenticated and role == 'redactor' or role == 'admin' %}
-                            <div class="actions">
-                                <a href="{% url 'comment_delete' comment.pk %}?next={{ request.path }}">Eliminar</a>
-                            </div>
-                        {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>{% trans "No hay comentarios sobre el blog aún. Sé el primero." %}</p>
+    <!-- Botón para siguiente publicación y publicacion anterior -->
+    <div class="navigation-buttons">
+        {% if post.get_previous_by_created_at %}
+        <button class="page-button">
+            <a href="{% url 'blog_post' post.get_previous_by_created_at.pk %}">
+                {% trans "Publicación anterior" %}
+            </a>
+        </button>
+        {% endif %}
+        <span></span>
+        {% if post.get_next_by_created_at %}
+        <button class="page-button">
+            <a href="{% url 'blog_post' post.get_next_by_created_at.pk %}" class="next-button">
+                {% trans "Siguiente publicación" %}
+            </a>
+        </button>
         {% endif %}
     </div>
-
-    <!-- Nuevo comentario raíz -->
+    <!-- Envío de comentario -->
     {% if user.is_authenticated %}
         <form method="POST" class="comment-form">
             {% csrf_token %}
@@ -145,25 +72,98 @@
             </p>
         </div>
     {% endif %}
-</section>
 
-<secion>
-    <!-- Botón para siguiente publicación y publicacion anterior -->
-    <div class="navigation-buttons">
-        <div class="navigation-buttons">
-                {% if post.get_previous_by_created_at %}
-                    <a href="{% url 'blog_post' post.get_previous_by_created_at.pk %}" class="prev-button">
-                        {% trans "Publicación anterior" %}
-                    </a>
+
+<!-- Lista de comentarios -->
+<div class="comments-list">
+    {% if comments %}
+        {% for comment in comments %}
+            <div class="comment-block">
+                <div class="comment-header">
+                    <div class="avatar"></div>
+                    <div class="user-info">
+                        <span class="username">{{ comment.user.username }}</span>
+                        <span class="user-role">
+                            
+                            {% with comment.user.userrole.role as rol %}
+                            {{ rol|  title }}
+                            {% endwith %}
+                        </span>
+                    </div>
+                </div>
+                <div class="comment-meta">
+                    <span class="comment-number">#{{ forloop.counter }}</span>
+                    <span class="comment-time">{% trans "Enviado hace" %}
+                        {{ comment.created_at|timesince }}</span>
+                </div>
+                <div class="comment-content">{{ comment.content }}</div>
+            <div class="comment-rating">
+                {% with avg=comment.ratings.all|average_stars %}
+                    {% star_states avg as states %}
+                    <span>
+                        {% for state in states %}
+                            {% if state == 'full' %}
+                                ★
+                            {% elif state == 'half' %}
+                                <span style="color:#FFD700;">&#9733;</span><span style="color:#DDD;position:relative;left:-10px;">&#9734;</span>
+                            {% else %}
+                                ☆
+                            {% endif %}
+                        {% endfor %}
+                        ({{ avg|floatformat:1 }}/5)
+                    </span>
+                {% endwith %}
+            </div>
+                {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'rate_comment' comment.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <label>Tu calificación:</label>
+                        {% for i in "12345" %}
+                            <input type="radio" name="stars" value="{{ forloop.counter }}">
+                            {{ forloop.counter }}
+                        {% endfor %}
+                        <button type="submit">{% trans Calificar %}</button>
+                    </form>
                 {% endif %}
-                {% if post.get_next_by_created_at %}
-                    <a href="{% url 'blog_post' post.get_next_by_created_at.pk %}" class="next-button">
-                        {% trans "Siguiente publicación" %}
-                    </a>
+                {% if user.is_authenticated and role == 'redactor' or role == 'admin' %}
+                    <div class="actions">
+                        <a href="{% url 'comment_delete' comment.pk %}?next={{ request.path }}">Eliminar</a>
+                    </div>
                 {% endif %}
-            </nav>
-    </div>
-</section>
+
+                {% if user.is_authenticated %}
+                    <button class="show-reply-btn" onclick="toggleReplyForm(this)">{% trans "Responder" %}</button>
+
+                    <form method="post" class="reply-form" style="display: none; margin-top: 10px;">
+                        {% csrf_token %}
+                        {{ form.content }}
+                        <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                        <button type="submit">{% trans "Enviar respuesta" %}</button>
+                    </form>
+                {% endif %}
+
+                {% for reply in comment.replies.all %}
+                    <div class="reply-block">
+                        <strong>{{ reply.user.username }}</strong>
+                        <p>{{ reply.content }}</p>
+                        <span>{{ reply.created_at|timesince }}
+                            {% trans "atrás" %}
+                        </span>
+                    {% if user.is_authenticated and role == 'redactor' or role == 'admin' %}
+                        <div class="actions">
+                            <a href="{% url 'comment_delete' comment.pk %}?next={{ request.path }}">Eliminar</a>
+                        </div>
+                    {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty-comment">{% trans "No hay comentarios sobre el blog aún. Sé el primero." %}</p>
+    {% endif %}
+</div>
+
 <!-- Sección de contacto -->
 <div style="text-align: center;">
     <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>

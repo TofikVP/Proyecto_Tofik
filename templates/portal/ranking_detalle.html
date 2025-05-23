@@ -1,23 +1,153 @@
 {% extends "common/base.html" %}
 {% load static %}
 {% block title %}{{ juego.titulo }}{% endblock %}
+{% load static %}
+{% load i18n %}
 {% block content %}
-<section id="detalle-juego" style="max-width: 800px; margin: 40px auto; background: #222; border-radius: 12px; padding: 32px;">
-    <h2 style="text-align:center;">{{ juego.titulo }}</h2>
-    <img src="{% if juego.portada %}{{ juego.portada.url }}{% endif %}" alt="Portada {{ juego.titulo }}" style="display:block; margin: 20px auto; max-width: 300px; border-radius: 8px;">
-    <p style="text-align:center; margin-bottom: 20px;"><strong>Género:</strong> {{ juego.genero }}</p>
-    <div style="margin-bottom: 20px;">
-        <h3>Resumen</h3>
+<section id="detalle-juego">
+    <h1>{{ juego.titulo }}</h1>
+    <img class="portada" src="{% if juego.portada %}{{ juego.portada.url }}{% endif %}" alt="Portada {{ juego.titulo }}">
+    <div class="genero">
+        <p><strong>Géneros:</strong>
+            {% for genero in juego.generos.all %}
+                {{ genero.nombre }}{% if not forloop.last %}, {% endif %}
+            {% empty %}
+                Sin géneros
+            {% endfor %}
+        </p>
+    </div>
+
+    <div class="resumen">
+    <h2>Resumen</h2>
         <p>{{ juego.resumen }}</p>
     </div>
-    {% if juego.capturas %}
-    <div style="text-align:center;">
-        <h3>Captura</h3>
-        <img src="{{ juego.capturas.url }}" alt="Captura de {{ juego.titulo }}" style="max-width: 90%; border-radius: 8px;">
+    {% if capturas %}
+    <h2>
+        Capturas
+    </h2>
+    <div class="capturas-carousel">
+        <button class="carousel-btn" id="prev-captura">&#8592;</button>
+        <div class="carousel-img-container">
+            {% for captura in capturas %}
+                <img class="carousel-img" src="{{ captura.imagen.url }}" alt="{{ captura.descripcion|default:'Captura' }}" style="{% if not forloop.first %}display:none;{% endif %}">
+            {% endfor %}
+        </div>
+        <button class="carousel-btn" id="next-captura">&#8594;</button>
     </div>
     {% endif %}
-    <div style="text-align:center; margin-top: 30px;">
-        <a href="{% url 'ranking' %}" class="contact-button">Volver al ranking</a>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.carousel-img');
+            let current = 0;
+            if(images.length > 0){
+                images.forEach((img, i) => {
+                    img.style.opacity = (i === 0) ? '1' : '0';
+                    img.style.display = '';
+                });
+                document.getElementById('prev-captura').onclick = function() {
+                    images[current].style.opacity = '0';
+                    setTimeout(() => {
+                        current = (current - 1 + images.length) % images.length;
+                        images.forEach((img, i) => img.style.opacity = (i === current) ? '1' : '0');
+                    }, 400);
+                };
+                document.getElementById('next-captura').onclick = function() {
+                    images[current].style.opacity = '0';
+                    setTimeout(() => {
+                        current = (current + 1) % images.length;
+                        images.forEach((img, i) => img.style.opacity = (i === current) ? '1' : '0');
+                    }, 400);
+                };
+            }
+        });
+    </script>
+
+    <!-- Sección de directos -->
+    <h1 style="margin-top: 10px">{% trans "Directos" %}</h1>
+    <div id="gameplay" class="video-container"></div>
+    <script>
+        const clientId = 'wo8n3wmsfl5r7hi71929e309tbea1e';
+        const accessToken = 'ot9v5xfktpc2ndlffo97apoz53vmrc';
+        const gameName = "{{ juego.titulo|escapejs }}";
+
+        async function getGameId(gameName) {
+            const res = await fetch(`https://api.twitch.tv/helix/games?name=${encodeURIComponent(gameName)}`, {
+                headers: {
+                    'Client-ID': clientId,
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            const data = await res.json();
+            return data.data && data.data[0] ? data.data[0].id : null;
+        }
+
+        async function getStreamsByGame(gameId) {
+            const res = await fetch(`https://api.twitch.tv/helix/streams?game_id=${gameId}&first=20`, {
+                headers: {
+                    'Client-ID': clientId,
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            const data = await res.json();
+            return data.data || [];
+        }
+
+        function getRandomItems(arr, n) {
+            let result = [];
+            let taken = new Set();
+            while (result.length < n && arr.length > 0) {
+                let idx = Math.floor(Math.random() * arr.length);
+                if (!taken.has(idx)) {
+                    result.push(arr[idx]);
+                    taken.add(idx);
+                }
+            }
+            return result;
+        }
+
+        async function showRandomStreams() {
+            const streamsContainer = document.getElementById('gameplay');
+            streamsContainer.innerHTML = '';
+            const gameId = await getGameId(gameName);
+            if (!gameId) {
+                streamsContainer.innerHTML = '<p>No se encontraron directos para este juego.</p>';
+                return;
+            }
+            const streams = await getStreamsByGame(gameId);
+            if (!streams.length) {
+                streamsContainer.innerHTML = '<p>No se encontraron directos para este juego.</p>';
+                return;
+            }
+            const selectedStreams = getRandomItems(streams, 3);
+            selectedStreams.forEach(stream => {
+                const streamDiv = document.createElement('div');
+                streamDiv.className = 'stream-item';
+                streamDiv.innerHTML = `
+                    <iframe
+                        src="https://player.twitch.tv/?channel=${stream.user_login}&parent=${window.location.hostname}&muted=true"
+                        height="300"
+                        width="400"
+                        allowfullscreen>
+                    </iframe>
+                    <p>${stream.title} <br><small><a href="https://www.twitch.tv/${stream.user_login}" target="_blank">${stream.user_name}</a></small></p>
+                `;
+                streamsContainer.appendChild(streamDiv);
+            });
+        }
+        showRandomStreams();
+    </script>
+
+    <div class="game-nav">
+        {% if juego_anterior %}
+            <a href="{% url 'detalle_ranking_juego' juego_anterior.id %}" class="ranking-button">&#8592; Juego anterior</a>
+        {% endif %}
+        {% if juego_siguiente %}
+            <a href="{% url 'detalle_ranking_juego' juego_siguiente.id %}" class="ranking-button">Siguiente juego &#8594;</a>
+        {% endif %}
+    </div>
+
+    <div class="volver">
+        <a href="{% url 'ranking' %}" class="ranking-button">Volver al ranking</a>
     </div>
 </section>
 {% endblock %}

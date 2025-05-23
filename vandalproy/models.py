@@ -91,50 +91,60 @@ class Noticias_destacada(models.Model):
 
 
 # Videojuegos del ranking
+
+class Genero(models.Model):
+    nombre = models.CharField(max_length=50, unique=True)
+    nombre_en = models.CharField(max_length=50, unique=True)
+    def __str__(self):
+        return self.nombre
+    
+class Plataforma(models.Model):
+    nombre = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.nombre
+
+def captura_upload_to(instance, filename):
+    # Guarda en juegos_ranking/capturas/<id_juego>/<nombre_archivo>
+    return f"juegos_ranking/capturas/{instance.juego.id}/{filename}"
+
+class Captura(models.Model):
+    juego = models.ForeignKey('Juego_ranking', related_name='capturas', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to=captura_upload_to)
+    descripcion = models.CharField(max_length=200, blank=True)
+
+    def __str__(self):
+        return f"Captura de {self.juego.titulo}"
+
 class Juego_ranking(models.Model):
     id = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=200)
     titulo_en = models.CharField(max_length=200, blank=True)
     resumen = models.TextField()
     resumen_en = models.TextField(blank=True)
-    genero = models.CharField (
-        max_length=50,
-        choices=[
-            ("shooter", "Shooter"),
-            ("aventura", "Aventura"),
-            ("hack and slash", "Hack & Slash"),
-            ("rpg", "RPG"),
-            ("jrpg", "JRPG"),
-            ("plataformas", "Plataformas"),
-            ("simulador", "Simulador"),
-            ("soulslike", "Soulslike"),
-            ("mundo abierto", "Mundo Abierto"),
-            ("sandbox", "Sandbox"),
-            ("por turnos", "Por turnos"),
-            ("ritmo", "Ritmo"),
-            ("puzzles", "Puzzles")
-        ],
-    )
-    genero_en = models.CharField (
-        max_length=50,
-        choices=[
-            ("shooter", "Shooter"),
-            ("adventure", "Adventure"),
-            ("hack and slash", "Hack & Slash"),
-            ("rpg", "RPG"),
-            ("jrpg", "JRPG"),
-            ("plataform", "Plataform"),
-            ("simulator", "Simulator"),
-            ("soulslike", "Soulslike"),
-            ("open world", "Open World"),
-            ("sandbox", "Sandbox"),
-            ("turn based", "Turn Based"),
-            ("rythm", "Rythm"),
-            ("puzzle", "Puzzle")
-        ],
-    )
+    generos = models.ManyToManyField(Genero)
+    plataformas_de_lanzamiento = models.ManyToManyField(Plataforma)
     portada = models.ImageField(upload_to="juegos_ranking/portadas/")
-    capturas = models.ImageField(upload_to="juegos_ranking/capturas/")
-    
+
+# Plataforma_de_lanzamiento = models.CharField (
+#     max_length=50,
+#     choices=[
+#         ("nes", "NES"),
+#         ("super nes", "Super Nes"),
+#         ("playstation", "PlayStation"),
+#         ("gamecube", "GameCube"),
+#         ("xbox", "Xbox"),
+#         ("playstation 2", "PlayStation 2"),
+#         ("wii", "Wii"),
+#         ("xbox 360", "Xbox 360"),
+#         ("playstation 3", "PlayStation 3"),
+#         ("xbox one", "Xbox One"),
+#         ("wii u", "Wii U"),
+#         ("playstation 4", "PlayStation 4"),
+#         ("xbox series x", "Xbox Series X"),
+#         ("nintendo switch", "Nintendo Switch"),
+#         ("playstation 5", "PlayStation 5"),
+#         ("pc", "PC")
+#     ],
     def __str__(self):
         return self.titulo

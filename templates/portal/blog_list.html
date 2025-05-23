@@ -37,18 +37,39 @@
     </article>
     {% endfor %}
   </div>
+
   <!-- Paginación -->
   <div class="pagination">
     {% if posts.has_previous %}
-      <a href="?page={{ posts.previous_page_number }}">Anterior</a>
+      <button class="page-button">
+        <a href="?page={{ posts.previous_page_number }}">Anterior</a>
+      </button>
     {% endif %}
-    <span>Página {{ posts.number }} de {{ posts.paginator.num_pages }}</span>
+    <span class="page-number">Página {{ posts.number }} de {{ posts.paginator.num_pages }}</span>
     {% if posts.has_next %}
-      <a href="?page={{ posts.next_page_number }}">Siguiente</a>
-    {% elif posts.number > 1 %}
-      <span> página anterior</span>
+      <button class="page-button">
+        <a href="?page={{ posts.next_page_number }}">Siguiente</a>
+      </button>
     {% endif %}
   </div>
+  <!-- Nuevo comentario raíz -->
+  {% if user.is_authenticated %}
+    <form method="POST" class="comment-form">
+        {% csrf_token %}
+        {{ form.content }}
+        <input type="hidden" name="parent_id" value="">
+        <!-- comentario raíz -->
+        <button type="submit">Enviar comentario</button>
+    </form>
+  {% else %}
+      <div class="login-notice">
+          <p>
+              <a class="login-link" href="{% url 'login' %}">{% trans "Inicia sesión" %}</a>
+              {% trans "para dejar un comentario." %}
+          </p>
+      </div>
+  {% endif %}
+<section>
   <!-- Lista de comentarios -->
   <div class="comments-list">
     {% if comments %}
@@ -97,27 +118,7 @@
         <p style="margin-top: 5%">{% trans "No hay comentarios sobre el blog aún. Sé el primero en comentar." %}</p>
     {% endif %}
   </div>
-
-  <!-- Nuevo comentario raíz -->
-  {% if user.is_authenticated %}
-      <form method="POST" class="comment-form">
-          {% csrf_token %}
-          {{ form.content }}
-          <input type="hidden" name="parent_id" value="">
-          <!-- comentario raíz -->
-          <button type="submit">Enviar comentario</button>
-      </form>
-  {% else %}
-      <div class="login-notice">
-          <p>
-              <a class="login-link" href="{% url 'login' %}">{% trans "Inicia sesión" %}</a>
-              {% trans "para dejar un comentario." %}
-          </p>
-      </div>
-
-    {% endif %}
 </section>
-
   <!-- Sección de contacto -->
 <div style="text-align: center;">
   <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>

@@ -241,7 +241,7 @@ def blog_list_view(request):
     posts_list = (
         BlogPost.objects.prefetch_related("comments").all().order_by("-created_at")
     )
-    paginator = Paginator(posts_list, 6)  # 6 posts por página
+    paginator = Paginator(posts_list, 3)  # 6 posts por página
     page_number = request.GET.get("page")
     posts = paginator.get_page(page_number)
 
@@ -396,4 +396,13 @@ def detalle_noticia_ultima(request, pk):
 
 def detalle_ranking_juego(request, pk):
     juego = get_object_or_404(Juego_ranking, pk=pk)
-    return render(request, "portal/ranking_detalle.html", {"juego": juego})
+    capturas = juego.capturas.all()
+    # Obtener anterior y siguiente por ID
+    anterior = Juego_ranking.objects.filter(id__lt=juego.id).order_by('-id').first()
+    siguiente = Juego_ranking.objects.filter(id__gt=juego.id).order_by('id').first()
+    return render(request, 'portal/ranking_detalle.html', {
+        'juego': juego,
+        'capturas': capturas,
+        'juego_anterior': anterior,
+        'juego_siguiente': siguiente,
+    })

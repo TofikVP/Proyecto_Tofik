@@ -4,109 +4,109 @@
 {% block title %}VANDAL{% endblock %}
 {% block content %}
 <!-- Sección de videos -->
-  <section id="video-portal">
-    <h2>{% trans "Explora nuestros videos" %}</h2>
-    <div class="video-container">
-      <!-- Video 1 -->
-      <div class="video-item">
-        <video controls>
-          <source src="{% static 'videos/video.mp4' %}" type="video/mp4">
-          Tu navegador no soporta la reproducción de videos.
-        </video>
-        <p>Zenless Zone Zero introducción de H.A.N.D</p>
-      </div>
-      <!-- Video 2 -->
-      <div class="video-item">
-        <video controls>
-          <source src="{% static 'videos/video2.mp4' %}" type="video/mp4">
-          Tu navegador no soporta la reproducción de videos.
-        </video>
-        <p>Momentos más graciosos de esta semana en twitch</p>
-      </div>
-      <!-- Video 3 -->
-      <div class="video-item">
-        <video controls>
-          <source src="{% static 'videos/video3.mp4' %}" type="video/mp4">
-          Tu navegador no soporta la reproducción de videos.
-        </video>
-        <p>Punishing: Gray Raven presenta su esperada colaboración con DMC 5</p>
-      </div>
+<section id="video-portal">
+  <h2>{% trans "Explora nuestros videos" %}</h2>
+  <div class="video-container">
+    <!-- Video 1 -->
+    <div class="video-item">
+      <video controls>
+        <source src="{% static 'videos/video.mp4' %}" type="video/mp4">
+        Tu navegador no soporta la reproducción de videos.
+      </video>
+      <p>Zenless Zone Zero introducción de H.A.N.D</p>
     </div>
-    <!-- Sección de clips -->
-    <h2>{% trans "Consulta los últimos clips de los streamers destacados" %}</h2>
-    <div id="clips-container" class="video-container"></div>
-      <script>
-        // Reemplaza estos valores con tus propios datos de Twitch
-        const clientId = 'wo8n3wmsfl5r7hi71929e309tbea1e';
-        const accessToken = 'ot9v5xfktpc2ndlffo97apoz53vmrc';
-        // Lista de nombres de streamers (puedes poner los que quieras)
-        const streamers = ['shroud', 'pokimane', 'ninja', 'elxokas', 'auronplay', 'ibai', 'rubius'];
+    <!-- Video 2 -->
+    <div class="video-item">
+      <video controls>
+        <source src="{% static 'videos/video2.mp4' %}" type="video/mp4">
+        Tu navegador no soporta la reproducción de videos.
+      </video>
+      <p>Momentos más graciosos de esta semana en twitch</p>
+    </div>
+    <!-- Video 3 -->
+    <div class="video-item">
+      <video controls>
+        <source src="{% static 'videos/video3.mp4' %}" type="video/mp4">
+        Tu navegador no soporta la reproducción de videos.
+      </video>
+      <p>Punishing: Gray Raven presenta su esperada colaboración con DMC 5</p>
+    </div>
+  </div>
+  <!-- Sección de clips -->
+  <h2>{% trans "Consulta los últimos clips de los streamers destacados" %}</h2>
+  <div id="clips-container" class="video-container"></div>
+    <script>
+      // Reemplaza estos valores con tus propios datos de Twitch
+      const clientId = 'wo8n3wmsfl5r7hi71929e309tbea1e';
+      const accessToken = 'ot9v5xfktpc2ndlffo97apoz53vmrc';
+      // Lista de nombres de streamers (puedes poner los que quieras)
+      const streamers = ['shroud', 'pokimane', 'ninja', 'elxokas', 'auronplay', 'ibai', 'rubius'];
 
-        // Selecciona 3 streamers aleatorios
-        function getRandomStreamers(arr, n) {
-          let result = new Array(n),
-              len = arr.length,
-              taken = new Array(len);
-          if (n > len)
-            throw new RangeError("getRandom: more elements taken than available");
-          while (n--) {
-            let x = Math.floor(Math.random() * len);
-            result[n] = arr[x in taken ? taken[x] : x];
-            taken[x] = --len in taken ? taken[len] : len;
+      // Selecciona 3 streamers aleatorios
+      function getRandomStreamers(arr, n) {
+        let result = new Array(n),
+            len = arr.length,
+            taken = new Array(len);
+        if (n > len)
+          throw new RangeError("getRandom: more elements taken than available");
+        while (n--) {
+          let x = Math.floor(Math.random() * len);
+          result[n] = arr[x in taken ? taken[x] : x];
+          taken[x] = --len in taken ? taken[len] : len;
+        }
+        return result;
+      }
+
+      async function getUserId(username) {
+        const res = await fetch(`https://api.twitch.tv/helix/users?login=${username}`, {
+          headers: {
+            'Client-ID': clientId,
+            'Authorization': `Bearer ${accessToken}`
           }
-          return result;
-        }
+        });
+        const data = await res.json();
+        return data.data && data.data[0] ? data.data[0].id : null;
+      }
 
-        async function getUserId(username) {
-          const res = await fetch(`https://api.twitch.tv/helix/users?login=${username}`, {
-            headers: {
-              'Client-ID': clientId,
-              'Authorization': `Bearer ${accessToken}`
-            }
-          });
-          const data = await res.json();
-          return data.data && data.data[0] ? data.data[0].id : null;
-        }
+      async function getTopClip(userId) {
+        const res = await fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=${userId}&first=1&sort=views`, {
+          headers: {
+            'Client-ID': clientId,
+            'Authorization': `Bearer ${accessToken}`
+          }
+        });
+        const data = await res.json();
+        return data.data && data.data[0] ? data.data[0] : null;
+      }
 
-        async function getTopClip(userId) {
-          const res = await fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=${userId}&first=1&sort=views`, {
-            headers: {
-              'Client-ID': clientId,
-              'Authorization': `Bearer ${accessToken}`
-            }
-          });
-          const data = await res.json();
-          return data.data && data.data[0] ? data.data[0] : null;
-        }
-
-        async function showTopClips() {
-          const selected = getRandomStreamers(streamers, 3);
-          const clipsContainer = document.getElementById('clips-container');
-          clipsContainer.innerHTML = '';
-          for (const streamer of selected) {
-            const userId = await getUserId(streamer);
-            if (!userId) continue;
-            const clip = await getTopClip(userId);
-            if (clip) {
-              const clipDiv = document.createElement('div');
-              clipDiv.className = 'video-item';
-              clipDiv.innerHTML = `
-                <iframe
-                  src="https://clips.twitch.tv/embed?clip=${clip.id}&parent=${window.location.hostname}"
-                  height="300"
-                  width="400"
-                  allowfullscreen>
-                </iframe>
-                <p>${clip.title} <br><small><a href="https://www.twitch.tv/${streamer}">${streamer}</a></small></p>
-              `;
-              clipsContainer.appendChild(clipDiv);
-            }
+      async function showTopClips() {
+        const selected = getRandomStreamers(streamers, 3);
+        const clipsContainer = document.getElementById('clips-container');
+        clipsContainer.innerHTML = '';
+        for (const streamer of selected) {
+          const userId = await getUserId(streamer);
+          if (!userId) continue;
+          const clip = await getTopClip(userId);
+          if (clip) {
+            const clipDiv = document.createElement('div');
+            clipDiv.className = 'video-item';
+            clipDiv.innerHTML = `
+              <iframe
+                src="https://clips.twitch.tv/embed?clip=${clip.id}&parent=${window.location.hostname}"
+                height="300"
+                width="400"
+                allowfullscreen>
+              </iframe>
+              <p>${clip.title} <br><small><a href="https://www.twitch.tv/${streamer}">${streamer}</a></small></p>
+            `;
+            clipsContainer.appendChild(clipDiv);
           }
         }
+      }
 
-        showTopClips();
-      </script>
-  </section>
+      showTopClips();
+    </script>
+</section>
 <!-- Sección de contacto -->
 <div style="text-align: center;">
   <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>

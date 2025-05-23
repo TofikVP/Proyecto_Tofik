@@ -125,6 +125,13 @@ section {
   margin: 0 auto;
 }
 
+section h1 {
+  font-size: 2rem;
+  position: relative;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
 section h2 {
   font-size: 2rem;
   position: relative;
@@ -132,7 +139,33 @@ section h2 {
   margin-bottom: 40px;
 }
 
+section h3 {
+  font-size: 1rem;
+  position: relative;
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 20px;
+}
+
+section h1::after {
+  content: '';
+  width: 60px;
+  height: 3px;
+  background: var(--accent-color);
+  display: block;
+  margin: 10px auto 0;
+}
+
 section h2::after {
+  content: '';
+  width: 60px;
+  height: 3px;
+  background: var(--accent-color);
+  display: block;
+  margin: 10px auto 0;
+}
+
+section h3::after {
   content: '';
   width: 60px;
   height: 3px;
