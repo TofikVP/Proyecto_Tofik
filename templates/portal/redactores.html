@@ -3,90 +3,50 @@
 {% load static %}
 {% block title %}VANDAL{% endblock %}
 {% block content %}
-<!-- Contenido principal -->
 <section id="redactores">
   <h2>{% trans "Nuestro equipo de redacción" %}</h2>
   <div class="list-redactores">
-
-    <!-- Redactor 1 -->
-    <div class="redactor-container">
-      <div class="image">
-        <img class="image" src="{% static 'images/Redactores/javier.jpg' %}" alt="Javier">
-        <div class="social-links">
-          <a href="https://x.com"><img src="{% static 'images/Logos/x_logo.png' %}" alt="Twitter Icon"></a>
-          <a href="https://es.linkedin.com/"><img src="{% static 'images/Logos/linkedin_logo.png' %}" alt="LinkedIn Icon"></a>
-        </div>
-      </div>
-      <div class="info">
-        <div class="headline">Javier</div>
-        <div class="summary">{% trans "Redactor de videojuegos y tecnología." %}</div>
-      </div>
+{% for redactor in redactores %}
+  <div class="redactor-container">
+    <div class="image">
+      <img class="image" src="{{ redactor.imagen.url }}" alt="{{ redactor.nombre }}">
+    <div class="social-links">
+      {% if redactor.twitter %}
+        <a href="{{ redactor.twitter }}">
+          {% if redactor.icono_twitter %}
+            <img src="{{ redactor.icono_twitter.url }}" alt="Twitter Icon" style="width:32px;height:32px;margin-right:8px;">
+          {% else %}
+            <img src="{% static 'images/Logos/x_logo.png' %}" alt="Twitter Icon" style="width:32px;height:32px;margin-right:8px;">
+          {% endif %}
+        </a>
+      {% endif %}
+      {% if redactor.linkedin %}
+        <a href="{{ redactor.linkedin }}">
+          {% if redactor.icono_linkedin %}
+            <img src="{{ redactor.icono_linkedin.url }}" alt="LinkedIn Icon" style="width:32px;height:32px;margin-right:8px;">
+          {% else %}
+            <img src="{% static 'images/Logos/linkedin_logo.png' %}" alt="LinkedIn Icon" style="width:32px;height:32px;margin-right:8px;">
+          {% endif %}
+        </a>
+      {% endif %}
     </div>
-
-    <!-- Redactor 2 -->
-    <div class="redactor-container">
-      <div class="image">
-        <img class="image" src="{% static 'images/Redactores/maria.jpg' %}" alt="María">
-        <div class="social-links">
-          <a href="https://x.com"><img src="{% static 'images/Logos/x_logo.png' %}" alt="Twitter Icon"></a>
-          <a href="https://es.linkedin.com/"><img src="{% static 'images/Logos/linkedin_logo.png' %}" alt="LinkedIn Icon"></a>
-        </div>
-      </div>
-      <div class="info">
-        <div class="headline">María</div>
-        <div class="summary">{% trans "Experta en análisis de juegos." %}</div>
-      </div>
+  </div>
+  <div class="info">
+    <div class="headline">{{ redactor.nombre }}</div>
+    <div class="summary">
+      {% get_current_language as LANGUAGE_CODE %}
+      {% if LANGUAGE_CODE == 'en' and redactor.resumen_en %}
+        {{ redactor.resumen_en }}
+      {% else %}
+        {{ redactor.resumen }}
+      {% endif %}
     </div>
-
-    <!-- Redactor 3 -->
-    <div class="redactor-container">
-      <div class="image">
-        <img class="image" src="{% static 'images/Redactores/carlos.jpg' %}" alt="Carlos">
-        <div class="social-links">
-          <a href="https://x.com"><img src="{% static 'images/Logos/x_logo.png' %}" alt="Twitter Icon"></a>
-          <a href="https://es.linkedin.com/"><img src="{% static 'images/Logos/linkedin_logo.png' %}" alt="LinkedIn Icon"></a>
-        </div>
-      </div>
-      <div class="info">
-        <div class="headline">Carlos</div>
-        <div class="summary">{% trans "Apasionado de la música y los videojuegos." %}</div>
-      </div>
-    </div>
-
-    <!-- Redactor 4 -->
-    <div class="redactor-container">
-      <div class="image">
-        <img class="image" src="{% static 'images/Redactores/laura.jpg' %}" alt="Laura">
-        <div class="social-links">
-          <a href="https://x.com"><img src="{% static 'images/Logos/x_logo.png' %}" alt="Twitter Icon"></a>
-          <a href="https://es.linkedin.com/"><img src="{% static 'images/Logos/linkedin_logo.png' %}" alt="LinkedIn Icon"></a>
-        </div>
-      </div>
-      <div class="info">
-        <div class="headline">Laura</div>
-        <div class="summary">{% trans "Redactora de cine y series." %}</div>
-      </div>
-    </div>
-
-    <!-- Redactor 5 -->
-    <div class="redactor-container">
-      <div class="image">
-        <img class="image" src="{% static 'images/Redactores/david.jpg' %}" alt="David">
-        <div class="social-links">
-          <a href="https://x.com"><img src="{% static 'images/Logos/x_logo.png' %}" alt="Twitter Icon"></a>
-          <a href="https://es.linkedin.com/"><img src="{% static 'images/Logos/linkedin_logo.png' %}" alt="LinkedIn Icon"></a>
-        </div>
-      </div>
-      <div class="info">
-        <div class="headline">David</div>
-        <div class="summary">{% trans "Crítico de cine y videojuegos." %}</div>
-      </div>
-    </div>
-
+  </div>
+</div>
+{% endfor %}
   </div>
 </section>
 
-  <!-- Sección de contacto -->
 <div style="text-align: center;">
   <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>
   <p>{% trans "Cuéntanos para que podamos lanzar un hechizo de corrección." %}</p>

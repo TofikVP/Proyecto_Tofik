@@ -42,13 +42,13 @@
   <div class="pagination">
     {% if posts.has_previous %}
       <button class="page-button">
-        <a href="?page={{ posts.previous_page_number }}">Anterior</a>
+        <a href="?page={{ posts.previous_page_number }}">{% trans "Anterior" %}</a>
       </button>
     {% endif %}
     <span class="page-number">Página {{ posts.number }} de {{ posts.paginator.num_pages }}</span>
     {% if posts.has_next %}
       <button class="page-button">
-        <a href="?page={{ posts.next_page_number }}">Siguiente</a>
+        <a href="?page={{ posts.next_page_number }}">{% trans "Siguiente" %}</a>
       </button>
     {% endif %}
   </div>
@@ -58,8 +58,7 @@
         {% csrf_token %}
         {{ form.content }}
         <input type="hidden" name="parent_id" value="">
-        <!-- comentario raíz -->
-        <button type="submit">Enviar comentario</button>
+        <button type="submit">{% trans "Enviar comentario" %}</button>
     </form>
   {% else %}
       <div class="login-notice">
@@ -94,14 +93,13 @@
           <div class="comment-content">{{ comment.content }}</div>
 
           {% if user.is_authenticated %}
-              <button class="show-reply-btn" onclick="toggleReplyForm(this)">{% trans "Responder" %}</button>
-
-              <form method="post" class="reply-form">
-                  {% csrf_token %}
-                  {{ form.content }}
-                  <input type="hidden" name="parent_id" value="{{ comment.id }}">
-                  <button type="submit">{% trans "Enviar respuesta" %}</button>
-              </form>
+            <button class="show-reply-btn" onclick="toggleReplyForm(this)">{% trans "Responder" %}</button>
+            <form method="post" class="reply-form">
+                {% csrf_token %}
+                {{ form.content }}
+                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                <button type="submit">{% trans "Enviar respuesta" %}</button>
+            </form>
           {% endif %}
 
           {% for reply in comment.replies.all %}

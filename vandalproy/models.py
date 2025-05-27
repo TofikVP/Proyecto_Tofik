@@ -61,6 +61,20 @@ class CommentRating(models.Model):
     class Meta:
         unique_together = ('comment', 'user')
 
+#Equipo de redactores
+class Redactor(models.Model):
+    nombre = models.CharField(max_length=100)
+    resumen = models.CharField(max_length=255)
+    resumen_en = models.CharField(max_length=255, blank=True, null=True)
+    imagen = models.ImageField(upload_to='images/Redactores/')
+    icono_twitter = models.ImageField(upload_to='images/Redactores/Iconos/', blank=True, null=True)
+    icono_linkedin = models.ImageField(upload_to='images/Redactores/Iconos/', blank=True, null=True)
+    twitter = models.URLField(blank=True, null=True)
+    linkedin = models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return self.nombre
+
 class Noticias_ultima(models.Model):
     id = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=200)
@@ -94,7 +108,7 @@ class Noticias_destacada(models.Model):
 
 class Genero(models.Model):
     nombre = models.CharField(max_length=50, unique=True)
-    nombre_en = models.CharField(max_length=50, unique=True)
+    nombre_en = models.CharField(max_length=50, blank=True, null=True)
     def __str__(self):
         return self.nombre
     
@@ -127,25 +141,5 @@ class Juego_ranking(models.Model):
     plataformas_de_lanzamiento = models.ManyToManyField(Plataforma)
     portada = models.ImageField(upload_to="juegos_ranking/portadas/")
 
-# Plataforma_de_lanzamiento = models.CharField (
-#     max_length=50,
-#     choices=[
-#         ("nes", "NES"),
-#         ("super nes", "Super Nes"),
-#         ("playstation", "PlayStation"),
-#         ("gamecube", "GameCube"),
-#         ("xbox", "Xbox"),
-#         ("playstation 2", "PlayStation 2"),
-#         ("wii", "Wii"),
-#         ("xbox 360", "Xbox 360"),
-#         ("playstation 3", "PlayStation 3"),
-#         ("xbox one", "Xbox One"),
-#         ("wii u", "Wii U"),
-#         ("playstation 4", "PlayStation 4"),
-#         ("xbox series x", "Xbox Series X"),
-#         ("nintendo switch", "Nintendo Switch"),
-#         ("playstation 5", "PlayStation 5"),
-#         ("pc", "PC")
-#     ],
     def __str__(self):
         return self.titulo

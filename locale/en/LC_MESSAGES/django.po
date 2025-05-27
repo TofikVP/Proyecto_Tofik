@@ -26,6 +26,12 @@ msgstr ""
 #: templates/usuarios/login.html:55
 msgid "INICIO"
 msgstr "HOME"
+msgid "Enviar comentario"
+msgstr "Send comment"
+msgid "Anterior"
+msgstr "Previous"
+msgid "Siguiente"
+msgstr "Next"
 
 #: templates/common/home.html:65 templates/common/legal.html:55
 #: templates/portal/blog_detalle.html:65 templates/portal/blog_list.html:55

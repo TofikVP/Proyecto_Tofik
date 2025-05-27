@@ -26,6 +26,7 @@ from .models import (
     Noticias_destacada,
     CommentRating,
     Juego_ranking,
+    Redactor,
 )
 from .forms import CommentForm, PostForm
 import logging
@@ -359,6 +360,10 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return context
 
 
+#Redactores del medio
+def redactores(request):
+    redactores = Redactor.objects.all()
+    return render(request, 'portal/redactores.html', {'redactores': redactores})
 # Noticias
 # Vista para la página de inicio
 def home(request):

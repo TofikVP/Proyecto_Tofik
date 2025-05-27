@@ -1,11 +1,18 @@
 {% extends "common/base.html" %}
 {% load i18n %}
 {% load static %}
+{% get_current_language as LANGUAGE_CODE %}
 {% block title %}VANDAL{% endblock %}
 {% block content %}
 <!-- Contenido principal -->
 <section id="ranking">
-  <h2>Top 10 mejores juegos de la historia</h2>
+  <h2>
+    {% if LANGUAGE_CODE == 'en' %}
+      {% trans "Top 10 best games in history" %}
+    {% else %}
+      {% trans "Top 10 mejores juegos de la historia" %}
+    {% endif %}
+  </h2>
   <div class="list-ranking">
     {% for juego in Juego_ranking %}
     <a href="{% url 'detalle_ranking_juego' juego.id %}" style="text-decoration:none;color:inherit;">
@@ -14,8 +21,21 @@
           <img src="{{ juego.portada.url }}" alt="Top {{ forloop.counter }}">
         </div>
         <div class="info">
-          <div class="title">{{ forloop.counter }}. {{ juego.titulo }}</div>
-          <div class="summary">{{ juego.resumen }}</div>
+          <div class="title">
+            {{ forloop.counter }}.
+            {% if LANGUAGE_CODE == 'en' and juego.titulo_en %}
+              {{ juego.titulo_en }}
+            {% else %}
+              {{ juego.titulo }}
+            {% endif %}
+          </div>
+          <div class="summary">
+            {% if LANGUAGE_CODE == 'en' and juego.resumen_en %}
+              {{ juego.resumen_en }}
+            {% else %}
+              {{ juego.resumen }}
+            {% endif %}
+          </div>
         </div>
         <div class="nota">
           <p>{{ juego.nota }}</p>
@@ -25,7 +45,7 @@
     {% endfor %}
   </div>
 </section>
-  <!-- Sección de contacto -->
+<!-- Sección de contacto -->
 <div style="text-align: center;">
   <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>
   <p>{% trans "Cuéntanos para que podamos lanzar un hechizo de corrección." %}</p>
@@ -33,5 +53,4 @@
 <div style="text-align: center; margin: 20px 0;">
   <a href="/{{ LANGUAGE_CODE }}/contacto" class="contact-button">{% trans "Contáctanos" %}</a>
 </div>
-
 {% endblock %}

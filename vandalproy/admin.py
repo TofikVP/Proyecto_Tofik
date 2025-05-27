@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import BlogPost, BlogComment, UserRole, Noticias_ultima, Noticias_destacada, Juego_ranking, Plataforma, Genero, Captura
+from .models import BlogPost, BlogComment, UserRole, Noticias_ultima, Noticias_destacada, Juego_ranking, Plataforma, Genero, Captura, Redactor
 
 class CapturaInline(admin.TabularInline):
     model = Captura
@@ -23,3 +23,4 @@ admin.site.register(Juego_ranking, JuegoRankingAdmin)
 admin.site.register(Plataforma)
 admin.site.register(Genero)
 admin.site.register(Captura)
+admin.site.register(Redactor)

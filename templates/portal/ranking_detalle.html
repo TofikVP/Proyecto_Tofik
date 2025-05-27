@@ -1,29 +1,52 @@
 {% extends "common/base.html" %}
 {% load static %}
-{% block title %}{{ juego.titulo }}{% endblock %}
-{% load static %}
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% block title %}
+  {% if LANGUAGE_CODE == 'en' and juego.titulo_en %}
+    {{ juego.titulo_en }}
+  {% else %}
+    {{ juego.titulo }}
+  {% endif %}
+{% endblock %}
 {% block content %}
 <section id="detalle-juego">
-    <h1>{{ juego.titulo }}</h1>
+    <h1>
+      {% if LANGUAGE_CODE == 'en' and juego.titulo_en %}
+        {{ juego.titulo_en }}
+      {% else %}
+        {{ juego.titulo }}
+      {% endif %}
+    </h1>
     <img class="portada" src="{% if juego.portada %}{{ juego.portada.url }}{% endif %}" alt="Portada {{ juego.titulo }}">
     <div class="genero">
-        <p><strong>Géneros:</strong>
+        <p><strong>{% trans "Géneros" %}:</strong>
             {% for genero in juego.generos.all %}
-                {{ genero.nombre }}{% if not forloop.last %}, {% endif %}
+                {% if LANGUAGE_CODE == 'en' and genero.nombre_en %}
+                  {{ genero.nombre_en }}
+                {% else %}
+                  {{ genero.nombre }}
+                {% endif %}
+                {% if not forloop.last %}, {% endif %}
             {% empty %}
-                Sin géneros
+                {% trans "Sin géneros" %}
             {% endfor %}
         </p>
     </div>
 
     <div class="resumen">
-    <h2>Resumen</h2>
-        <p>{{ juego.resumen }}</p>
+      <h2>{% trans "Resumen" %}</h2>
+      <p>
+        {% if LANGUAGE_CODE == 'en' and juego.resumen_en %}
+          {{ juego.resumen_en }}
+        {% else %}
+          {{ juego.resumen }}
+        {% endif %}
+      </p>
     </div>
     {% if capturas %}
     <h2>
-        Capturas
+        <h2>{% trans "Capturas" %}</h2>
     </h2>
     <div class="capturas-carousel">
         <button class="carousel-btn" id="prev-captura">&#8592;</button>
@@ -221,15 +244,15 @@
 
     <div class="game-nav">
         {% if juego_anterior %}
-            <a href="{% url 'detalle_ranking_juego' juego_anterior.id %}" class="ranking-button">&#8592; Juego anterior</a>
+            <a href="{% url 'detalle_ranking_juego' juego_anterior.id %}" class="ranking-button">&#8592; {% trans "Juego anterior" %}</a>
         {% endif %}
         {% if juego_siguiente %}
-            <a href="{% url 'detalle_ranking_juego' juego_siguiente.id %}" class="ranking-button">Siguiente juego &#8594;</a>
+            <a href="{% url 'detalle_ranking_juego' juego_siguiente.id %}" class="ranking-button">{% trans "Siguiente juego" %} &#8594;</a>
         {% endif %}
     </div>
 
     <div class="volver">
-        <a href="{% url 'ranking' %}" class="ranking-button">Volver al ranking</a>
+        <a href="{% url 'ranking' %}" class="ranking-button">{% trans "Volver al ranking" %}</a>
     </div>
 </section>
 {% endblock %}
