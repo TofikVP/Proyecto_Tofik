@@ -18,16 +18,21 @@ urlpatterns += i18n_patterns(
     path('', views.home, name='home'),
     path('legal/', TemplateView.as_view(template_name='portal/legal.html'), name='legal'),
     path('error/', TemplateView.as_view(template_name='portal/error.html'), name='error'),
+    #Blog y posts
     path('blog/', views.blog_list_view, name='blog_list'),
     path('blog/<int:post_id>/', views.blog_post_view, name='blog_post'),
+    #Comentarios del blog
     path('comentario/<int:pk>/eliminar/', CommentDeleteView.as_view(), name='comment_delete'),
     path('comentario/<int:comment_id>/rate/', views.rate_comment, name='rate_comment'),
+    #Noticias
     path('noticias_destacada/<int:pk>/', views.detalle_noticia_destacada, name='detalle_noticia_destacada'),
     path('noticias_ultima/<int:pk>/', views.detalle_noticia_ultima, name='detalle_noticia_ultima'),
+    #Página del calendario
     path('calendario/', TemplateView.as_view(template_name='portal/calendario.html'), name='calendario'),
+    #Página de contacto
     path('contacto/', TemplateView.as_view(template_name='portal/contacto.html'), name='contacto'),
-    path('ranking/', TemplateView.as_view(template_name='portal/ranking.html'), name='ranking'),
-    path('ranking/<int:pk>/', views.detalle_ranking_juego, name='detalle_ranking_juego'),    path('redactores/', TemplateView.as_view(template_name='portal/redactores.html'), name='redactores'),
+    #Página del ranking y sus juegos
+    path('ranking/', views.ranking, name='ranking'),    path('ranking/<int:pk>/', views.detalle_ranking_juego, name='detalle_ranking_juego'),    path('redactores/', TemplateView.as_view(template_name='portal/redactores.html'), name='redactores'),
     path('videos/', TemplateView.as_view(template_name='portal/videos.html'), name='videos'),
     path('login/', views.login_view, name='login'),
     path('registro/', views.register_view, name='register'),

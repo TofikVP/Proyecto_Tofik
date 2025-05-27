@@ -394,6 +394,10 @@ def detalle_noticia_ultima(request, pk):
     return render(request, "portal/noticia_detalle.html", {"noticia": noticia})
 
 
+def ranking(request):
+    juegos = Juego_ranking.objects.all().order_by('-nota')
+    return render(request, 'portal/ranking.html', {'Juego_ranking': juegos})
+
 def detalle_ranking_juego(request, pk):
     juego = get_object_or_404(Juego_ranking, pk=pk)
     capturas = juego.capturas.all()

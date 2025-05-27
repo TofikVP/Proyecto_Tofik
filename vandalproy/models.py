@@ -117,12 +117,13 @@ class Captura(models.Model):
         return f"Captura de {self.juego.titulo}"
 
 class Juego_ranking(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.PositiveIntegerField(primary_key=True, unique=True)
     titulo = models.CharField(max_length=200)
     titulo_en = models.CharField(max_length=200, blank=True)
     resumen = models.TextField()
     resumen_en = models.TextField(blank=True)
     generos = models.ManyToManyField(Genero)
+    nota = models.PositiveSmallIntegerField(default=0)
     plataformas_de_lanzamiento = models.ManyToManyField(Plataforma)
     portada = models.ImageField(upload_to="juegos_ranking/portadas/")
 

@@ -9,13 +9,17 @@ class CapturaInline(admin.TabularInline):
 
 class JuegoRankingAdmin(admin.ModelAdmin):
     inlines = [CapturaInline]
-
+    # Permitir cambiar el ID después de creado
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return []
+        return []
 admin.site.register(UserRole)
 admin.site.register(Noticias_ultima)
 admin.site.register(Noticias_destacada)
 admin.site.register(BlogPost)
 admin.site.register(BlogComment)
-admin.site.register(Juego_ranking)
+admin.site.register(Juego_ranking, JuegoRankingAdmin)
 admin.site.register(Plataforma)
 admin.site.register(Genero)
 admin.site.register(Captura)
