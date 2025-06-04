@@ -1,11 +1,14 @@
+{% extends "common/base.html" %}
+{% load i18n %}
 {% load static %}
+{% block title %}VANDAL{% endblock %}
 {% block content %}
 
-  <h2>¿Eliminar este comentario?</h2>
+  <h2>{% trans "¿Eliminar este comentario?" %}</h2>
   <p>{{ comment.content }}</p>
   <form method="post">
     {% csrf_token %}
-    <button type="submit">Confirmar</button>
-    <a href="{% url 'dashboard_redactor' %}">Cancelar</a>
+    <button type="submit">{% trans "Confirmar" %}</button>
+    <a href="{% url 'dashboard_redactor' %}">{% trans "Cancelar" %}"</a>
   </form>
 {% endblock %}

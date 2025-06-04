@@ -7,31 +7,32 @@
 <section id="video-portal">
   <h2>{% trans "Explora nuestros videos" %}</h2>
   <div class="video-container">
-    <!-- Video 1 -->
-    <div class="video-item">
-      <video controls>
-        <source src="{% static 'videos/video.mp4' %}" type="video/mp4">
-        Tu navegador no soporta la reproducción de videos.
-      </video>
-      <p>Zenless Zone Zero introducción de H.A.N.D</p>
+      {% for video in video %}
+        <div class="video-item">
+          <video controls width="480">
+            <source src="{{ video.archivo.url }}" type="video/mp4">
+            {% trans "Tu navegador no soporta la reproducción de videos." %}
+          </video>
+          <h3>
+            {% get_current_language as LANGUAGE_CODE %}
+            {% if LANGUAGE_CODE == 'en' and video.titulo_en %}
+              {{ video.titulo_en }}
+            {% else %}
+              {{ video.titulo }}
+            {% endif %}
+          </h3>
+          <p>
+            {% if LANGUAGE_CODE == 'en' and video.descripcion_en %}
+              {{ video.descripcion_en }}
+            {% else %}
+              {{ video.descripcion }}
+            {% endif %}
+          </p>
+        </div>
+      {% empty %}
+        <p>{% trans "No hay videos disponibles." %}</p>
+      {% endfor %}
     </div>
-    <!-- Video 2 -->
-    <div class="video-item">
-      <video controls>
-        <source src="{% static 'videos/video2.mp4' %}" type="video/mp4">
-        Tu navegador no soporta la reproducción de videos.
-      </video>
-      <p>Momentos más graciosos de esta semana en twitch</p>
-    </div>
-    <!-- Video 3 -->
-    <div class="video-item">
-      <video controls>
-        <source src="{% static 'videos/video3.mp4' %}" type="video/mp4">
-        Tu navegador no soporta la reproducción de videos.
-      </video>
-      <p>Punishing: Gray Raven presenta su esperada colaboración con DMC 5</p>
-    </div>
-  </div>
   <!-- Sección de clips -->
   <h2>{% trans "Consulta los últimos clips de los streamers destacados" %}</h2>
   <div id="clips-container" class="video-container"></div>

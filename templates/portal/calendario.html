@@ -6,40 +6,41 @@
 
 <!--- Calendario de Eventos -->
 <section id="calendario" class="calendario-container">
-  <h2>Calendario de Eventos</h2>
-  <div class="calendario-card">
-    <div class="title">10 mayo 2025</div>
-    <div class="desc">Torneo de estrategia en línea – 16:00h</div>
-    <div class="image"><img src="{% static 'images/Calendario/1.png' %}" alt=""></div>
-  </div>
-  <div class="calendario-card">
-    <div class="title">18 mayo 2025</div>
-    <div class="desc">Taller de diseño UX/UI – 11:00h</div>
-    <div class="image"><img src="{% static 'images/Calendario/2.jpg' %}" alt=""></div>
-  </div>
-  <div class="calendario-card">
-    <div class="title">25 mayo 2025</div>
-    <div class="desc">Game Jam colaborativo – 14:00h</div>
-    <div class="image"><img src="{% static 'images/Calendario/3.png' %}" alt=""></div>
-  </div>
-  <div class="calendario-card">
-    <div class="title">1 junio 2025</div>
-    <div class="desc">Conferencia sobre inteligencia artificial – 10:00h</div>
-    <div class="image"><img src="{% static 'images/Calendario/4.jpg' %}" alt=""></div>
-  </div>
-  <div class="calendario-card">
-    <div class="title">15 junio 2025</div>
-    <div class="desc">Hackathon de desarrollo web – 09:00h</div>
-    <div class="image"><img src="{% static 'images/Calendario/5.png' %}" alt=""></div>
-  </div>
+  <h2>{% trans "Calendario de Eventos" %}</h2>
+  {% for evento in eventos %}
+    <div class="calendario-card">
+      <div class="title">
+        {% get_current_language as LANGUAGE_CODE %}
+        {% if LANGUAGE_CODE == 'en' and evento.nombre_en %}
+          {{ evento.nombre_en }}
+        {% else %}
+          {{ evento.nombre }}
+        {% endif %}
+        <br>
+        {{ evento.fecha|date:"d F Y H:i" }}
+      </div>
+      <div class="desc">
+        {% if LANGUAGE_CODE == 'en' and evento.descripcion_en %}
+          {{ evento.descripcion_en }}
+        {% else %}
+          {{ evento.descripcion }}
+        {% endif %}
+      </div>
+      <div class="image">
+        <img src="{{ evento.imagen.url }}" alt="{{ evento.nombre }}">
+      </div>
+    </div>
+  {% empty %}
+    <p>{% trans "No hay eventos programados." %}</p>
+  {% endfor %}
 </section>
 
 <!-- Sección de contacto -->
 <div style="text-align: center;">
-<h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>
-<p>{% trans "Cuéntanos para que podamos lanzar un hechizo de corrección." %}</p>
+  <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>
+  <p>{% trans "Cuéntanos para que podamos lanzar un hechizo de corrección." %}</p>
 </div>
 <div style="text-align: center; margin: 20px 0;">
-<a href="/{{ LANGUAGE_CODE }}/contacto" class="contact-button">{% trans "Contáctanos" %}</a>
+  <a href="/{{ LANGUAGE_CODE }}/contacto" class="contact-button">{% trans "Contáctanos" %}</a>
 </div>
 {% endblock %}

@@ -140,3 +140,6 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "vandalproy.views.EmailBackend",
 ]
+
+TWITCH_CLIENT_ID = 'wo8n3wmsfl5r7hi71929e309tbea1e'
+TWITCH_CLIENT_SECRET = 'pgdl05i1w20z5b186qvvzlsralbz3f'

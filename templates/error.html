@@ -6,6 +6,6 @@
 <section>
     <h1>Error</h1>
     <p>{{ message }}</p>
-    <p><button style="margin-top: 20px; display: inline-block;" onclick="window.location.href='{% url 'home' %}'">Volver a la página principal</button></p>
+    <p><button style="margin-top: 20px; display: inline-block;" onclick="window.location.href='{% url 'home' %}'">{% trans "Volver a la página principal" %}</button></p>
 </section>
 {% endblock %}

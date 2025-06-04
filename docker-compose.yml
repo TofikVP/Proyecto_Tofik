@@ -15,5 +15,16 @@ services:
       - postgres_data:/var/lib/postgres/data/
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - web
 volumes:
   postgres_data:

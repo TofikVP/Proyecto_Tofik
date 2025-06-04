@@ -45,7 +45,7 @@
         <a href="?page={{ posts.previous_page_number }}">{% trans "Anterior" %}</a>
       </button>
     {% endif %}
-    <span class="page-number">Página {{ posts.number }} de {{ posts.paginator.num_pages }}</span>
+    <span class="page-number">{% trans "Página" %} {{ posts.number }} {% trans "de" %} {{ posts.paginator.num_pages }}</span>
     {% if posts.has_next %}
       <button class="page-button">
         <a href="?page={{ posts.next_page_number }}">{% trans "Siguiente" %}</a>
@@ -80,7 +80,7 @@
                   <span class="username">{{ comment.user.username }}</span>
                   <span class="user-role">
                       {% with comment.user.userrole.role as rol %}
-                      ROL ({{ rol|title }})
+                      {% trans "ROL" %} ({{ rol|title }})
                       {% endwith %}
                   </span>
               </div>

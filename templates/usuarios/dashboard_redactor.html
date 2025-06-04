@@ -5,82 +5,81 @@
 {% block content %}
 {% if user.is_authenticated and user.userrole.role == 'redactor' or user.userrole.role == 'admin' %}
 <body>
-    <h1 class="dashboard-title">Bienvenid@, {{ user.username }}</h1>
+    <h1 class="dashboard-title">{% trans "Bienvenid@," %} {{ user.username }}</h1>
 
     <!-- Contenedor principal del dashboard -->
     <div class="dashboard-container">
 
         <!-- Sección de subida de contenido -->
         <div class="dashboard-card">
-            <h2>Subir contenido</h2>
+            <h2>{% trans "Subir contenido" %}</h2>
             <form method="post" enctype="multipart/form-data" class="dashboard-form" style="background: white">
                 {% csrf_token %}
                 <input type="file" name="file" required>
-                <button type="submit" name="upload">Subir archivo</button>
+                <button type="submit" name="upload">{% trans "Subir archivo" %}</button>
             </form>
         </div>
 
         <!-- Sección de Crear Noticia -->
         <div class="dashboard-card">
-            <h2>Crear Noticia</h2>
+            <h2>{% trans "Crear Noticia" %}</h2>
 
             <form method="post" enctype="multipart/form-data" class="dashboard-form" style="background: white">
                 {% csrf_token %}
 
-                <label for="id_titulo">Título:</label>
+                <label for="id_titulo">{% trans "Título:" %}</label>
                 <input type="text" name="titulo" id="id_titulo" class="form-control" required>
 
-                <label for="id_resumen">Resumen:</label>
+                <label for="id_resumen">{% trans "Resumen:" %}</label>
                 <textarea name="resumen" id="id_resumen" rows="3" class="form-control" required></textarea>
 
-                <label for="id_contenido">Contenido:</label>
+                <label for="id_contenido">{% trans "Contenido:" %}</label>
                 <textarea name="contenido" id="id_contenido" rows="6" class="form-control" required></textarea>
 
-                <label for="id_imagen">Imagen:</label>
+                <label for="id_imagen">{% trans "Imagen:" %}</label>
                 <input type="file" name="imagen" id="id_imagen" class="form-control">
 
-                <button type="submit" name="noticia_submit" class="btn btn-success" style="margin-top: 1em;">Publicar Noticia</button>
+                <button type="submit" name="noticia_submit" class="btn btn-success" style="margin-top: 1em;">{% trans "Publicar Noticia" %}</button>
             </form>
         </div>
 
         <!-- Sección de Posts -->
         <div class="dashboard-card">
-            <h2>Tus Posts</h2>
+            <h2>{% trans "Tus Posts" %}</h2>
             <ul class="dashboard-list">
                 {% for p in posts %}
                 <li><a href="{% url 'blog_post' p.id %}">{{ p.title }}</a></li>
                 {% empty %}
-                <li>No tienes posts.</li>
+                <li>{% trans "No tienes posts." %}</li>
                 {% endfor %}
             </ul>
                 <!-- Botón para mostrar el formulario -->
                 <button
                     onclick="document.getElementById('nuevo-post-form').classList.toggle('hidden')"
                     class="btn btn-primary">
-                    Agregar nuevo post
+                    {% trans "Agregar nuevo post" %}
                 </button>
 
                 <!-- Formulario oculto por defecto -->
                 <div id="nuevo-post-form" class="hidden" style="margin-top: 1em;">
                     <form method="post" enctype="multipart/form-data" class="dashboard-form" style="background: white">
                         {% csrf_token %}
-
-                        <label for="id_title">Título</label>
+                        <label for="id_title">{% trans "Título" %}</label>
                         <input type="text" name="title" id="id_title" class="form-control" required>
 
-                        <label for="id_content">Contenido</label>
+                        <label for="id_content">{% trans "Contenido" %}</label>
                         <textarea name="content" id="id_content" rows="5" class="form-control" required></textarea>
 
-                        <label for="id_image">Imagen (opcional)</label>
+                        <label for="id_image">{% trans "Imagen (opcional)" %}</label>
                         <input type="file" name="image" id="id_image" class="form-control">
 
-                        <button type="submit" name="post_submit" class="btn btn-success" style="margin-top: 1em;">Publicar</button>
+                        <button type="submit" name="post_submit" class="btn btn-success" style="margin-top: 1em;">{% trans "Publicar" %}</button>
                     </form>
                 </div>
         </div>
         <!-- Sección de Comentarios -->
         <div class="dashboard-card">
-            <h2>Tus Comentarios</h2>
+            <h2>{% trans "Tus Comentarios" %}</h2>
             <ul class="dashboard-list">
                 {% for c in comments %}
                 <li>
@@ -88,30 +87,30 @@
                         <div class="content">{{ c.content }} <small>({{ c.created_at }})</small></div>
                         <div class="actions">
                             {% if role == 'redactor' or role == "admin" %}
-                            <a href="{% url 'comment_delete' c.pk %}">Eliminar</a>
+                            <a href="{% url 'comment_delete' c.pk %}">{% trans "Eliminar" %}</a>
                             {% endif %}
                         </div>
                     </div>
                 </li>
                 {% empty %}
-                <li>No tienes comentarios.</li>
+                <li>{% trans "No tienes comentarios." %}</li>
                 {% endfor %}
             </ul>
         </div>
 
         <!-- Sección de Cambio de Contraseña -->
         <div class="dashboard-card">
-            <h2>Cambiar contraseña</h2>
+            <h2>{% trans "Cambiar contraseña" %}</h2>
             <form method="post" class="dashboard-form" style="background: white">
                 {% csrf_token %}
                 {{ password_form.as_p }}
-                <button type="submit" name="password_submit">Actualizar contraseña</button>
+                <button type="submit" name="password_submit">{% trans "Actualizar contraseña" %}</button>
             </form>
         </div>
 
         <!-- Botón logout -->
         <div class="dashboard-card">
-            <a href="{% url 'logout' %}" class="dashboard-form">Cerrar sesión</a>
+            <a href="{% url 'logout' %}" class="dashboard-form">{% trans "Cerrar sesión" %}</a>
         </div>
     </div>
 </body>

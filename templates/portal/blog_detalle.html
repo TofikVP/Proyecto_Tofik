@@ -62,7 +62,7 @@
             {{ form.content }}
             <input type="hidden" name="parent_id" value="">
             <!-- comentario raíz -->
-            <button type="submit">Enviar comentario</button>
+            <button type="submit">{% trans "Enviar comentario" %}</button>
         </form>
     {% else %}
         <div class="login-notice">
@@ -118,17 +118,17 @@
                     <form method="post" action="{% url 'rate_comment' comment.id %}">
                         {% csrf_token %}
                         <input type="hidden" name="next" value="{{ request.path }}">
-                        <label>Tu calificación:</label>
+                        <label>{% trans "Tu calificación:" %}</label>
                         {% for i in "12345" %}
                             <input type="radio" name="stars" value="{{ forloop.counter }}">
                             {{ forloop.counter }}
                         {% endfor %}
-                        <button type="submit">{% trans Calificar %}</button>
+                        <button type="submit">{% trans "Calificar" %}</button>
                     </form>
                 {% endif %}
                 {% if user.is_authenticated and role == 'redactor' or role == 'admin' %}
                     <div class="actions">
-                        <a href="{% url 'comment_delete' comment.pk %}?next={{ request.path }}">Eliminar</a>
+                        <a href="{% url 'comment_delete' comment.pk %}?next={{ request.path }}">{% trans "Eliminar" %}</a>
                     </div>
                 {% endif %}
 

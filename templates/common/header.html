@@ -2,16 +2,22 @@
 {% load static %}
 <nav class="navbar">
 <div class="language-switch">
-    <a href="/es{{ request.get_full_path|slice:'3:' }}" class="lang-option">ES</a>
-    <span>|</span>
-    <a href="/en{{ request.get_full_path|slice:'3:' }}" class="lang-option">EN</a>
+    <a href="/es{{ request.get_full_path|slice:'3:' }}" class="lang-option">
+        <img class="social-icons" src="{% static 'images/Logos/version_espanola.png' %}" alt="ES">
+    </a>
+    <span>
+        |
+    </span>
+    <a href="/en{{ request.get_full_path|slice:'3:' }}" class="lang-option">
+        <img class="social-icons" src="{% static 'images/Logos/version_inglesa.png' %}" alt="EN">
+    </a>
 </div>
 {% if user.is_authenticated %}
     <div class="login-dropdown">
-        <button class="dropdown-button">Bienvenido {{ user.username }}</button>
+        <button class="dropdown-button">{% trans "Bienvenido" %} {{ user.username }}</button>
         <div class="dropdown-content">
-            <a href="/{{ LANGUAGE_CODE }}/dashboard/{{ user.userrole.role }}">Ir a mi panel</a>
-            <a href="/{{ LANGUAGE_CODE }}/logout/">Cerrar sesión</a>
+            <a href="/{{ LANGUAGE_CODE }}/dashboard/{{ user.userrole.role }}">{% trans "Ir a mi panel" %}</a>
+            <a href="/{{ LANGUAGE_CODE }}/logout/">{% trans "Cerrar sesión" %}</a>
         </div>
     </div>
 {% else %}

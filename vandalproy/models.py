@@ -143,3 +143,25 @@ class Juego_ranking(models.Model):
 
     def __str__(self):
         return self.titulo
+    
+class Video(models.Model):
+    titulo = models.CharField(max_length=200)
+    titulo_en = models.CharField(max_length=200, blank=True, null=True)
+    descripcion = models.TextField(blank=True)
+    descripcion_en = models.TextField(blank=True, null=True)
+    archivo = models.FileField(upload_to='videos/')
+    fecha_subida = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.titulo
+    
+class EventoCalendario(models.Model):
+    nombre = models.CharField(max_length=200)
+    nombre_en = models.CharField(max_length=200, blank=True, null=True)
+    fecha = models.DateTimeField()
+    descripcion = models.TextField()
+    descripcion_en = models.TextField(blank=True, null=True)
+    imagen = models.ImageField(upload_to='Calendario/')
+
+    def __str__(self):
+        return f"{self.nombre} ({self.fecha})"

@@ -3,81 +3,69 @@
 {% load static %}
 {% block title %}VANDAL{% endblock %}
 {% block content %}
-
 {% if user.is_authenticated and user.userrole.role == 'colaborador' or user.userrole.role == 'admin' %}
-    <!-- Dashboard de Colaboradores -->
-    <body>
-        <h1 class="dashboard-title">Bienvenid@,
-            {{ user.username }}</h1>
+<body>
+    <h1 class="dashboard-title">{% trans "Bienvenid@," %} {{ user.username }}</h1>
 
-        <!-- Contenedor principal del dashboard -->
-        <div class="dashboard-container">
+    <!-- Contenedor principal del dashboard -->
+    <div class="dashboard-container">
 
-            <!-- Sección de subida de contenido -->
-            <div class="dashboard-card">
-                <h2>Subir contenido</h2>
-                <form style="background: white" method="post" enctype="multipart/form-data" class="dashboard-form">
-                    {% csrf_token %}
-                    <input type="file" name="file" required>
-                    <button type="submit" name="upload">Subir archivo</button>
-                </form>
-            </div>
-
-            <!-- Sección de Posts -->
-            <div class="dashboard-card">
-                <h2>Tus Posts</h2>
-                <ul class="dashboard-list">
-                    {% for p in posts %}
-                        <li>
-                            <a href="{% url 'blog_post' p.id %}">{{ p.title }}</a>
-                        </li>
-                        {% empty %}
-                        <li>No tienes posts.</li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <!-- Sección de Comentarios -->
-            <div class="dashboard-card">
-                <h2>Tus Comentarios</h2>
-                <ul class="dashboard-list">
-                    {% for c in comments %}
-                        <li>
-                            <div class="comment-item">
-                                <div class="content">{{ c.content }}
-                                    <small>({{ c.created_at }})</small>
-                                </div>
-                                <div class="actions">
-                                    {% if role == 'redactor' %}
-                                        <a href="{% url 'comment_delete' c.pk %}">Eliminar</a>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </li>
-                        {% empty %}
-                        <li>No tienes comentarios.</li>
-                    {% endfor %}
-                </ul>
-            </div>
-
-            <!-- Sección de Cambio de Contraseña -->
-            <div class="dashboard-card">
-                <h2>Cambiar contraseña</h2>
-                <form style="background: white" method="post" class="dashboard-form">
-                    {% csrf_token %}
-                    {{ password_form.as_p }}
-                    <button type="submit" name="password_submit">Actualizar contraseña</button>
-                </form>
-            </div>
-
-            <!-- Botón logout -->
-            <div class="dashboard-card">
-                <a href="{% url 'logout' %}" class="dashboard-form">Cerrar sesión</a>
-            </div>
+        <!-- Sección de subida de contenido -->
+        <div class="dashboard-card">
+            <h2>{% trans "Subir contenido" %}</h2>
+            <form method="post" enctype="multipart/form-data" class="dashboard-form" style="background: white">
+                {% csrf_token %}
+                <input type="file" name="file" required>
+                <button type="submit" name="upload">{% trans "Subir archivo" %}</button>
+            </form>
         </div>
-    </body>
+
+        <!-- Sección de Posts -->
+        <div class="dashboard-card">
+            <h2>{% trans "Tus Posts" %}</h2>
+            <ul class="dashboard-list">
+                {% for p in posts %}
+                <li><a href="{% url 'blog_post' p.id %}">{{ p.title }}</a></li>
+                {% empty %}
+                <li>{% trans "No tienes posts." %}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- Sección de Comentarios -->
+        <div class="dashboard-card">
+            <h2>{% trans "Tus Comentarios" %}</h2>
+            <ul class="dashboard-list">
+                {% for c in comments %}
+                <li>
+                    <div class="comment-item">
+                        <div class="content">{{ c.content }} <small>({{ c.created_at }})</small></div>
+                    </div>
+                </li>
+                {% empty %}
+                <li>{% trans "No tienes comentarios." %}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Sección de Cambio de Contraseña -->
+        <div class="dashboard-card">
+            <h2>{% trans "Cambiar contraseña" %}</h2>
+            <form method="post" class="dashboard-form" style="background: white">
+                {% csrf_token %}
+                {{ password_form.as_p }}
+                <button type="submit" name="password_submit">{% trans "Actualizar contraseña" %}</button>
+            </form>
+        </div>
+
+        <!-- Botón logout -->
+        <div class="dashboard-card">
+            <a href="{% url 'logout' %}" class="dashboard-form">{% trans "Cerrar sesión" %}</a>
+        </div>
+    </div>
+</body>
 {% else %}
     <script>
         window.location.href = "{% url 'home' %}";
     </script>
 {% endif %}
-    {% endblock %}
+{% endblock %}

@@ -1,8 +1,15 @@
-from django.http import HttpResponseRedirect
+import requests
+from django.conf import settings
+
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
 
+
 from django.views.generic import DeleteView
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
+from django.views.decorators.csrf import csrf_exempt
+
+from django.utils.translation import get_language
 
 from django.core.paginator import Paginator
 
@@ -27,6 +34,8 @@ from .models import (
     CommentRating,
     Juego_ranking,
     Redactor,
+    Video,
+    EventoCalendario,
 )
 from .forms import CommentForm, PostForm
 import logging
@@ -206,7 +215,7 @@ def logout_view(request):
 def change_password(request):
     role = UserRole.objects.get(user=request.user).role
     if role != "suscriptor":
-        return redirect("/")  # o página de error
+        return redirect("/") 
 
     if request.method == "POST":
         form = PasswordChangeForm(user=request.user, data=request.POST)
@@ -415,3 +424,67 @@ def detalle_ranking_juego(request, pk):
         'juego_anterior': anterior,
         'juego_siguiente': siguiente,
     })
+
+def get_twitch_app_access_token():
+    url = 'https://id.twitch.tv/oauth2/token'
+    params = {
+        'client_id': settings.TWITCH_CLIENT_ID,
+        'client_secret': settings.TWITCH_CLIENT_SECRET,
+        'grant_type': 'client_credentials'
+    }
+    response = requests.post(url, params=params)
+    response.raise_for_status()
+    return response.json()['access_token']
+
+@csrf_exempt
+@require_GET
+def obtener_streams(request):
+    game_name = request.GET.get('game', '')
+    if not game_name:
+        return JsonResponse({'error': 'Missing game name'}, status=400)
+
+    # Paso 1: obtener access_token
+    token_url = 'https://id.twitch.tv/oauth2/token'
+    data = {
+        'client_id': settings.TWITCH_CLIENT_ID,
+        'client_secret': settings.TWITCH_CLIENT_SECRET,
+        'grant_type': 'client_credentials'
+    }
+    token_res = requests.post(token_url, data=data)
+    if token_res.status_code != 200:
+        return JsonResponse({'error': 'Token failed', 'detail': token_res.text}, status=token_res.status_code)
+    
+    access_token = token_res.json()['access_token']
+
+    # Paso 2: obtener game_id
+    headers = {
+        'Client-ID': settings.TWITCH_CLIENT_ID,
+        'Authorization': f'Bearer {access_token}'
+    }
+    search_url = f'https://api.twitch.tv/helix/search/categories?query={game_name}'
+    game_res = requests.get(search_url, headers=headers)
+    if game_res.status_code != 200:
+        return JsonResponse({'error': 'Game search failed'}, status=500)
+
+    data = game_res.json().get('data', [])
+    if not data:
+        return JsonResponse({'error': 'No game found'}, status=404)
+
+    game_id = data[0]['id']
+
+    # Paso 3: obtener streams
+    streams_url = f'https://api.twitch.tv/helix/streams?game_id={game_id}&first=10'
+    stream_res = requests.get(streams_url, headers=headers)
+    if stream_res.status_code != 200:
+        return JsonResponse({'error': 'Stream fetch failed'}, status=500)
+
+    return JsonResponse({'streams': stream_res.json().get('data', [])})
+
+def video(request):
+    idioma = get_language()
+    video = Video.objects.all().order_by('-fecha_subida')
+    return render(request, 'portal/videos.html', {'video': video, 'idioma': idioma})
+
+def calendario(request):
+    eventos = EventoCalendario.objects.all().order_by('fecha')
+    return render(request, 'portal/calendario.html', {'eventos': eventos})

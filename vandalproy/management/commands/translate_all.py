@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from vandalproy.models import (
     Noticias_ultima, Noticias_destacada, BlogPost,
-    Juego_ranking, Redactor, Genero
+    Juego_ranking, Redactor, Genero, Video, EventoCalendario
 )
 from googletrans import Translator
 
@@ -91,5 +91,29 @@ class Command(BaseCommand):
             if changed:
                 redactor.save()
                 self.stdout.write(self.style.SUCCESS(f"Traducido redactor: {redactor.nombre}"))
-
+        # Traduce Videos
+        for video in Video.objects.all():
+            changed = False
+            if hasattr(video, 'titulo_en') and not video.titulo_en:
+                video.titulo_en = translator.translate(video.titulo, dest="en").text
+                changed = True
+            if hasattr(video, 'descripcion_en') and not video.descripcion_en:
+                video.descripcion_en = translator.translate(video.descripcion, dest="en").text
+                changed = True
+            if changed:
+                video.save()
+                self.stdout.write(self.style.SUCCESS(f"Traducido video: {video.titulo}"))                
         self.stdout.write(self.style.SUCCESS("Traducción automática completada."))
+
+        #Traduce eventos calendario
+        for evento in EventoCalendario.objects.all():
+            changed = False
+            if hasattr(evento, 'nombre_en') and not evento.nombre_en:
+                evento.nombre_en = translator.translate(evento.nombre, dest="en").text
+                changed = True
+            if hasattr(evento, 'descripcion_en') and not evento.descripcion_en:
+                evento.descripcion_en = translator.translate(evento.descripcion, dest="en").text
+                changed = True
+            if changed:
+                evento.save()
+        self.stdout.write(self.style.SUCCESS(f"Traducido evento: {evento.nombre}"))

@@ -45,18 +45,16 @@
       </p>
     </div>
     {% if capturas %}
-    <h2>
         <h2>{% trans "Capturas" %}</h2>
-    </h2>
-    <div class="capturas-carousel">
-        <button class="carousel-btn" id="prev-captura">&#8592;</button>
-        <div class="carousel-img-container">
-            {% for captura in capturas %}
-                <img class="carousel-img" src="{{ captura.imagen.url }}" alt="{{ captura.descripcion|default:'Captura' }}" style="{% if not forloop.first %}display:none;{% endif %}">
-            {% endfor %}
+        <div class="capturas-carousel">
+            <button class="carousel-btn" id="prev-captura">&#8592;</button>
+            <div class="carousel-img-container">
+                {% for captura in capturas %}
+                    <img class="carousel-img" src="{{ captura.imagen.url }}" alt="{{ captura.descripcion|default:'Captura' }}" style="{% if not forloop.first %}display:none;{% endif %}">
+                {% endfor %}
+            </div>
+            <button class="carousel-btn" id="next-captura">&#8594;</button>
         </div>
-        <button class="carousel-btn" id="next-captura">&#8594;</button>
-    </div>
     {% endif %}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -87,160 +85,52 @@
 
     <!-- Sección de directos -->
     <h1 style="margin-top: 10px">{% trans "Directos" %}</h1>
-    <div id="gameplay" class="video-container"></div>
-        <script>
-            // Credenciales de la API de Twitch
-            const clientId = 'wo8n3wmsfl5r7hi71929e309tbea1e';
-            const accessToken = 'ot9v5xfktpc2ndlffo97apoz53vmrc';
-            // Nombre del juego obtenido del contexto de Django
+    <div id="gameplay" class="video-container">
+    <p>{% trans "Cargando streams..." %}</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
             const gameName = "{{ juego.titulo|escapejs }}";
+            const container = document.getElementById('gameplay');
+            container.innerHTML = '';
 
-            /**
-            * Normaliza un nombre quitando tildes y símbolos comunes.
-            */
-            function normalizarNombre(nombre) {
-                return nombre
-                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // quita tildes
-                    .replace(/[®™]/g, "") // quita símbolos de marca
-                    .replace(/[^a-zA-Z0-9\s]/g, "") // quita otros símbolos raros
-                    .trim();
-            }
+            try {
+                const res = await fetch(`/api/streams/?game=${encodeURIComponent(gameName)}`);
+                const data = await res.json();
 
-            /**
-            * Intenta buscar el ID de un juego en Twitch probando variantes del nombre.
-            * Devuelve el ID si lo encuentra, o null si no existe.
-            * Incluye timeout para evitar cuelgues.
-            */
-            async function getGameIdWithVariants(gameName) {
-                // Diccionario de variantes específicas para algunos juegos
-                const variantesPorJuego = {
-                    "tetris": ["Tetris®", "TETRIS", "Tetris 99", "Tetris Effect"],
-                    // Puedes añadir más variantes específicas aquí si lo necesitas
+                if (!data.streams || data.streams.length === 0) {
+                    container.innerHTML = '<p>No se encontraron directos para este juego.</p>';
+                    return;
+                }
+
+                const getRandomItems = (arr, n) => {
+                    const shuffled = arr.sort(() => 0.5 - Math.random());
+                    return shuffled.slice(0, n);
                 };
 
-                let searchNames = [gameName];
-                const lower = gameName.trim().toLowerCase();
-
-                // Añade variantes específicas si existen
-                if (variantesPorJuego[lower]) {
-                    searchNames = searchNames.concat(variantesPorJuego[lower]);
-                }
-
-                // Añade variantes genéricas para cualquier juego
-                searchNames.push(gameName.toUpperCase());
-                searchNames.push(gameName.toLowerCase());
-                searchNames.push(normalizarNombre(gameName));
-                searchNames = [...new Set(searchNames)]; // elimina duplicados
-
-                for (let name of searchNames) {
-                    try {
-                        // Timeout de 5 segundos para evitar cuelgues
-                        const controller = new AbortController();
-                        const timeout = setTimeout(() => controller.abort(), 5000);
-
-                        const res = await fetch(`https://api.twitch.tv/helix/games?name=${encodeURIComponent(name)}`, {
-                            headers: {
-                                'Client-ID': clientId,
-                                'Authorization': `Bearer ${accessToken}`
-                            },
-                            signal: controller.signal
-                        });
-                        clearTimeout(timeout);
-
-                        if (!res.ok) continue;
-                        const data = await res.json();
-                        if (data.data && data.data[0]) {
-                            return data.data[0].id;
-                        }
-                    } catch (e) {
-                        // Si hay error de red o timeout, intenta con la siguiente variante
-                        continue;
-                    }
-                }
-                // Si no encuentra ninguna variante, devuelve null
-                return null;
-            }
-
-            /**
-            * Obtiene los streams de Twitch para un gameId dado.
-            * Devuelve un array de streams o un array vacío si no hay resultados.
-            */
-            async function getStreamsByGame(gameId) {
-                try {
-                    const res = await fetch(`https://api.twitch.tv/helix/streams?game_id=${gameId}&first=20`, {
-                        headers: {
-                            'Client-ID': clientId,
-                            'Authorization': `Bearer ${accessToken}`
-                        }
-                    });
-                    if (!res.ok) throw new Error('Twitch API error');
-                    const data = await res.json();
-                    return data.data || [];
-                } catch (e) {
-                    // Si hay error, devuelve array vacío
-                    return [];
-                }
-            }
-
-            /**
-            * Selecciona n elementos aleatorios de un array.
-            * Si hay menos de n elementos, devuelve todos.
-            */
-            function getRandomItems(arr, n) {
-                let result = [];
-                let taken = new Set();
-                while (result.length < n && arr.length > 0) {
-                    let idx = Math.floor(Math.random() * arr.length);
-                    if (!taken.has(idx)) {
-                        result.push(arr[idx]);
-                        taken.add(idx);
-                    }
-                }
-                return result;
-            }
-
-            /**
-            * Busca y muestra hasta 3 streams aleatorios del juego en la página.
-            * Si no hay streams o el juego no existe en Twitch, muestra un mensaje.
-            */
-            async function showRandomStreams() {
-                const streamsContainer = document.getElementById('gameplay');
-                streamsContainer.innerHTML = '';
-                // Busca el ID del juego en Twitch probando variantes
-                const gameId = await getGameIdWithVariants(gameName);
-                if (!gameId) {
-                    // Si no encuentra el juego, muestra mensaje
-                    streamsContainer.innerHTML = '<p>No se encontraron directos para este juego.</p>';
-                    return;
-                }
-                // Busca los streams del juego
-                const streams = await getStreamsByGame(gameId);
-                if (!streams.length) {
-                    // Si no hay streams, muestra mensaje
-                    streamsContainer.innerHTML = '<p>No se encontraron directos para este juego.</p>';
-                    return;
-                }
-                // Selecciona hasta 3 streams aleatorios y los muestra
-                const selectedStreams = getRandomItems(streams, 3);
-                selectedStreams.forEach(stream => {
+                const selected = getRandomItems(data.streams, 3);
+                selected.forEach(stream => {
                     const streamDiv = document.createElement('div');
                     streamDiv.className = 'stream-item';
-                    streamDiv.innerHTML = `
-                        <iframe
-                            src="https://player.twitch.tv/?channel=${stream.user_login}&parent=${window.location.hostname}&muted=true"
-                            height="300"
-                            width="400"
-                            allowfullscreen>
-                        </iframe>
-                        <p>${stream.title} <br><small><a href="https://www.twitch.tv/${stream.user_login}" target="_blank">${stream.user_name}</a></small></p>
-                    `;
-                    streamsContainer.appendChild(streamDiv);
-                });
-            }
+                    const safeTitle = stream.title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-            // Ejecuta la función al cargar la página
-            showRandomStreams();
-        </script>
+                    streamDiv.innerHTML = `
+                    <iframe
+                        src="https://player.twitch.tv/?channel=${stream.user_login}&parent=localhost&muted=true"
+                        height="300"
+                        width="400"
+                        allowfullscreen>
+                    </iframe>
+                    <p>${safeTitle} <br><small><a href="https://www.twitch.tv/${stream.user_login}" target="_blank">${stream.user_name}</a></small></p>
+                    `;
+                    container.appendChild(streamDiv);
+                });
+            } catch (e) {
+            container.innerHTML = '<p>Error al cargar los directos de Twitch.</p>';
+            }
+        });
+    </script>
 
     <div class="game-nav">
         {% if juego_anterior %}
