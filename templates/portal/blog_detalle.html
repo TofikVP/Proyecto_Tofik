@@ -152,7 +152,7 @@
                         </span>
                     {% if user.is_authenticated and role == 'redactor' or role == 'admin' %}
                         <div class="actions">
-                            <a href="{% url 'comment_delete' comment.pk %}?next={{ request.path }}">Eliminar</a>
+                            <a href="{% url 'reply_delete' reply.pk %}?next={{ request.path }}">Eliminar</a>
                         </div>
                     {% endif %}
                     </div>
@@ -163,7 +163,14 @@
         <p class="empty-comment">{% trans "No hay comentarios sobre el blog aún. Sé el primero." %}</p>
     {% endif %}
 </div>
-
+<script>
+  function toggleReplyForm(btn) {
+    const form = btn.nextElementSibling;
+    if (form && form.classList.contains('reply-form')) {
+      form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+    }
+  }
+</script>
 <!-- Sección de contacto -->
 <div style="text-align: center;">
     <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>

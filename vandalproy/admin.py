@@ -1,6 +1,4 @@
 from django.contrib import admin
-
-# Register your models here.
 from .models import BlogPost, BlogComment, UserRole, Noticias_ultima, Noticias_destacada, Juego_ranking, Plataforma, Genero, Captura, Redactor, Video, EventoCalendario
 
 class CapturaInline(admin.TabularInline):

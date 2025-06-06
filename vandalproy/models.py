@@ -56,7 +56,7 @@ class BlogComment(models.Model):
 class CommentRating(models.Model):
     comment = models.ForeignKey('BlogComment', related_name='ratings', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    stars = models.PositiveSmallIntegerField()  # 1 a 5
+    stars = models.PositiveSmallIntegerField()
 
     class Meta:
         unique_together = ('comment', 'user')

@@ -27,7 +27,9 @@
         {% endif %}
       </div>
       <div class="image">
-        <img src="{{ evento.imagen.url }}" alt="{{ evento.nombre }}">
+        <a href="{% url 'detalle_calendario' evento.id %}">
+          <img src="{{ evento.imagen.url }}" alt="{{ evento.nombre }}">
+        </a>
       </div>
     </div>
   {% empty %}

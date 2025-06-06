@@ -1,0 +1,74 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}VANDAL{% endblock %}
+{% block content %}
+<!-- Detalle del evento -->
+  <section class="evento-detalle">
+    {% get_current_language as LANGUAGE_CODE %}
+    <h1 class="titulo">
+      {% if LANGUAGE_CODE == 'en' %}
+        {{ evento.nombre }}
+      {% else %}
+        {{ evento.nombre }}
+      {% endif %}
+    </h1>
+
+    <div class="subtitulo" style="text-align: center;margin-bottom:20px;font-size: 1,2em;">
+      {% if LANGUAGE_CODE == 'en' %}
+        {{ evento.descripcion_en }}
+      {% else %}
+        {{ evento.descripcion }}
+      {% endif %}
+    </div>
+
+    <div class="fecha" style="text-align: center;margin-bottom:20px">
+      {% if LANGUAGE_CODE == 'en' %}
+        <p>{{ evento.fecha|date:"F j, Y" }}</p>
+      {% else %}
+        <p>{{ evento.fecha }}</p>
+      {% endif %}
+    </div>
+
+    {% if user.is_authenticated %}
+        {% if user.userrole.role == 'admin' or user.userrole.role == 'redactor' %}
+            <div class="button" style="text-align: center;margin-bottom:20px">
+            <button class="page-button">
+                <a href="{% url 'calendario_editar' evento.pk %}" class="edit-button">{% trans "Editar evento" %}</a>
+            </button>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <div class="imagen">
+        <img src="{{ evento.imagen.url }}" alt="{{ evento.nombre }}">
+    </div>
+    <div class="navigation-buttons">
+      {% if evento.get_previous_by_fecha %}
+        <button class="page-button">
+          <a href="{% url 'detalle_calendario' evento.get_previous_by_fecha.pk %}">
+            {% trans "Evento anterior" %}
+          </a>
+        </button>
+      {% endif %}
+      <span></span>
+      {% if evento.get_next_by_fecha %}
+        <button class="page-button">
+          <a href="{% url 'detalle_calendario' evento.get_next_by_fecha.pk %}" class="next-button">
+            {% trans "Siguiente evento" %}
+          </a>
+        </button>
+      {% endif %}
+    </div>
+
+  </section>
+
+  <!-- Sección de contacto -->
+<div style="text-align: center;">
+  <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>
+  <p>{% trans "Cuéntanos para que podamos lanzar un hechizo de corrección." %}</p>
+</div>
+<div style="text-align: center; margin: 20px 0;">
+  <a href="/{{ LANGUAGE_CODE }}/contacto" class="contact-button">{% trans "Contáctanos" %}</a>
+</div>
+{% endblock %}

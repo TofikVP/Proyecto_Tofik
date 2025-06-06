@@ -48,7 +48,16 @@
             <h2>{% trans "Tus Posts" %}</h2>
             <ul class="dashboard-list">
                 {% for p in posts %}
-                <li><a href="{% url 'blog_post' p.id %}">{{ p.title }}</a></li>
+                <li>
+                    <div class="post-item">
+                        <div class="content"><a href="{% url 'blog_post' p.id %}">{{ p.title }}</a> <small>({{ p.created_at }})</small></div>
+                        <div class="actions">
+                            {% if role == 'redactor' or role == "admin" %}
+                            <a href="{% url 'post_delete' p.id %}">{% trans "Eliminar" %}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
                 {% empty %}
                 <li>{% trans "No tienes posts." %}</li>
                 {% endfor %}

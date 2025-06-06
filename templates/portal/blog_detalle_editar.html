@@ -1,0 +1,14 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load static %}
+{% load comentarios_extras %}
+{% get_current_language as LANGUAGE_CODE %}
+{% block title %}VANDAL{% endblock %}
+{% block content %}
+  <h2>{% trans "Editar entrada del blog" %}</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{% trans "Guardar cambios" %}</button>
+  </form>
+{% endblock %}

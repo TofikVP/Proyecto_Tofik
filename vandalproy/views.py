@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
 
 
-from django.views.generic import DeleteView
+from django.views.generic import DeleteView, UpdateView
 from django.views.decorators.http import require_POST, require_GET
 from django.views.decorators.csrf import csrf_exempt
 
@@ -52,7 +52,7 @@ class EmailBackend(ModelBackend):
         except User.DoesNotExist:
             return None
 
-
+#Paneles de usuario
 @login_required
 def dashboard(request):
     try:
@@ -133,26 +133,6 @@ def user_dashboard(request, role):
     }
     return render(request, templates[role], context)
 
-    # Vista de listado de posts
-    # Actualización para ordenar comentarios de más recientes a más antiguos
-
-    # post = get_object_or_404(BlogPost.objects.prefetch_related('comments'), id=post_id)
-    # form = CommentForm(request.POST or None)
-
-    # if request.method == 'POST' and request.user.is_authenticated and form.is_valid():
-    #     comment = form.save(commit=False)
-    #     comment.post = post
-    #     comment.user = request.user
-    #     comment.save()
-    #     return redirect('blog_post', post_id=post.id)
-
-    # comments = post.comments.all().order_by('-created_at')
-    # return render(request, 'portal/blog.html', {
-    #     'post': post,
-    #     'comments': comments,
-    #     'form': form,
-    # })
-
 
 # Vistas de autenticación
 def login_view(request):
@@ -196,9 +176,10 @@ def register_view(request):
             if user is not None:
                 login(
                     request, user
-                )  # ahora no da error porque user.backend ya está definido
+                )
+                
                 # 3) Redirigir al home
-                return redirect("/")  # :contentReference[oaicite:1]{index=1}
+                return redirect("/")
 
         # Si hay error, volver a mostrar el formulario
         return render(request, "usuarios/login.html", {"error": error})
@@ -236,7 +217,9 @@ def change_password(request):
     )
 
 
-# Vista de lista de posts del blog
+#Blog
+
+# Lista de posts del blog
 def blog_list_view(request):
     form = CommentForm(request.POST or None)
 
@@ -251,7 +234,7 @@ def blog_list_view(request):
     posts_list = (
         BlogPost.objects.prefetch_related("comments").all().order_by("-created_at")
     )
-    paginator = Paginator(posts_list, 3)  # 6 posts por página
+    paginator = Paginator(posts_list, 3)
     page_number = request.GET.get("page")
     posts = paginator.get_page(page_number)
 
@@ -268,12 +251,11 @@ def blog_list_view(request):
     )
 
 
-# Vista de detalle de post con comentarios
-# Actualización para ordenar comentarios de más recientes a más antiguos
+# Posts del blog y sus comentarios
 def blog_post_view(request, post_id):
     post = get_object_or_404(BlogPost, id=post_id)
     form = CommentForm(request.POST or None)
-
+# Ordenar comentarios de más recientes a más antiguos
     if request.method == "POST" and request.user.is_authenticated:
         if form.is_valid():
             comment = form.save(commit=False)
@@ -310,6 +292,31 @@ def blog_post_view(request, post_id):
         },
     )
 
+class BlogPostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = BlogPost
+    template_name = 'usuarios/confirm_delete_post.html'
+    success_url = reverse_lazy('blog_list')
+
+    def test_func(self):
+        post = self.get_object()
+        role = UserRole.objects.get(user=self.request.user).role
+        return role in ['redactor', 'admin'] or post.author == self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = self.object
+        return context
+
+class BlogPostEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = BlogPost
+    fields = ['title', 'title_en', 'content', 'content_en', 'image']
+    template_name = 'portal/blog_detalle_editar.html'
+    success_url = reverse_lazy('blog_list')
+
+    def test_func(self):
+        user = self.request.user
+        # Permitir solo admin o redactor
+        return hasattr(user, 'userrole') and user.userrole.role in ['admin', 'redactor']
 
 # Vista para enviar comentarios desde el blog
 def submit_comment(request):
@@ -327,7 +334,7 @@ def submit_comment(request):
         return HttpResponseRedirect(reverse("blog"))
     return HttpResponseRedirect(reverse("login"))
 
-
+#Puntuar comentarios
 @require_POST
 @login_required
 def rate_comment(request, comment_id):
@@ -342,6 +349,7 @@ def rate_comment(request, comment_id):
         return redirect(next_url)
     return redirect("blog_post", post_id=comment.post.id)
 
+#Borrar comentarios del blog
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = BlogComment
     template_name = "usuarios/confirm_delete_comment.html"
@@ -368,12 +376,26 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         context["comment"] = self.object
         return context
 
+#Borrar respuestas a comentarios
+def reply_delete_view(request, pk):
+    reply = get_object_or_404(BlogComment, pk=pk)
+    # Solo admin/redactor puede borrar
+    if getattr(request.user, 'userrole', None) and request.user.userrole.role in ['admin', 'redactor']:
+        reply.delete()
+    # Redirige al post original
+    return redirect('blog_post', post_id=reply.post.id)
+
+
+#Redactores
+
 
 #Redactores del medio
 def redactores(request):
     redactores = Redactor.objects.all()
     return render(request, 'portal/redactores.html', {'redactores': redactores})
+
 # Noticias
+
 # Vista para la página de inicio
 def home(request):
     # Buscador de noticias destacadas
@@ -382,7 +404,7 @@ def home(request):
     if query:
         destacadas_qs = destacadas_qs.filter(titulo__icontains=query) | destacadas_qs.filter(titulo_en__icontains=query)
 
-    paginator = Paginator(destacadas_qs, 4)  # 4 destacadas por página
+    paginator = Paginator(destacadas_qs, 4)
     page_number = request.GET.get('page')
     noticias_destacadas = paginator.get_page(page_number)
 
@@ -398,20 +420,44 @@ def home(request):
         },
     )
 
+#Noticias destacadas
 def detalle_noticia_destacada(request, pk):
     noticia = get_object_or_404(Noticias_destacada, pk=pk)
     return render(request, "portal/noticia_detalle.html", {"noticia": noticia})
+#Editar noticia destacada
+class EditarNoticiaDestacadaView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Noticias_destacada
+    fields = ['titulo', 'titulo_en', 'resumen', 'resumen_en', 'contenido', 'contenido_en', 'imagen']
+    template_name = 'portal/noticia_destacada_editar.html'
+    success_url = reverse_lazy('home')
 
+    def test_func(self):
+        user = self.request.user
+        return hasattr(user, 'userrole') and user.userrole.role in ['admin', 'redactor']
 
+#Noticias ultimas
 def detalle_noticia_ultima(request, pk):
     noticia = get_object_or_404(Noticias_ultima, pk=pk)
     return render(request, "portal/noticia_detalle.html", {"noticia": noticia})
+#Editar noticia ultima
+class EditarNoticiaUltimaView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Noticias_ultima
+    fields = ['titulo', 'titulo_en', 'resumen', 'resumen_en', 'contenido', 'contenido_en', 'fecha_publicacion', 'imagen']
+    template_name = 'portal/noticia_ultima_editar.html'
+    success_url = reverse_lazy('home')
+
+    def test_func(self):
+        user = self.request.user
+        return hasattr(user, 'userrole') and user.userrole.role in ['admin', 'redactor']
+
+#Ranking
 
 
 def ranking(request):
     juegos = Juego_ranking.objects.all().order_by('-nota')
     return render(request, 'portal/ranking.html', {'Juego_ranking': juegos})
 
+# Detalle de un juego en el ranking
 def detalle_ranking_juego(request, pk):
     juego = get_object_or_404(Juego_ranking, pk=pk)
     capturas = juego.capturas.all()
@@ -425,6 +471,18 @@ def detalle_ranking_juego(request, pk):
         'juego_siguiente': siguiente,
     })
 
+#Editar un juego del ranking
+class EditarRankingJuegoView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Juego_ranking
+    fields = ['titulo', 'titulo_en', 'resumen', 'resumen_en', 'nota', 'generos', 'plataformas_de_lanzamiento', 'portada']
+    template_name = 'portal/ranking_detalle_editar.html'
+    success_url = reverse_lazy('ranking')
+
+    def test_func(self):
+        user = self.request.user
+        return hasattr(user, 'userrole') and user.userrole.role in ['admin', 'redactor']
+
+#Twitch API
 def get_twitch_app_access_token():
     url = 'https://id.twitch.tv/oauth2/token'
     params = {
@@ -436,6 +494,7 @@ def get_twitch_app_access_token():
     response.raise_for_status()
     return response.json()['access_token']
 
+#Obtener streams de Twitch por nombre de juego
 @csrf_exempt
 @require_GET
 def obtener_streams(request):
@@ -480,11 +539,48 @@ def obtener_streams(request):
 
     return JsonResponse({'streams': stream_res.json().get('data', [])})
 
+#Videos
+
 def video(request):
     idioma = get_language()
     video = Video.objects.all().order_by('-fecha_subida')
     return render(request, 'portal/videos.html', {'video': video, 'idioma': idioma})
 
+
+#Calendario
+
 def calendario(request):
     eventos = EventoCalendario.objects.all().order_by('fecha')
     return render(request, 'portal/calendario.html', {'eventos': eventos})
+
+# Detalle de un evento del calendario
+class CalendarioDetailView(UpdateView):
+    model = EventoCalendario
+    template_name = 'portal/calendario_detalle.html'
+    context_object_name = 'evento'
+    fields = ['nombre', 'nombre_en', 'fecha', 'descripcion', 'descripcion_en', 'imagen']
+
+    def test_func(self):
+        user = self.request.user
+        return hasattr(user, 'userrole') and user.userrole.role in ['admin', 'redactor']
+
+# Borrar evento del calendario
+class CalendarioDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = EventoCalendario
+    template_name = 'portal/calendario_confirm_delete.html'
+    success_url = reverse_lazy('calendario')
+
+    def test_func(self):
+        user = self.request.user
+        return hasattr(user, 'userrole') and user.userrole.role in ['admin', 'redactor']
+
+#Editar evento del calendario
+class EditarCalendarioView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = EventoCalendario
+    fields = ['nombre', 'nombre_en', 'fecha', 'descripcion', 'descripcion_en', 'imagen']
+    template_name = 'portal/calendario_editar.html'
+    success_url = reverse_lazy('calendario')
+
+    def test_func(self):
+        user = self.request.user
+        return hasattr(user, 'userrole') and user.userrole.role in ['admin', 'redactor']

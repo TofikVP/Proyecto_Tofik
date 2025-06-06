@@ -21,19 +21,28 @@ urlpatterns += i18n_patterns(
     #Blog y posts
     path('blog/', blog_list_view, name='blog_list'),
     path('blog/<int:post_id>/', blog_post_view, name='blog_post'),
+    path('blog/<int:pk>/delete/', BlogPostDeleteView.as_view(), name='post_delete'),
+    path('blog/<int:pk>/edit/', BlogPostEditView.as_view(), name='blog_detalle_editar'),
     #Comentarios del blog
     path('comentario/<int:pk>/eliminar/', CommentDeleteView.as_view(), name='comment_delete'),
     path('comentario/<int:comment_id>/rate/', rate_comment, name='rate_comment'),
+    path('comentario/reply/<int:pk>/delete/', reply_delete_view, name='reply_delete'),
     #Noticias
     path('noticias_destacada/<int:pk>/', detalle_noticia_destacada, name='detalle_noticia_destacada'),
+    path('noticias_destacada/<int:pk>/edit/', EditarNoticiaDestacadaView.as_view(), name='noticia_destacada_editar'),
     path('noticias_ultima/<int:pk>/', detalle_noticia_ultima, name='detalle_noticia_ultima'),
+    path('noticias_ultima/<int:pk>/edit/', EditarNoticiaUltimaView.as_view(), name='noticia_ultima_editar'),
     #Página del calendario
     path('calendario/', calendario, name='calendario'),
+    path('calendario/<int:pk>/', CalendarioDetailView.as_view(), name='detalle_calendario'),
+    path('calendario/<int:pk>/delete/', CalendarioDeleteView.as_view(), name='calendario_delete'),
+    path('calendario/<int:pk>/edit/', EditarCalendarioView.as_view(), name='calendario_editar'),
     #Página de contacto
     path('contacto/', TemplateView.as_view(template_name='portal/contacto.html'), name='contacto'),
     #Página del ranking y sus juegos
     path('ranking/', ranking, name='ranking'),
     path('ranking/<int:pk>/', detalle_ranking_juego, name='detalle_ranking_juego'),
+    path('ranking/<int:pk>/edit/', EditarRankingJuegoView.as_view(), name='ranking_editar'),
     path('api/streams/', obtener_streams, name='obtener_streams'),
     #Página de redactores
     path('redactores/', redactores, name='redactores'),
