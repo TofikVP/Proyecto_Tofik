@@ -47,9 +47,9 @@
     margin-top: 10px;
   }
 
-  /* Version responsive */
+/* Adaptación móvil */
 
-@media (max-width: 768px) {
+@media (max-width: 300px) {
   .calendario-container {
     padding: 0 1rem;
     gap: 20px;

@@ -59,8 +59,8 @@ form textarea {
   resize: vertical;
 }
 
-/* Adaptación responsive */
-@media (max-width: 768px) {
+/* Adaptación móvil */
+@media (max-width: 300px) {
   .container {
     flex-direction: column;
     gap: 16px;

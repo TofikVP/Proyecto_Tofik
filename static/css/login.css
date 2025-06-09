@@ -57,8 +57,8 @@ form.separador_login button:hover {
   background-color: #0056b3;
 }
 
-/* Responsivo */
-@media (max-width: 480px) {
+/* Adaptación móvil */
+@media (max-width: 300px) {
   form.separador_login {
     padding: 16px;
     max-width: 100%;

@@ -211,7 +211,8 @@ form.buscador-form {
   }
 }
 
-@media (max-width: 480px) {
+/* Adaptación móvil */
+@media (max-width: 300px) {
   .noticia .headline {
     font-size: 1.3rem;
   }

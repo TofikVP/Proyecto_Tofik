@@ -266,8 +266,8 @@ footer {
   background-color: #1e7e34;
 }
 
-/* Adaptacion para moviles */
-
+/* Adaptación móvil */
+  
 @media screen and (max-width: 768px) {
   /* Ajustes de navbar */
   nav.navbar {

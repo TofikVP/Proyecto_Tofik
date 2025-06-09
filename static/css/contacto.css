@@ -58,8 +58,8 @@ form.contacto button:hover {
   background-color: #0056b3;
 }
 
-/* Adaptación responsive */
-@media (max-width: 768px) {
+/* Adaptación móvil */
+@media (max-width: 300px) {
   form.contacto {
     padding: 16px;
   }

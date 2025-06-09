@@ -284,7 +284,8 @@ html {
   font-size: 100%;
 }
 
-@media screen and (max-width: 480px) {
+/* Adaptación móvil */
+@media screen and (max-width: 300px) {
   html {
     font-size: 90%;
   }

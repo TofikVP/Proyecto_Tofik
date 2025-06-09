@@ -74,8 +74,8 @@
   margin-top: 10px;
 }
 
-/* Adaptación responsive */
-@media (max-width: 768px) {
+/* Adaptación móvil */
+@media (max-width: 300px) {
   .redactor-container {
     flex-direction: column;
     align-items: center;
