@@ -16,4 +16,5 @@ services:
 databases:
   - name: vandal-db
     plan: free
+    
 staticPublishPath: staticfiles
