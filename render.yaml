@@ -2,8 +2,8 @@ services:
   - type: web
     name: vandal
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn vandalproy.wsgi:application
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+    startCommand: "gunicorn vandalproy.wsgi:application"
     staticPublishPath: staticfiles
     envVars:
       - key: DJANGO_SETTINGS_MODULE
@@ -14,8 +14,7 @@ services:
         fromDatabase:
           name: vandal-db
           property: connectionString
+
 databases:
   - name: vandal-db
     plan: free
-    
-staticPublishPath: staticfiles
