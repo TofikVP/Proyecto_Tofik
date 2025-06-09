@@ -1,0 +1,39 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Publicidad y Anunciantes" %}{% endblock %}
+{% block content %}
+<div class="publicidad-container" style="max-width: 800px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 2em;">
+    <h1 style="text-align:center; margin-bottom: 1em; color: #110F5D;">{% trans "¿Quieres anunciarte en VANDAL?" %}</h1>
+    <p style="font-size: 1.2em; text-align:center; color: #222;">
+        {% trans "VANDAL es uno de los portales de videojuegos más visitados en español. Si eres anunciante o agencia y quieres llegar a una audiencia apasionada por los videojuegos, ¡este es tu sitio!" %}
+    </p>
+    <hr style="margin: 2em 0;">
+    <h2 style="color: #110F5D;">{% trans "¿Por qué anunciarte con nosotros?" %}</h2>
+    <ul style="font-size:1.1em; color: #222;">
+        <li>{% trans "Más de 1 millón de usuarios únicos al mes." %}</li>
+        <li>{% trans "Cobertura multiplataforma: web, móvil y redes sociales." %}</li>
+        <li>{% trans "Formatos de publicidad flexibles y personalizados." %}</li>
+        <li>{% trans "Equipo profesional para ayudarte a maximizar tu campaña." %}</li>
+    </ul>
+    <hr style="margin: 2em 0;">
+    <h2 style="color: #110F5D;">{% trans "Formatos disponibles" %}</h2>
+    <ul style="color: #222;">
+        <li>{% trans "Banners (cabecera, lateral, intersticiales...)" %}</li>
+        <li>{% trans "Publirreportajes y contenido patrocinado" %}</li>
+        <li>{% trans "Vídeos promocionales" %}</li>
+        <li>{% trans "Redes sociales y newsletters" %}</li>
+    </ul>
+    <hr style="margin: 2em 0;">
+    <h2 style="color: #110F5D;">{% trans "Contacto para anunciantes" %}</h2>
+    <p style="color: #222;">
+        {% trans "Solicita nuestro dossier de medios o pídenos una propuesta personalizada:" %}
+    </p>
+    <div style="text-align:center; margin: 2em 0;">
+        <a href="/{{ LANGUAGE_CODE }}/contacto" class="contact-button" style="font-size:1.2em;">{% trans "Contactar con el equipo comercial" %}</a>
+    </div>
+    <p style="text-align:center; color: #888;">
+        {% trans "También puedes escribirnos a" %} <a href="mailto:publicidad@vandal.com">publicidad@vandal.com</a>
+    </p>
+</div>
+{% endblock %}

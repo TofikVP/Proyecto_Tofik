@@ -1,0 +1,32 @@
+{% extends "common/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Política de Cookies" %}{% endblock %}
+{% block content %}
+{% load static %}
+{% get_current_language as LANGUAGE_CODE %}
+<div class="cookies-container" style="max-width: 800px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 2em;">
+    <h1 style="text-align:center; margin-bottom: 1em; color: #110F5D;">{% trans "Política de Cookies" %}</h1>
+    <p style="font-size: 1.1em; color: #222;">
+        {% trans "En VANDAL utilizamos cookies propias y de terceros para mejorar tu experiencia de usuario, analizar el tráfico y mostrarte publicidad personalizada." %}
+    </p>
+    <h2 style="color: #110F5D;">{% trans "¿Qué son las cookies?" %}</h2>
+    <p style="color: #222;">
+        {% trans "Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas una web. Sirven para recordar tus preferencias y facilitar la navegación." %}
+    </p>
+    <h2 style="color: #110F5D;">{% trans "¿Qué tipos de cookies utilizamos?" %}</h2>
+    <ul style="color: #222;">
+        <li><strong>{% trans "Cookies técnicas:" %}</strong> {% trans "Necesarias para el funcionamiento básico del sitio." %}</li>
+        <li><strong>{% trans "Cookies de análisis:" %}</strong> {% trans "Nos ayudan a entender cómo usas la web y mejorarla." %}</li>
+        <li><strong>{% trans "Cookies de personalización:" %}</strong> {% trans "Recuerdan tus preferencias (idioma, región, etc.)." %}</li>
+        <li><strong>{% trans "Cookies publicitarias:" %}</strong> {% trans "Muestran anuncios relevantes para ti." %}</li>
+    </ul>
+    <h2 style="color: #110F5D;">{% trans "¿Cómo puedes gestionar las cookies?" %}</h2>
+    <p style="color: #222;">
+        {% trans "Puedes permitir, bloquear o eliminar las cookies desde la configuración de tu navegador. Ten en cuenta que, si bloqueas algunas cookies, es posible que ciertas funciones de la web no estén disponibles." %}
+    </p>
+    <h2 style="color: #110F5D;">{% trans "Más información" %}</h2>
+    <p style="color: #222;">
+        {% trans "Si tienes dudas sobre nuestra política de cookies, puedes contactar con nosotros a través del formulario de contacto o escribiendo a" %} <a href="mailto:info@vandal.com">info@vandal.com</a>.
+    </p>
+</div>
+{% endblock %}

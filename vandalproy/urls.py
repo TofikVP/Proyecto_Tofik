@@ -51,7 +51,6 @@ urlpatterns += i18n_patterns(
     path('registro/', register_view, name='register'),
     path('logout/', logout_view, name='logout'),
     #Paneles
-    path('dashboard/', dashboard, name='error'),
     path('dashboard/admin/', admin.site.urls, name='dashboard_admin'),
     path('dashboard/<str:role>/', user_dashboard, name='dashboard_view'),
     path('dashboard/colaborador/', user_dashboard, name='dashboard_colaborador'),
@@ -59,6 +58,10 @@ urlpatterns += i18n_patterns(
     path('dashboard/suscriptor/', user_dashboard, name='dashboard_suscriptor'),
     path('dashboard/comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment_delete'),
     path('dashboard/suscriptor/change-password/', change_password, name='change_password'),
+    #Publicidad
+    path('publicidad/', TemplateView.as_view(template_name='portal/publicidad.html'), name='publicidad'),
+    #Cookies
+    path('cookies/', TemplateView.as_view(template_name='portal/cookies.html'), name='cookies'),
 )
 
 if settings.DEBUG:

@@ -1,6 +1,8 @@
 import requests
 from django.conf import settings
 
+from django.db.models import Q
+
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
 
@@ -53,17 +55,6 @@ class EmailBackend(ModelBackend):
             return None
 
 #Paneles de usuario
-@login_required
-def dashboard(request):
-    try:
-        user_role = UserRole.objects.get(user=request.user).role
-    except ObjectDoesNotExist:
-        return render(
-            request,
-            "error.html",
-            {"message": "No tienes un rol asignado. Contacta al administrador."},
-        )
-
 
 @login_required
 def user_dashboard(request, role):
@@ -171,14 +162,13 @@ def register_view(request):
             user = User.objects.create_user(
                 username=username, email=email, password=password
             )
-            # 2) Autenticarlo en la sesión
+            # 2) Asignar rol de suscriptor automáticamente
+            UserRole.objects.create(user=user, role="suscriptor")
+            # 3) Autenticarlo en la sesión
             user = authenticate(request, username=username, password=password)
             if user is not None:
-                login(
-                    request, user
-                )
-                
-                # 3) Redirigir al home
+                login(request, user)
+                # 4) Redirigir al home
                 return redirect("/")
 
         # Si hay error, volver a mostrar el formulario
@@ -398,17 +388,39 @@ def redactores(request):
 
 # Vista para la página de inicio
 def home(request):
-    # Buscador de noticias destacadas
     query = request.GET.get('q', '')
+
+    # Buscar en noticias destacadas
     destacadas_qs = Noticias_destacada.objects.all().order_by("-titulo")
     if query:
-        destacadas_qs = destacadas_qs.filter(titulo__icontains=query) | destacadas_qs.filter(titulo_en__icontains=query)
+        destacadas_qs = destacadas_qs.filter(
+            Q(titulo__icontains=query) |
+            Q(titulo_en__icontains=query) |
+            Q(resumen__icontains=query) |
+            Q(resumen_en__icontains=query) |
+            Q(contenido__icontains=query) |
+            Q(contenido_en__icontains=query)
+        )
 
-    paginator = Paginator(destacadas_qs, 4)
-    page_number = request.GET.get('page')
-    noticias_destacadas = paginator.get_page(page_number)
+    paginator_destacadas = Paginator(destacadas_qs, 3)
+    page_number_destacadas = request.GET.get('page')
+    noticias_destacadas = paginator_destacadas.get_page(page_number_destacadas)
 
-    ultimas_noticias = Noticias_ultima.objects.all().order_by("-fecha_publicacion")[:3]
+    # Buscar en noticias ultimas
+    ultimas_qs = Noticias_ultima.objects.all().order_by("-fecha_publicacion")
+    if query:
+        ultimas_qs = ultimas_qs.filter(
+            Q(titulo__icontains=query) |
+            Q(titulo_en__icontains=query) |
+            Q(resumen__icontains=query) |
+            Q(resumen_en__icontains=query) |
+            Q(contenido__icontains=query) |
+            Q(contenido_en__icontains=query)
+        )
+
+    paginator_ultimas = Paginator(ultimas_qs, 3)
+    page_number_ultimas = request.GET.get('ultimas_page')
+    ultimas_noticias = paginator_ultimas.get_page(page_number_ultimas)
 
     return render(
         request,

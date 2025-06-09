@@ -20,8 +20,8 @@ msgstr ""
 
 #Traducciones del Header
 
-msgid "INICIO"
-msgstr "HOME"
+msgid "Inicio"
+msgstr "Home"
 
 msgid "Equipo"
 msgstr "Team"

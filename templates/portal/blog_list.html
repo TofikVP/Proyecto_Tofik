@@ -9,7 +9,7 @@
   <h2>{% trans "Blog" %}</h2>
   <div class="grid-3">
     {% for post in posts %}
-    <article class="card">
+    <article class="blog-card">
       <div class="date">{{ post.created_at|date:"j F Y" }}</div>
       <div class="title">
         {% if LANGUAGE_CODE == 'en' and post.title_en %}

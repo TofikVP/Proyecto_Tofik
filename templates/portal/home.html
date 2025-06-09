@@ -1,105 +1,115 @@
 {% extends "common/base.html" %}
 {% load i18n %}
 {% load static %}
+
 {% block title %}VANDAL{% endblock %}
+
 {% block content %}
-  <!-- Buscador -->
-  <div class="search-bar">
-    <form method="get" action="" class="buscador-form">
-      <input type="text" name="q" class="buscador-input" placeholder={% trans "Buscar noticia..." %} value="{{ query|default:'' }}">
-      <button type="submit" class="buscador-btn" aria-label={% trans "Buscar" %}>
-        <svg class="buscador-icon" viewBox="0 0 24 24" width="20" height="20">
-          <circle cx="11" cy="11" r="8" stroke="#555" stroke-width="2" fill="none"/>
-          <line x1="17" y1="17" x2="21" y2="21" stroke="#555" stroke-width="2"/>
-        </svg>
+
+<!-- Buscador -->
+<div class="search-bar">
+  <form method="get" action="" class="buscador-form">
+    <input type="text" name="q" class="buscador-input" placeholder="{% trans 'Buscar noticia...' %}" value="{{ query|default:'' }}">
+    <button type="submit" class="buscador-btn" aria-label="{% trans 'Buscar' %}">
+      <svg class="buscador-icon" viewBox="0 0 24 24" width="20" height="20">
+        <circle cx="11" cy="11" r="8" stroke="#555" stroke-width="2" fill="none"/>
+        <line x1="17" y1="17" x2="21" y2="21" stroke="#555" stroke-width="2"/>
+      </svg>
+    </button>
+  </form>
+</div>
+
+<!-- Noticias Destacadas -->
+<section id="noticias-destacadas">
+  <h2>{% trans "NOTICIAS DESTACADAS" %}</h2>
+  <div class="list-noticias">
+    {% for noticia in noticias_destacadas %}
+      <div class="noticia">
+        <div class="headline">
+          {% if LANGUAGE_CODE == 'en' and noticia.titulo_en %}
+            {{ noticia.titulo_en }}
+          {% else %}
+            {{ noticia.titulo }}
+          {% endif %}
+        </div>
+        <div class="image">
+          <a href="{% url 'detalle_noticia_destacada' noticia.pk %}">
+            <img class="image" src="{{ noticia.imagen.url }}" alt="{% if LANGUAGE_CODE == 'en' and noticia.titulo_en %}{{ noticia.titulo_en }}{% else %}{{ noticia.titulo }}{% endif %}">
+          </a>
+        </div>
+        <div class="summary">
+          {% if LANGUAGE_CODE == 'en' and noticia.resumen_en %}
+            {{ noticia.resumen_en|truncatechars:120 }}
+          {% else %}
+            {{ noticia.resumen|truncatechars:120 }}
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <p class="hidden">{% trans "No hay noticias por el momento." %}</p>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Últimas Noticias -->
+<section id="ultimas-noticias">
+  <h2>{% trans "ÚLTIMAS NOTICIAS" %}</h2>
+  <div class="list-noticias">
+    {% for noticia in ultimas_noticias %}
+      <div class="noticia">
+        <div class="time">
+          {% trans "Hace" %} {{ noticia.fecha_publicacion|timesince }}
+        </div>
+        <div class="headline">
+          {% if LANGUAGE_CODE == 'en' and noticia.titulo_en %}
+            {{ noticia.titulo_en }}
+          {% else %}
+            {{ noticia.titulo }}
+          {% endif %}
+        </div>
+        <div class="image">
+          <a href="{% url 'detalle_noticia_ultima' noticia.pk %}">
+            <img class="image" src="{{ noticia.imagen.url }}" alt="{% if LANGUAGE_CODE == 'en' and noticia.titulo_en %}{{ noticia.titulo_en }}{% else %}{{ noticia.titulo }}{% endif %}">
+          </a>
+        </div>
+        <div class="summary">
+          {% if LANGUAGE_CODE == 'en' and noticia.resumen_en %}
+            {{ noticia.resumen_en|truncatechars:120 }}
+          {% else %}
+            {{ noticia.resumen|truncatechars:120 }}
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <p class="hidden">{% trans "No se encontraron noticias." %}</p>
+    {% endfor %}
+  </div>
+
+  <!-- Paginación -->
+  <div class="pagination" style="text-align:center;justify-content: center;">
+    {% if ultimas_noticias.has_previous %}
+      <button class="pagination-button"">
+        <a style="text-decoration: none; color: white;" href="?ultimas_page={{ ultimas_noticias.previous_page_number }}">{% trans "Anterior" %}</a>
       </button>
-    </form>
+    {% endif %}
+
+    <span style="color: white;margin: 20px">
+      {% trans "Página" %} {{ ultimas_noticias.number }} {% trans "de" %} {{ ultimas_noticias.paginator.num_pages }}
+    </span>
+
+    {% if ultimas_noticias.has_next %}
+      <button class="pagination-button">
+        <a style="text-decoration: none; color: white;" href="?ultimas_page={{ ultimas_noticias.next_page_number }}">{% trans "Siguiente" %}</a>
+      </button>
+    {% endif %}
   </div>
-  <!-- Noticias Destacadas -->
-  <section id="noticias">
-    <h2>{% trans "NOTICIAS DESTACADAS" %}</h2>
-    <div class="list-noticias">
-      {% for noticia in noticias_destacadas %}
-        <div class="noticia">
-          <div class="headline">
-            {% if LANGUAGE_CODE == 'en' and noticia.titulo_en %}
-              {{ noticia.titulo_en }}
-            {% else %}
-              {{ noticia.titulo }}
-            {% endif %}
-          </div>
+</section>
 
-          <div class="image">
-            <a href="{% url 'detalle_noticia_destacada' noticia.pk %}">
-              <img class="image" src="{{ noticia.imagen.url }}" alt="{% if LANGUAGE_CODE == 'en' and noticia.titulo_en %}{{ noticia.titulo_en }}{% else %}{{ noticia.titulo }}{% endif %}">
-            </a>
-          </div>
-          <div class="summary">
-            {% if LANGUAGE_CODE == 'en' and noticia.resumen_en %}
-              {{ noticia.resumen_en|truncatechars:120 }}
-            {% else %}
-              {{ noticia.resumen|truncatechars:120 }}
-            {% endif %}
-          </div>
-        </div>
-      {% empty %}
-        <p style="color: white;">{% trans "No hay noticias por el momento." %}</p>
-      {% endfor %}
-    </div>
-    <!-- Paginación solo para destacadas -->
-    <div class="pagination" style="text-align:center; margin:2em 0;">
-      {% if noticias_destacadas.has_previous %}
-        <a href="?q={{ query }}&page={{ noticias_destacadas.previous_page_number }}">{% trans "Anterior" %}</a>
-      {% endif %}
-      <span>{% trans "Página" %} {{ noticias_destacadas.number }} {% trans "de" %} {{ noticias_destacadas.paginator.num_pages }}</span>
-      {% if noticias_destacadas.has_next %}
-        <a href="?q={{ query }}&page={{ noticias_destacadas.next_page_number }}">{% trans "Siguiente" %}</a>
-      {% endif %}
-    </div>
-  </section>
+<!-- Sección de contacto -->
+<section id="contacto" style="text-align: center; margin-top: 40px;">
+  <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>
+  <p>{% trans "Cuéntanos para que podamos lanzar un hechizo de corrección." %}</p>
+  <a href="/{{ LANGUAGE_CODE }}/contacto" class="contact-button">{% trans "Contáctanos" %}</a>
+</section>
 
-
-  <!-- Últimas Noticias -->
-  <section id="noticias">
-    <h2>{% trans "ÚLTIMAS NOTICIAS" %}</h2>
-    <div class="list-noticias">
-      {% for noticia in ultimas_noticias %}
-        <div class="noticia">
-          <div class="time">
-            {% trans "Hace" %} {{ noticia.fecha_publicacion|timesince }}
-          </div>
-          <div class="headline">
-            {% if LANGUAGE_CODE == 'en' and noticia.titulo_en %}
-              {{ noticia.titulo_en }}
-            {% else %}
-              {{ noticia.titulo }}
-            {% endif %}
-          </div>
-          <div class="image">
-            <a href="{% url 'detalle_noticia_ultima' noticia.pk %}">
-              <img class="image" src="{{ noticia.imagen.url }}" alt="{% if LANGUAGE_CODE == 'en' and noticia.titulo_en %}{{ noticia.titulo_en }}{% else %}{{ noticia.titulo }}{% endif %}">
-            </a>
-          </div>
-          <div class="summary">
-            {% if LANGUAGE_CODE == 'en' and noticia.resumen_en %}
-              {{ noticia.resumen_en|truncatechars:120 }}
-            {% else %}
-              {{ noticia.resumen|truncatechars:120 }}
-            {% endif %}
-          </div>
-        </div>
-      {% empty %}
-        <p style="color: white;">{% trans "No se encontraron noticias." %}</p>
-      {% endfor %}
-    </div>
-  </section>
-
-  <!-- Sección de contacto -->
-  <div style="text-align: center;">
-      <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>
-      <p>{% trans "Cuéntanos para que podamos lanzar un hechizo de corrección." %}</p>
-  </div>
-  <div style="text-align: center; margin: 20px 0;">
-      <a href="/{{ LANGUAGE_CODE }}/contacto" class="contact-button">{% trans "Contáctanos" %}</a>
-  </div>
 {% endblock %}
