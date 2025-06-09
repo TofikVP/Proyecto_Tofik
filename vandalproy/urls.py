@@ -12,8 +12,6 @@ urlpatterns = [
 ]
 
 urlpatterns += i18n_patterns(
-    # Panel administrador
-    path('admin/', admin.site.urls),
     # Paginas del portal
     path('', home, name='home'),
     path('legal/', TemplateView.as_view(template_name='portal/legal.html'), name='legal'),
