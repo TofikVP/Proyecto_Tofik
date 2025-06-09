@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-o+lj84mim5&*!bu_3+(@j84om1pej+!=pq5_7z3kpb%8)8l4t-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "195.55.200.162", "172.16.2.8"]
+ALLOWED_HOSTS = [".onrender.com", "localhost", "127.0.0.1", "195.55.200.162", "172.16.2.8", "vandal.ddaw.es", "www.vandal.ddaw.es"]
 
 # Application definition
 
@@ -125,6 +125,7 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "static/uploads"
