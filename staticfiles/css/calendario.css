@@ -46,3 +46,58 @@
     border-radius: 8px;
     margin-top: 10px;
   }
+
+/* Adaptación móvil */
+
+@media (max-width: 300px) {
+  .calendario-container {
+    padding: 0 1rem;
+    gap: 20px;
+  }
+
+  .calendario-container .calendario-card {
+    padding: 16px;
+  }
+
+  .calendario-container .calendario-card .title {
+    font-size: 1rem;
+  }
+
+  .calendario-container .calendario-card .date {
+    font-size: 0.8rem;
+  }
+
+  .calendario-container .calendario-card .desc {
+    font-size: 0.85rem;
+  }
+
+  .calendario-container .calendario-card .image img {
+    width: 80%;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendario-container {
+    padding: 0 0.5rem;
+  }
+
+  .calendario-container .calendario-card {
+    padding: 14px;
+  }
+
+  .calendario-container .calendario-card .title {
+    font-size: 0.95rem;
+  }
+
+  .calendario-container .calendario-card .date {
+    font-size: 0.75rem;
+  }
+
+  .calendario-container .calendario-card .desc {
+    font-size: 0.8rem;
+  }
+
+  .calendario-container .calendario-card .image img {
+    width: 100%;
+  }
+}

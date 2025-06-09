@@ -1,13 +1,17 @@
-/* Estilos para la pagina de Login */
+/* Estilos para la página de Login */
 
 form.separador_login {
   background-color: transparent;
   flex: 1;
   max-width: 400px;
+  width: 100%;
   padding: 20px;
   border-radius: 12px;
   background: linear-gradient(5deg, #1252e9bf, #14095a);
   font-family: Arial, sans-serif;
+  color: white;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 0 auto;
 }
 
 form.separador_login:hover {
@@ -15,3 +19,54 @@ form.separador_login:hover {
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
+/* Estilos generales de campos dentro del formulario */
+form.separador_login label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: white;
+}
+
+form.separador_login input[type="text"],
+form.separador_login input[type="password"],
+form.separador_login input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 14px;
+  background-color: white;
+  color: #000;
+}
+
+form.separador_login button {
+  width: 100%;
+  padding: 12px;
+  background-color: #0b045c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+form.separador_login button:hover {
+  background-color: #0056b3;
+}
+
+/* Adaptación móvil */
+@media (max-width: 300px) {
+  form.separador_login {
+    padding: 16px;
+    max-width: 100%;
+    border-radius: 8px;
+  }
+
+  form.separador_login input,
+  form.separador_login button {
+    font-size: 15px;
+  }
+}

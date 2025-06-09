@@ -55,3 +55,74 @@ div#clips-container p small a {
 div#clips-container p small a:hover {
   color: rgb(255, 0, 0)
 }
+
+/* Adaptación móvil */
+
+@media (max-width: 300px) {
+  .video-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .video-item {
+    width: 90%;
+    max-width: 400px;
+  }
+
+  #video-portal h2 {
+    font-size: 1.5rem;
+    margin: 30px 0 20px;
+  }
+
+  video {
+    width: 100%;
+    height: auto;
+  }
+
+  div#clips-container {
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+  }
+
+  div#clips-container p {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1rem;
+    width: 90%;
+  }
+
+  iframe {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .contact-button {
+    font-size: 1rem;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-item {
+    width: 95%;
+  }
+
+  div#clips-container p {
+    font-size: 0.95rem;
+  }
+
+  iframe {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  #video-portal h2 {
+    font-size: 1.3rem;
+  }
+}
+

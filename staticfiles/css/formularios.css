@@ -4,6 +4,13 @@
   justify-content: center;
   gap: 20px;
   margin: 30px auto;
+  flex-wrap: wrap;
+  padding: 0 1rem;
+}
+
+form {
+  flex: 1 1 100%;
+  max-width: 600px;
 }
 
 form .button {
@@ -50,4 +57,41 @@ form textarea {
 
 form textarea {
   resize: vertical;
+}
+
+/* Adaptación móvil */
+@media (max-width: 300px) {
+  .container {
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 1rem;
+  }
+
+  form {
+    max-width: 100%;
+  }
+
+  form .button {
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  form input,
+  form textarea {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  form .button {
+    font-size: 14px;
+  }
 }

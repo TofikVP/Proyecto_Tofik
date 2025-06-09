@@ -148,7 +148,7 @@ textarea {
   margin: 0 auto;
 }
 
-.card {
+.blog-card {
   background: rgba(255, 255, 255, 0.05);
   padding: 1.5rem;
   border-radius: 12px;
@@ -157,32 +157,32 @@ textarea {
   text-align: left;
 }
 
-.card:hover {
+.blog-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
 }
 
-.card .date {
+.blog-card .date {
   font-size: 0.85rem;
   color: #aaa;
   margin-bottom: 0.5rem;
 }
 
-.card .title {
+.blog-card .title {
   font-size: 1.1rem;
   font-weight: bold;
   margin-bottom: 0.7rem;
   color: #fff;
 }
 
-.card .desc {
+.blog-card .desc {
   font-size: 0.9rem;
   color: #ccc;
   margin-bottom: 1rem;
   line-height: 1.4;
 }
 
-.card .image {
+.blog-card .image {
   width: 100%;
   height: 180px;
   object-fit: cover;
@@ -229,4 +229,64 @@ textarea {
 .page-button > a {
   color: white;
   text-decoration: none;
+}
+
+/* Parte movil */
+
+@media screen and (max-width: 768px) {
+  #blog {
+    padding: 1rem 0.5rem;
+  }
+
+  .blog-card {
+    padding: 1rem;
+  }
+
+  .blog-card .image {
+    height: 140px;
+  }
+
+  .comment-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .reply-block {
+    margin-left: 1rem;
+  }
+
+  .page-number {
+    display: block;
+    margin: 1rem 0;
+    text-align: center;
+  }
+
+  .pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .page-button {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .contact-button {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+}
+
+html {
+  font-size: 100%;
+}
+
+/* Adaptación móvil */
+@media screen and (max-width: 300px) {
+  html {
+    font-size: 90%;
+  }
 }
