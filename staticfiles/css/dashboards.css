@@ -1,0 +1,142 @@
+/* dashboards.css */
+:root {
+  --dash-bg: #f4f6f8;
+  --dash-card-bg: #ffffff;
+  --dash-border: #d1d5db;
+  --dash-text: #000000;
+  --dash-accent: #3b82f6;
+  --dash-radius: 8px;
+  --dash-padding: 16px;
+  --dash-gap: 24px;
+}
+
+.dashboard-title {
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(90deg, #3b82f6, #9333ea);
+  margin-top: 20px;
+}
+
+/* Contenedor general del dashboard */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: var(--dash-gap);
+  background-color: var(--dash-bg);
+  border-radius: var(--dash-radius);
+}
+
+/* Tarjetas para secciones */
+.dashboard-card {
+  background-color: var(--dash-card-bg);
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-radius);
+  padding: var(--dash-padding);
+  margin-bottom: var(--dash-gap);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Títulos de sección */
+.dashboard-card h2 {
+  font-size: 1.5rem;
+  color: var(--dash-text);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--dash-accent);
+  padding-bottom: 0.5rem;
+}
+
+/* Listados (posts, comentarios) */
+.dashboard-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-list li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--dash-border);
+  color: var(--dash-text);
+}
+
+.dashboard-list li:last-child {
+  border-bottom: none;
+}
+
+/* Formularios dentro del dashboard */
+.dashboard-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  color: var(--dash-text);
+}
+
+.dashboard-form input[type="file"],
+.dashboard-form input[type="text"],
+.dashboard-form input[type="password"],
+.dashboard-form textarea {
+  padding: 0.5rem;
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-radius);
+  font-size: 1rem;
+  color: var(--dash-text);
+  background-color: #fff;
+}
+
+.dashboard-form button {
+  align-self: flex-start;
+  background-color: var(--dash-accent);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--dash-radius);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.dashboard-form button:hover {
+  opacity: 0.9;
+}
+
+/* Comentarios con acción */
+.comment-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment-item .content {
+  flex: 1;
+  color: var(--dash-text);
+}
+
+.comment-item .actions a {
+  margin-left: 1rem;
+  color: var(--dash-accent);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.comment-item .actions a:hover {
+  text-decoration: underline;
+}
+
+/* Adaptaciones responsivas */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: var(--dash-gap) / 2;
+  }
+
+  .dashboard-card {
+    padding: var(--dash-padding) / 2;
+  }
+
+  .dashboard-card h2 {
+    font-size: 1.25rem;
+  }
+}

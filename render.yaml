@@ -4,6 +4,7 @@ services:
     env: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn vandalproy.wsgi:application
+    staticPublishPath: staticfiles
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: vandalproy.settings
