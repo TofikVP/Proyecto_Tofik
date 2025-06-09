@@ -56,6 +56,14 @@
             <button class="carousel-btn" id="next-captura">&#8594;</button>
         </div>
     {% endif %}
+    
+    {% if user.is_authenticated and user.userrole.role == 'admin' or user.userrole.role == 'redactor' %}
+        <div class="button" style="text-align: center;margin-bottom:20px">
+            <button class="page-button">
+                <a href="{% url 'ranking_detalle_editar' juego.pk %}" class="edit-button">{% trans "Editar juego" %}</a>
+            </button>
+        </div>
+    {% endif %}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const images = document.querySelectorAll('.carousel-img');

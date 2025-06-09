@@ -40,7 +40,7 @@ urlpatterns += i18n_patterns(
     #Página del ranking y sus juegos
     path('ranking/', ranking, name='ranking'),
     path('ranking/<int:pk>/', detalle_ranking_juego, name='detalle_ranking_juego'),
-    path('ranking/<int:pk>/edit/', EditarRankingJuegoView.as_view(), name='ranking_editar'),
+    path('ranking/<int:pk>/edit/', EditarRankingJuegoView.as_view(), name='ranking_detalle_editar'),
     path('api/streams/', obtener_streams, name='obtener_streams'),
     #Página de redactores
     path('redactores/', redactores, name='redactores'),

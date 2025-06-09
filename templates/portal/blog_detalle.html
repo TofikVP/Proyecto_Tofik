@@ -17,6 +17,7 @@
                 <span class="user-role">{% trans "Autor" %}</span>
             </div>
         </div>
+
         <div class="comment-meta">
             <span class="comment-number">#0</span>
             <span class="comment-time">
@@ -37,6 +38,16 @@
             </div>
         {% endif %}
     </div>
+
+    {% if user.is_authenticated %}
+        {% if user.userrole.role == 'admin' or user.userrole.role == 'redactor' %}
+            <div class="button" style="text-align: center;margin-bottom:20px">
+                <button class="page-button">
+                    <a href="{% url 'blog_detalle_editar' post.pk %}" class="edit-button">{% trans "Editar post" %}</a>
+                </button>
+            </div>
+        {% endif %}
+    {% endif %}
     <!-- Botón para siguiente publicación y publicacion anterior -->
     <div class="navigation-buttons">
         {% if post.get_previous_by_created_at %}

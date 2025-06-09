@@ -95,6 +95,7 @@
                     <div class="comment-item">
                         <div class="content">{{ c.content }} <small>({{ c.created_at }})</small></div>
                         <div class="actions">
+                            <a href="{% url 'blog_post' c.post.id %}" class="btn btn-info" style="margin-right:8px">{% trans "Ver post" %}</a>
                             {% if role == 'redactor' or role == "admin" %}
                             <a href="{% url 'comment_delete' c.pk %}">{% trans "Eliminar" %}</a>
                             {% endif %}

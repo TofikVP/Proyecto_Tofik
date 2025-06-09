@@ -423,7 +423,7 @@ def home(request):
 #Noticias destacadas
 def detalle_noticia_destacada(request, pk):
     noticia = get_object_or_404(Noticias_destacada, pk=pk)
-    return render(request, "portal/noticia_detalle.html", {"noticia": noticia})
+    return render(request, "portal/noticia_detalle.html", {"noticia": noticia, "tipo_noticia": "destacada"})
 #Editar noticia destacada
 class EditarNoticiaDestacadaView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Noticias_destacada
@@ -438,7 +438,7 @@ class EditarNoticiaDestacadaView(LoginRequiredMixin, UserPassesTestMixin, Update
 #Noticias ultimas
 def detalle_noticia_ultima(request, pk):
     noticia = get_object_or_404(Noticias_ultima, pk=pk)
-    return render(request, "portal/noticia_detalle.html", {"noticia": noticia})
+    return render(request, "portal/noticia_detalle.html", {"noticia": noticia, "tipo_noticia": "ultima"})
 #Editar noticia ultima
 class EditarNoticiaUltimaView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Noticias_ultima
@@ -451,7 +451,6 @@ class EditarNoticiaUltimaView(LoginRequiredMixin, UserPassesTestMixin, UpdateVie
         return hasattr(user, 'userrole') and user.userrole.role in ['admin', 'redactor']
 
 #Ranking
-
 
 def ranking(request):
     juegos = Juego_ranking.objects.all().order_by('-nota')

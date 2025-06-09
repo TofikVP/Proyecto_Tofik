@@ -32,8 +32,21 @@
         <p>{{ noticia.contenido|linebreaks }}</p>
       {% endif %}
     </div>
+    {% if user.is_authenticated and user.userrole.role == 'admin' or user.userrole.role == 'redactor' %}
+      <div class="button" style="text-align: center;margin-bottom:20px">
+        {% if tipo_noticia == "destacada" %}
+          <button class="page-button">
+            <a href="{% url 'noticia_destacada_editar' noticia.pk %}" class="page-button edit-button">{% trans "Editar noticia" %}</a>
+          </button>
+        {% elif tipo_noticia == "ultima" %}
+          <button class="page-button">
+            <a href="{% url 'noticia_ultima_editar' noticia.pk %}" class="page-button edit-button">{% trans "Editar noticia" %}</a>
+          </button>
+        {% endif %}
+      </div>
+    {% endif %}
   </section>
-  
+
   <!-- Sección de contacto -->
 <div style="text-align: center;">
   <h1>{% trans "¿Encontraste un bug en tu aventura?" %}</h1>

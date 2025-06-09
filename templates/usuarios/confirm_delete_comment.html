@@ -8,7 +8,13 @@
   <p>{{ comment.content }}</p>
   <form method="post">
     {% csrf_token %}
-    <button type="submit">{% trans "Confirmar" %}</button>
-    <a href="{% url 'dashboard_redactor' %}">{% trans "Cancelar" %}"</a>
+    <button type="submit">
+      {% trans "Confirmar" %}
+    </button>
+
+    <button>
+      <a style="text-decoration: none;color: white;" href="{% url 'blog_post' comment.post.id %}">{% trans "Cancelar" %}</a>
+    </button>
+
   </form>
 {% endblock %}
