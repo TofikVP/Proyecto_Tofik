@@ -1,6 +1,4 @@
-from .models import Noticias_ultima, Noticias_destacada, UserRole, BlogPost
-from googletrans import Translator
-
+from .models import UserRole
 
 def user_role(request):
     if request.user.is_authenticated:
