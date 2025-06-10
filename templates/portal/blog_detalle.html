@@ -45,6 +45,9 @@
                 <button class="page-button">
                     <a href="{% url 'blog_detalle_editar' post.pk %}" class="edit-button">{% trans "Editar post" %}</a>
                 </button>
+                <button class="delete-button">
+                    <a href="{% url 'post_delete' post.pk %}">{% trans "Eliminar post" %}</a>
+                </button>
             </div>
         {% endif %}
     {% endif %}
@@ -139,7 +142,9 @@
                 {% endif %}
                 {% if user.is_authenticated and role == 'redactor' or role == 'admin' %}
                     <div class="actions">
-                        <a href="{% url 'comment_delete' comment.pk %}?next={{ request.path }}">{% trans "Eliminar" %}</a>
+                        <button class="delete-button">
+                            <a href="{% url 'comment_delete' comment.pk %}?next={{ request.path }}">{% trans "Eliminar" %}</a>
+                        </button>
                     </div>
                 {% endif %}
 
@@ -163,7 +168,9 @@
                         </span>
                     {% if user.is_authenticated and role == 'redactor' or role == 'admin' %}
                         <div class="actions">
-                            <a href="{% url 'reply_delete' reply.pk %}?next={{ request.path }}">Eliminar</a>
+                            <button class="delete-button">
+                                <a href="{% url 'reply_delete' reply.pk %}?next={{ request.path }}">Eliminar</a>
+                            </button>
                         </div>
                     {% endif %}
                     </div>

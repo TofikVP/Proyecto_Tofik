@@ -32,11 +32,14 @@
 
     {% if user.is_authenticated %}
         {% if user.userrole.role == 'admin' or user.userrole.role == 'redactor' %}
-            <div class="button" style="text-align: center;margin-bottom:20px">
+            <div style="text-align: center;margin-bottom:20px">
             <button class="page-button">
                 <a href="{% url 'calendario_editar' evento.pk %}" class="edit-button">{% trans "Editar evento" %}</a>
             </button>
-            </div>
+            <button class="delete-button">
+                <a href="{% url 'calendario_delete' evento.pk %}">{% trans "Eliminar evento" %}</a>
+            </button>
+        </div>
         {% endif %}
     {% endif %}
 

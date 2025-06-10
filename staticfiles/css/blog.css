@@ -212,25 +212,6 @@ textarea {
   text-decoration: underline;
 }
 
-.page-number {
-  margin-left: 10px;
-  margin-right: 10px;
-  justify-content: center;
-}
-
-.page-button {
-  background-color: #3b82f6;
-}
-
-.page-button:hover {
-  background-color: #0757d7;
-}
-
-.page-button > a {
-  color: white;
-  text-decoration: none;
-}
-
 /* Parte movil */
 
 @media screen and (max-width: 768px) {

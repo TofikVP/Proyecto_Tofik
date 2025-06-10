@@ -578,7 +578,7 @@ class CalendarioDetailView(UpdateView):
 # Borrar evento del calendario
 class CalendarioDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = EventoCalendario
-    template_name = 'portal/calendario_confirm_delete.html'
+    template_name = 'usuarios/confirm_delete_evento.html'
     success_url = reverse_lazy('calendario')
 
     def test_func(self):

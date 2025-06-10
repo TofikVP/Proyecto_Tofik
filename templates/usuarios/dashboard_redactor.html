@@ -53,7 +53,9 @@
                         <div class="content"><a href="{% url 'blog_post' p.id %}">{{ p.title }}</a> <small>({{ p.created_at }})</small></div>
                         <div class="actions">
                             {% if role == 'redactor' or role == "admin" %}
-                            <a href="{% url 'post_delete' p.id %}">{% trans "Eliminar" %}</a>
+                            <button class="delete-button">
+                                <a href="{% url 'post_delete' p.id %}">{% trans "Eliminar" %}</a>
+                            </button>
                             {% endif %}
                         </div>
                     </div>
@@ -62,48 +64,54 @@
                 <li>{% trans "No tienes posts." %}</li>
                 {% endfor %}
             </ul>
-                <!-- Botón para mostrar el formulario -->
-                <button
-                    onclick="document.getElementById('nuevo-post-form').classList.toggle('hidden')"
-                    class="btn btn-primary">
-                    {% trans "Agregar nuevo post" %}
-                </button>
+            <!-- Botón para mostrar el formulario -->
+            <button
+                onclick="document.getElementById('nuevo-post-form').classList.toggle('hidden')"
+                class="page-button">
+                {% trans "Agregar nuevo post" %}
+            </button>
 
-                <!-- Formulario oculto por defecto -->
-                <div id="nuevo-post-form" class="hidden" style="margin-top: 1em;">
-                    <form method="post" enctype="multipart/form-data" class="dashboard-form" style="background: white">
-                        {% csrf_token %}
-                        <label for="id_title">{% trans "Título" %}</label>
-                        <input type="text" name="title" id="id_title" class="form-control" required>
+            <!-- Formulario oculto por defecto -->
+            <div id="nuevo-post-form" class="hidden" style="margin-top: 1em;">
+                <form method="post" enctype="multipart/form-data" class="dashboard-form" style="background: white">
+                    {% csrf_token %}
+                    <label for="id_title">{% trans "Título" %}</label>
+                    <input type="text" name="title" id="id_title" class="form-control" required>
 
-                        <label for="id_content">{% trans "Contenido" %}</label>
-                        <textarea name="content" id="id_content" rows="5" class="form-control" required></textarea>
+                    <label for="id_content">{% trans "Contenido" %}</label>
+                    <textarea name="content" id="id_content" rows="5" class="form-control" required></textarea>
 
-                        <label for="id_image">{% trans "Imagen (opcional)" %}</label>
-                        <input type="file" name="image" id="id_image" class="form-control">
+                    <label for="id_image">{% trans "Imagen" %}</label>
+                    <input type="file" name="image" id="id_image" class="form-control">
 
-                        <button type="submit" name="post_submit" class="btn btn-success" style="margin-top: 1em;">{% trans "Publicar" %}</button>
-                    </form>
-                </div>
+                    <button type="submit" name="post_submit" class="btn btn-success" style="margin-top: 1em;">{% trans "Publicar" %}</button>
+                </form>
+            </div>
         </div>
         <!-- Sección de Comentarios -->
         <div class="dashboard-card">
             <h2>{% trans "Tus Comentarios" %}</h2>
             <ul class="dashboard-list">
                 {% for c in comments %}
-                <li>
-                    <div class="comment-item">
-                        <div class="content">{{ c.content }} <small>({{ c.created_at }})</small></div>
-                        <div class="actions">
-                            <a href="{% url 'blog_post' c.post.id %}" class="btn btn-info" style="margin-right:8px">{% trans "Ver post" %}</a>
-                            {% if role == 'redactor' or role == "admin" %}
-                            <a href="{% url 'comment_delete' c.pk %}">{% trans "Eliminar" %}</a>
-                            {% endif %}
+                    <li>
+                        <div class="comment-item">
+                            <div class="content">{{ c.content }} <small>({{ c.created_at }})</small></div>
+                            <div class="actions">
+                                <button class="page-button">
+                                    <a style="text-decoration: none;color: white" href="{% url 'blog_post' c.post.id %}">{% trans "Ver post" %}</a>
+                                </button>
+                                {% if role == 'redactor' or role == "admin" %}
+                                    <button class="delete-button">
+                                        <a style="text-decoration: none;color: white" href="{% url 'comment_delete' c.pk %}">
+                                            {% trans "Eliminar" %}
+                                        </a>
+                                    </button>
+                                {% endif %}
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
                 {% empty %}
-                <li>{% trans "No tienes comentarios." %}</li>
+                    <li>{% trans "No tienes comentarios." %}</li>
                 {% endfor %}
             </ul>
         </div>
@@ -120,7 +128,9 @@
 
         <!-- Botón logout -->
         <div class="dashboard-card">
-            <a href="{% url 'logout' %}" class="dashboard-form">{% trans "Cerrar sesión" %}</a>
+            <button class="delete-button">
+                <a href="{% url 'logout' %}" class="dashboard-form">{% trans "Cerrar sesión" %}</a>
+            </button>
         </div>
     </div>
 </body>

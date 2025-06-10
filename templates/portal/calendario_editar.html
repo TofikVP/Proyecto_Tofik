@@ -9,6 +9,8 @@
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">{% trans "Guardar cambios" %}</button>
+    <button type="submit" class="page-button">
+      {% trans "Guardar cambios" %}
+    </button>
   </form>
 {% endblock %}

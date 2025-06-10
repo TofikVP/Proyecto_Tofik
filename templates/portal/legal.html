@@ -1,17 +1,39 @@
 {% extends "common/base.html" %}
 {% load i18n %}
-{% load static %}
-{% block title %}VANDAL{% endblock %}
+{% block title %}{% trans "Aviso Legal" %}{% endblock %}
 {% block content %}
-  <p>Lorem ipsum dolor sit amet consectetur adipiscing elit risus, non proin dui cubilia curabitur vivamus tempus
-    ullamcorper aptent, taciti netus integer felis mauris dictumst aliquam. Nibh nostra leo enim gravida sollicitudin,
-    rhoncus facilisis cras curae vulputate per, torquent elementum sapien fusce. Duis at ridiculus praesent pretium
-    semper fames ligula, mattis vestibulum neque enim blandit turpis viverra, porta nulla lacus libero proin molestie.
-  </p>
+{% load static %}
+{% get_current_language as LANGUAGE_CODE %}
+<div class="cookies-container" style="max-width: 800px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 2em;">
+    <h1 style="text-align:center; margin-bottom: 1em; color: #110F5D;">{% trans "Aviso Legal" %}</h1>
 
-  <p>Iaculis suscipit eleifend ac proin nulla nullam porttitor, non ultrices urna mus accumsan tellus, sagittis ornare
-    turpis ligula varius et. Torquent himenaeos tellus placerat facilisis litora nostra scelerisque, aptent dictumst
-    mauris quisque habitant dis, molestie orci luctus faucibus fringilla risus. Vulputate scelerisque fusce dapibus
-    libero felis eleifend luctus cursus nostra molestie, convallis vestibulum sapien dis urna conubia magnis risus
-    litora ultrices, mauris iaculis suscipit nisl at sodales euismod netus arcu.</p>
+    <p style="font-size: 1.1em; color: #222;">
+        {% trans "Este sitio web ha sido desarrollado con fines educativos e informativos, sin ánimo de lucro y respetando la legislación vigente." %}
+    </p>
+
+    <h2 style="color: #110F5D;">{% trans "Responsabilidad del contenido" %}</h2>
+    <p style="color: #222;">
+        {% trans "El equipo de VANDAL no se hace responsable del uso indebido que puedan hacer los usuarios de la información ofrecida en este sitio web. Nos esforzamos por mantener los contenidos actualizados y correctos, aunque no garantizamos su exactitud total." %}
+    </p>
+
+    <h2 style="color: #110F5D;">{% trans "Propiedad intelectual" %}</h2>
+    <p style="color: #222;">
+        {% trans "Salvo que se indique lo contrario, los textos, imágenes y demás recursos incluidos en este sitio son propiedad de sus respectivos autores o están licenciados para su uso bajo condiciones compatibles con este proyecto. Queda prohibida su reproducción no autorizada." %}
+    </p>
+
+    <h2 style="color: #110F5D;">{% trans "Enlaces externos" %}</h2>
+    <p style="color: #222;">
+        {% trans "Este sitio puede contener enlaces a páginas externas sobre las que VANDAL no tiene control. No asumimos responsabilidad por el contenido, políticas o prácticas de estos sitios externos." %}
+    </p>
+
+    <h2 style="color: #110F5D;">{% trans "Protección de datos" %}</h2>
+    <p style="color: #222;">
+        {% trans "No se recopilan datos personales sin el consentimiento explícito del usuario. Cualquier tratamiento de datos personales se realiza conforme a la normativa vigente en materia de protección de datos." %}
+    </p>
+
+    <h2 style="color: #110F5D;">{% trans "Contacto" %}</h2>
+    <p style="color: #222;">
+        {% trans "Si tienes preguntas relacionadas con este aviso legal o deseas más información, puedes contactarnos escribiendo a" %} <a href="mailto:info@vandal.com">info@vandal.com</a>.
+    </p>
+</div>
 {% endblock %}

@@ -9,7 +9,6 @@
 
     <!-- Contenedor principal del dashboard -->
     <div class="dashboard-container">
-
         <!-- Sección de subida de contenido -->
         <div class="dashboard-card">
             <h2>{% trans "Subir contenido" %}</h2>
@@ -19,24 +18,43 @@
                 <button type="submit" name="upload">{% trans "Subir archivo" %}</button>
             </form>
         </div>
-
         <!-- Sección de Posts -->
         <div class="dashboard-card">
             <h2>{% trans "Tus Posts" %}</h2>
             <ul class="dashboard-list">
-                {% for c in comments %}
+                {% for p in posts %}
                 <li>
-                    <div class="comment-item">
-                        <div class="content">{{ c.content }} <small>({{ c.created_at }})</small></div>
-                        <div class="actions">
-                            <a href="{% url 'blog_post' c.post.id %}" class="btn btn-info" style="margin-right:8px">{% trans "Ver post" %}</a>
-                        </div>
+                    <div class="post-item">
+                        <div class="content"><a href="{% url 'blog_post' p.id %}">{{ p.title }}</a> <small>({{ p.created_at }})</small></div>
                     </div>
                 </li>
                 {% empty %}
-                <li>{% trans "No tienes comentarios." %}</li>
+                <li>{% trans "No tienes posts." %}</li>
                 {% endfor %}
             </ul>
+            <!-- Botón para mostrar el formulario -->
+            <button
+                onclick="document.getElementById('nuevo-post-form').classList.toggle('hidden')"
+                class="btn btn-primary">
+                {% trans "Agregar nuevo post" %}
+            </button>
+
+            <!-- Formulario oculto por defecto -->
+            <div id="nuevo-post-form" class="hidden" style="margin-top: 1em;">
+                <form method="post" enctype="multipart/form-data" class="dashboard-form" style="background: white">
+                    {% csrf_token %}
+                    <label for="id_title">{% trans "Título" %}</label>
+                    <input type="text" name="title" id="id_title" class="form-control" required>
+
+                    <label for="id_content">{% trans "Contenido" %}</label>
+                    <textarea name="content" id="id_content" rows="5" class="form-control" required></textarea>
+
+                    <label for="id_image">{% trans "Imagen" %}</label>
+                    <input type="file" name="image" id="id_image" class="form-control">
+
+                    <button type="submit" name="post_submit" class="btn btn-success" style="margin-top: 1em;">{% trans "Publicar" %}</button>
+                </form>
+            </div>
         </div>
         <!-- Sección de Comentarios -->
         <div class="dashboard-card">
@@ -46,6 +64,9 @@
                 <li>
                     <div class="comment-item">
                         <div class="content">{{ c.content }} <small>({{ c.created_at }})</small></div>
+                        <button class="page-button">    
+                            <a href="{% url 'blog_post' c.post.id %}">{% trans "Ver post" %}</a>
+                        </button>
                     </div>
                 </li>
                 {% empty %}
@@ -66,7 +87,9 @@
 
         <!-- Botón logout -->
         <div class="dashboard-card">
-            <a href="{% url 'logout' %}" class="dashboard-form">{% trans "Cerrar sesión" %}</a>
+            <button class="delete-button">
+                <a href="{% url 'logout' %}" class="dashboard-form">{% trans "Cerrar sesión" %}</a>
+            </button>
         </div>
     </div>
 </body>

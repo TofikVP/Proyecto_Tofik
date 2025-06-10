@@ -3,18 +3,22 @@
 {% load static %}
 {% block title %}VANDAL{% endblock %}
 {% block content %}
-
+{% if user.is_authenticated and user.userrole.role == 'redactor' or user.userrole.role == 'admin' %}
+<body>
   <h2>{% trans "¿Eliminar este comentario?" %}</h2>
   <p>{{ comment.content }}</p>
   <form method="post">
     {% csrf_token %}
-    <button type="submit">
+    <button type="submit" class="delete-button">
       {% trans "Confirmar" %}
     </button>
 
-    <button>
-      <a style="text-decoration: none;color: white;" href="{% url 'blog_post' comment.post.id %}">{% trans "Cancelar" %}</a>
+    <button class="page-button">
+      <a href="{% url 'blog_post' comment.post.id %}">{% trans "Cancelar" %}</a>
     </button>
 
   </form>
+{% else %}
+  <p>{% trans "No tienes permiso para eliminar este comentario." %}</p>
+{% endif %}
 {% endblock %}

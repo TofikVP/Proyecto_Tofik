@@ -9,18 +9,6 @@
 
     <!-- Contenedor principal del dashboard -->
     <div class="dashboard-container">
-
-        <!-- Sección de Posts -->
-        <div class="dashboard-card">
-            <h2>{% trans "Tus Posts" %}</h2>
-            <ul class="dashboard-list">
-                {% for p in posts %}
-                <li><a href="{% url 'blog_post' p.id %}">{{ p.title }}</a></li>
-                {% empty %}
-                <li>{% trans "No tienes posts." %}</li>
-                {% endfor %}
-            </ul>
-        </div>
         <!-- Sección de Comentarios -->
         <div class="dashboard-card">
             <h2>{% trans "Tus Comentarios" %}</h2>
