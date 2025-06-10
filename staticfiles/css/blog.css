@@ -236,24 +236,7 @@ textarea {
   .reply-block {
     margin-left: 1rem;
   }
-
-  .page-number {
-    display: block;
-    margin: 1rem 0;
-    text-align: center;
-  }
-
-  .pagination {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .page-button {
-    width: 100%;
-    margin: 5px 0;
-  }
-
+  
   .contact-button {
     display: inline-block;
     padding: 12px 24px;

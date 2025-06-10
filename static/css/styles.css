@@ -178,10 +178,14 @@ section h3::after {
   margin-left: 10px;
   margin-right: 10px;
   justify-content: center;
+  display: block;
+  margin: 1rem 0;
+  text-align: center;
 }
 
 .page-button {
   background-color: #3b82f6;
+  margin: 5px 0;
 }
 
 .page-button:hover {
