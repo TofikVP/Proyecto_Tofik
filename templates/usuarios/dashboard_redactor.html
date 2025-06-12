@@ -20,27 +20,111 @@
             </form>
         </div>
 
-        <!-- Sección de Crear Noticia -->
+        <!-- Bloque de Noticias Últimas -->
         <div class="dashboard-card">
-            <h2>{% trans "Crear Noticia" %}</h2>
+            <h2>{% trans "Tus Últimas Noticias" %}</h2>
+            <ul class="dashboard-list">
+                {% for n in ultimas_noticias %}
+                <li>
+                    <div class="post-item">
+                        <div class="content">
+                            <a href="{% url 'detalle_noticia_ultima' n.id %}">
+                                {{ n.titulo }}
+                            </a>
+                            <small>({{ n.fecha_publicacion }})</small>
+                        </div>
+                        <div class="actions">
+                            <button class="page-button">
+                                <a href="{% url 'detalle_noticia_ultima' n.id %}">{% trans "Ir a la noticia" %}</a>
+                            </button>
+                            {% if role == 'redactor' or role == "admin" %}
+                            <button class="delete-button">
+                                <a href="{% url 'noticia_ultima_delete' n.id %}">{% trans "Eliminar" %}</a>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+                {% empty %}
+                <li>{% trans "No tienes noticias últimas." %}</li>
+                {% endfor %}
+            </ul>
+            <!-- Botón para mostrar el formulario -->
+            <button
+                onclick="document.getElementById('nueva-noticia-ultima-form').classList.toggle('hidden')"
+                class="page-button">
+                {% trans "Agregar nueva noticia" %}
+            </button>
+            <!-- Formulario oculto por defecto -->
+            <div id="nueva-noticia-ultima-form" class="hidden" style="margin-top: 1em;">
+                <form method="post" enctype="multipart/form-data" class="dashboard-form" style="background: white">
+                    {% csrf_token %}
+                    <label for="id_titulo_ultima">{% trans "Título" %}</label>
+                    <input type="text" name="titulo" id="id_titulo_ultima" class="form-control" required>
+                    <label for="id_resumen_ultima">{% trans "Resumen" %}</label>
+                    <textarea name="resumen" id="id_resumen_ultima" rows="3" class="form-control" required></textarea>
+                    <label for="id_contenido_ultima">{% trans "Contenido" %}</label>
+                    <textarea name="contenido" id="id_contenido_ultima" rows="6" class="form-control" required></textarea>
+                    <label for="id_imagen_ultima">{% trans "Imagen" %}</label>
+                    <input type="file" name="imagen" id="id_imagen_ultima" class="form-control">
+                    <button type="submit" name="noticia_submit" class="btn btn-success" style="margin-top: 1em;">
+                        {% trans "Publicar Noticia Última" %}
+                    </button>
+                </form>
+            </div>
+        </div>
 
-            <form method="post" enctype="multipart/form-data" class="dashboard-form" style="background: white">
-                {% csrf_token %}
-
-                <label for="id_titulo">{% trans "Título:" %}</label>
-                <input type="text" name="titulo" id="id_titulo" class="form-control" required>
-
-                <label for="id_resumen">{% trans "Resumen:" %}</label>
-                <textarea name="resumen" id="id_resumen" rows="3" class="form-control" required></textarea>
-
-                <label for="id_contenido">{% trans "Contenido:" %}</label>
-                <textarea name="contenido" id="id_contenido" rows="6" class="form-control" required></textarea>
-
-                <label for="id_imagen">{% trans "Imagen:" %}</label>
-                <input type="file" name="imagen" id="id_imagen" class="form-control">
-
-                <button type="submit" name="noticia_submit" class="btn btn-success" style="margin-top: 1em;">{% trans "Publicar Noticia" %}</button>
-            </form>
+        <!-- Bloque de Noticias Destacadas -->
+        <div class="dashboard-card">
+            <h2>{% trans "Tus Noticias Destacadas" %}</h2>
+            <ul class="dashboard-list">
+                {% for n in noticias_destacadas %}
+                <li>
+                    <div class="post-item">
+                        <div class="content">
+                            <a href="{% url 'detalle_noticia_destacada' n.id %}">
+                                {{ n.titulo }}
+                            </a>
+                        </div>
+                        <div class="actions">
+                            <button class="page-button">
+                                <a href="{% url 'detalle_noticia_destacada' n.id %}">{% trans "Ir a la noticia" %}</a>
+                            </button>
+                            {% if role == 'redactor' or role == "admin" %}
+                            <button class="delete-button">
+                                <a href="{% url 'noticia_destacada_delete' n.id %}">{% trans "Eliminar" %}</a>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+                {% empty %}
+                <li>{% trans "No tienes noticias destacadas." %}</li>
+                {% endfor %}
+            </ul>
+            <!-- Botón para mostrar el formulario -->
+            <button
+                onclick="document.getElementById('nueva-noticia-destacada-form').classList.toggle('hidden')"
+                class="page-button">
+                {% trans "Agregar nueva noticia destacada" %}
+            </button>
+            <!-- Formulario oculto por defecto -->
+            <div id="nueva-noticia-destacada-form" class="hidden" style="margin-top: 1em;">
+                <form method="post" enctype="multipart/form-data" class="dashboard-form" style="background: white">
+                    {% csrf_token %}
+                    <label for="id_titulo_destacada">{% trans "Título" %}</label>
+                    <input type="text" name="titulo_destacada" id="id_titulo_destacada" class="form-control" required>
+                    <label for="id_resumen_destacada">{% trans "Resumen" %}</label>
+                    <textarea name="resumen_destacada" id="id_resumen_destacada" rows="3" class="form-control" required></textarea>
+                    <label for="id_contenido_destacada">{% trans "Contenido" %}</label>
+                    <textarea name="contenido_destacada" id="id_contenido_destacada" rows="6" class="form-control" required></textarea>
+                    <label for="id_imagen_destacada">{% trans "Imagen" %}</label>
+                    <input type="file" name="imagen_destacada" id="id_imagen_destacada" class="form-control">
+                    <button type="submit" name="noticia_destacada_submit" class="btn btn-success" style="margin-top: 1em;">
+                        {% trans "Publicar Noticia Destacada" %}
+                    </button>
+                </form>
+            </div>
         </div>
 
         <!-- Sección de Posts -->
@@ -88,6 +172,7 @@
                 </form>
             </div>
         </div>
+
         <!-- Sección de Comentarios -->
         <div class="dashboard-card">
             <h2>{% trans "Tus Comentarios" %}</h2>

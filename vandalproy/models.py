@@ -85,6 +85,8 @@ class Noticias_ultima(models.Model):
     contenido_en = models.TextField(blank=True)
     fecha_publicacion = models.DateField()
     imagen = models.ImageField(upload_to="noticias/ultimas/")
+    autor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="noticias_ultimas", null=True, blank=True)
+
 
     def __str__(self):
         return self.titulo
@@ -99,6 +101,7 @@ class Noticias_destacada(models.Model):
     contenido = models.TextField()
     contenido_en = models.TextField(blank=True)
     imagen = models.ImageField(upload_to="noticias/destacadas/")
+    autor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="noticias_destacadas", null=True, blank=True)
 
     def __str__(self):
         return self.titulo

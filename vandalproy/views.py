@@ -55,68 +55,82 @@ class EmailBackend(ModelBackend):
             return None
 
 #Paneles de usuario
-
 @login_required
 def user_dashboard(request, role):
-    # 1) Instanciar el formulario de cambio de contraseña
     pwd_form = PasswordChangeForm(user=request.user)
 
-    # 2) Procesar envíos de formulario (POST)
+    # Procesar formularios
     if request.method == "POST":
-        # 2.a) Cambio de contraseña
+        # Cambio de contraseña
         if "password_submit" in request.POST:
             pwd_form = PasswordChangeForm(user=request.user, data=request.POST)
             if pwd_form.is_valid():
                 user = pwd_form.save()
                 update_session_auth_hash(request, user)
                 return redirect(f"/")
-        # 2.b) Subida de archivo (admin/colaborador/redactor)
+        # Subida de archivo
         if "upload" in request.POST and role in ["admin", "colaborador", "redactor"]:
             fs = FileSystemStorage(location="static/uploads/")
             fs.save(request.FILES["file"].name, request.FILES["file"])
             return redirect(f"dashboard_{role}")
-        if "post_submit" in request.POST and role in [
-            "admin",
-            "colaborador",
-            "redactor",
-        ]:
+        # Crear post
+        if "post_submit" in request.POST and role in ["admin", "colaborador", "redactor"]:
             post_form = PostForm(request.POST, request.FILES)
             if post_form.is_valid():
                 post = post_form.save(commit=False)
                 post.author = request.user
                 post.save()
                 return redirect(f"dashboard_{role}")
-        if "noticia_submit" in request.POST and role == "redactor" or role == "admin":
+        # Crear noticia última
+        if "noticia_submit" in request.POST and (role == "redactor" or role == "admin"):
             titulo = request.POST.get("titulo")
             resumen = request.POST.get("resumen")
             contenido = request.POST.get("contenido")
             imagen = request.FILES.get("imagen")
-
-            # Crear noticia sin 'autor', usando fecha actual
             from datetime import date
-
             Noticias_ultima.objects.create(
                 titulo=titulo,
                 resumen=resumen,
                 contenido=contenido,
                 imagen=imagen,
                 fecha_publicacion=date.today(),
+                autor=request.user,
             )
-
+            return redirect(f"dashboard_{role}")
+        # Crear noticia destacada
+        if "noticia_destacada_submit" in request.POST and (role == "redactor" or role == "admin"):
+            titulo = request.POST.get("titulo_destacada")
+            resumen = request.POST.get("resumen_destacada")
+            contenido = request.POST.get("contenido_destacada")
+            imagen = request.FILES.get("imagen_destacada")
+            Noticias_destacada.objects.create(
+                titulo=titulo,
+                resumen=resumen,
+                contenido=contenido,
+                imagen=imagen,
+                autor=request.user,
+            )
             return redirect(f"dashboard_{role}")
 
-    # 3) Construir contexto **fuera** del POST, para GET y POST invalidados
+    # Contexto
     comments = BlogComment.objects.filter(user=request.user).order_by("-created_at")
+    ultimas_noticias = Noticias_ultima.objects.filter(autor=request.user).order_by("-fecha_publicacion")
+    noticias_destacadas = Noticias_destacada.objects.filter(autor=request.user).order_by("-id") 
+    posts = BlogPost.objects.filter(author=request.user)
+    try:
+        role = request.user.userrole.role
+    except Exception:
+        role = None
+
     context = {
         "comments": comments,
         "password_form": pwd_form,
+        "ultimas_noticias": ultimas_noticias,
+        "noticias_destacadas": noticias_destacadas,
+        "posts": posts,
+        "role": role,
     }
 
-    # 4) Añadir posts si corresponde
-    if role in ["colaborador", "redactor"]:
-        context["posts"] = BlogPost.objects.filter(author=request.user)
-
-    # 5) Renderizar siempre (GET o POST), retornando HttpResponse
     templates = {
         "redactor": "usuarios/dashboard_redactor.html",
         "colaborador": "usuarios/dashboard_colaborador.html",
@@ -446,7 +460,20 @@ class EditarNoticiaDestacadaView(LoginRequiredMixin, UserPassesTestMixin, Update
     def test_func(self):
         user = self.request.user
         return hasattr(user, 'userrole') and user.userrole.role in ['admin', 'redactor']
+#Borrar noticia destacada
+class BorrarNoticiaDestacadaView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Noticias_destacada
+    template_name = 'usuarios/confirm_delete_noticia_destacada.html'
+    success_url = reverse_lazy('home')
 
+    def test_func(self):
+        user = self.request.user
+        return hasattr(user, 'userrole') and user.userrole.role in ['admin', 'redactor']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['noticia'] = self.object  # Añade esto
+        return context
 #Noticias ultimas
 def detalle_noticia_ultima(request, pk):
     noticia = get_object_or_404(Noticias_ultima, pk=pk)
@@ -461,7 +488,20 @@ class EditarNoticiaUltimaView(LoginRequiredMixin, UserPassesTestMixin, UpdateVie
     def test_func(self):
         user = self.request.user
         return hasattr(user, 'userrole') and user.userrole.role in ['admin', 'redactor']
+#Borrar noticia ultima
+class BorrarNoticiaUltimaView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Noticias_ultima
+    template_name = 'usuarios/confirm_delete_noticia_ultima.html'
+    success_url = reverse_lazy('home')
 
+    def test_func(self):
+        user = self.request.user
+        return hasattr(user, 'userrole') and user.userrole.role in ['admin', 'redactor']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['noticia'] = self.object  # Añade esto
+        return context
 #Ranking
 
 def ranking(request):
@@ -585,6 +625,10 @@ class CalendarioDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         user = self.request.user
         return hasattr(user, 'userrole') and user.userrole.role in ['admin', 'redactor']
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['evento'] = self.object  # Añade esto
+        return context
 #Editar evento del calendario
 class EditarCalendarioView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = EventoCalendario

@@ -14,7 +14,7 @@
     </button>
     
     <button class="page-button">
-      <a href="{% url 'dashboard_redactor' %}">{% trans "Cancelar" %}</a>
+      <a href="{% url 'blog_post' post.id %}">{% trans "Cancelar" %}</a>
     </button>
   </form>
 {% else %}

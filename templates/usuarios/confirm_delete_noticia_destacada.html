@@ -5,19 +5,19 @@
 {% block content %}
 {% if user.is_authenticated and user.userrole.role == 'redactor' or user.userrole.role == 'admin' %}
   <body>
-    <h2>{% trans "¿Eliminar este evento?" %}</h2>
-    <p>{{ evento.nombre }}</p>
+    <h2>{% trans "¿Eliminar esta noticia destacada?" %}</h2>
+    <p>{{ noticia.titulo }}</p>
     <form method="post">
       {% csrf_token %}
       <button type="submit" class="delete-button">
         {% trans "Confirmar" %}
       </button>
       <button class="page-button">
-      <a href="{% url 'detalle_calendario' evento.pk %}">{% trans "Cancelar" %}</a>
+      <a href="{% url 'detalle_noticia_destacada' noticia.pk %}">{% trans "Cancelar" %}</a>
       </button>
 
     </form>
 {% else %}
-  <p>{% trans "No tienes permiso para eliminar este evento." %}</p>
+  <p>{% trans "No tienes permiso para eliminar esta noticia." %}</p>
 {% endif %}
 {% endblock %}

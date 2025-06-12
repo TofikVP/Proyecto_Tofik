@@ -38,9 +38,15 @@
           <button class="page-button">
             <a href="{% url 'noticia_destacada_editar' noticia.pk %}">{% trans "Editar noticia" %}</a>
           </button>
+          <button class="delete-button">
+            <a href="{% url 'noticia_destacada_delete' noticia.pk %}">{% trans "Eliminar noticia" %}</a>
+          </button>
         {% elif tipo_noticia == "ultima" %}
           <button class="page-button">
             <a href="{% url 'noticia_ultima_editar' noticia.pk %}">{% trans "Editar noticia" %}</a>
+          </button>
+          <button class="delete-button">
+            <a href="{% url 'noticia_ultima_delete' noticia.pk %}">{% trans "Eliminar noticia" %}</a>
           </button>
         {% endif %}
       </div>

@@ -28,8 +28,10 @@ urlpatterns += i18n_patterns(
     #Noticias
     path('noticias_destacada/<int:pk>/', detalle_noticia_destacada, name='detalle_noticia_destacada'),
     path('noticias_destacada/<int:pk>/edit/', EditarNoticiaDestacadaView.as_view(), name='noticia_destacada_editar'),
+    path('noticias_destacada/<int:pk>/delete/', BorrarNoticiaDestacadaView.as_view(), name='noticia_destacada_delete'),
     path('noticias_ultima/<int:pk>/', detalle_noticia_ultima, name='detalle_noticia_ultima'),
     path('noticias_ultima/<int:pk>/edit/', EditarNoticiaUltimaView.as_view(), name='noticia_ultima_editar'),
+    path('noticias_ultima/<int:pk>/delete/', BorrarNoticiaUltimaView.as_view(), name='noticia_ultima_delete'),
     #Página del calendario
     path('calendario/', calendario, name='calendario'),
     path('calendario/<int:pk>/', CalendarioDetailView.as_view(), name='detalle_calendario'),

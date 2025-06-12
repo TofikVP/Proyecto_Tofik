@@ -1,4 +1,4 @@
-/* === Ranking general === */
+/* Ranking general */
 #ranking,
 .list-ranking {
   display: flex;
@@ -68,7 +68,7 @@
   display: inline-block;
 }
 
-/* === Detalle de juego === */
+/*  Detalle de juego  */
 #detalle-juego {
   max-width: 960px;
   margin: 40px auto;
@@ -100,7 +100,7 @@
   text-align: center;
 }
 
-/* === Carousel de capturas === */
+/*  Carousel de capturas  */
 .capturas-carousel {
   display: flex;
   align-items: center;
@@ -223,7 +223,7 @@
 }
 
 /* Adaptación móvil */
-@media (max-width: 250px) {
+@media (max-width: 768px) {
   .ranking-container {
     flex-direction: column;
     align-items: center;
@@ -236,17 +236,23 @@
   }
 
   .ranking-container .nota {
-    margin-left: 0;
+    font-size: 48px;
+    padding: 8px 16px;
   }
 
   .carousel-img-container {
-    height: auto;
+    height: 220px; /* o el alto que prefieras en móvil */
+    width: 100%;
+    max-width: 100%;
   }
 
   .carousel-img {
-    position: relative;
-    opacity: 1;
-    transform: none !important;
+    /* Mantén el posicionamiento absoluto */
+    position: absolute;
+    width: 100%;
+    height: auto;
+    max-height: 220px;
+    max-width: 100%;
   }
 
   .carousel-btn {
